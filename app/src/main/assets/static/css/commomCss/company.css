@@ -1,0 +1,129 @@
+.produceBgImg {
+    margin-top: 45px;
+    height: 120px;
+    width: 100%;
+    background-color: #fff;
+}
+.produceBgImg>img {
+	height: 100%;
+	width: 100%;
+}
+.produceName {
+	padding: 0 10px;
+	height: 40px;
+	line-height: 40px;
+	font-size: .45rem;
+	font-weight: bold;
+	border-bottom: #eee solid 1px;
+}
+.produceContent {
+	padding: 10px;
+	color: #999999;
+	font-size: .4rem;
+}
+
+.companyInfo {
+	background-color:#fff;
+	padding: 10px;
+}
+.companyName {
+	font-size: .45rem;
+	font-weight: bold;
+}
+.companyPlace, .companyTel {
+	color: #999;
+}
+.companyPlace>i, .companyTel>i {
+	margin-right: 5px;
+}
+.mainProduce {
+	background-color:#fff;
+	padding: 10px;
+	font-size: .45rem;
+	margin-top: 5px;
+}
+.companyIntroduce {
+	background-color:#fff;
+	padding: 10px;
+	color: #999999;
+	font-size: .4rem;
+	margin-top: 5px;
+}
+.introduceInfo {
+	font-size: .45rem;
+	color: #000;
+}
+.advertisementBottom {
+	position: absolute;
+	bottom: 0;
+	background-color: #41a6ff;
+	color: #fff;
+	font-size: .5rem;
+	text-align: center;
+	line-height: 50px;
+	height: 50px;
+	width: 100%;
+}
+
+.detailInfos {
+	background-color:#fff;
+	margin-top: 5px;
+}
+.introduceNav {
+	display: flex;
+	height: 40px;
+}
+.introduceNav>div {
+	flex: 1;
+	text-align: center;
+	line-height: 40px;
+}
+.introduceNavActive {
+	color: #41a6ff;
+	border-bottom: #41a6ff solid 2px;
+}
+.detailContent {
+	padding: 10px 10px 10px 0;
+	color: #999999;
+}
+#inNav-1 {
+	padding-left: 10px;
+}
+.produceIntroduce {
+    width: 4.7rem;
+	height: 100px;
+	display: inline-block;
+	padding: 0 0 10px 10px;
+}
+.produceIntroduce>img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+}
+
+.searchCompany {
+    width: 6rem;
+	height: 30px;
+	border-radius: 30px;
+	border: #000000;
+	text-indent: 15px;
+	-webkit-user-select: auto;
+}
+.mui-media-object {
+	border-radius: 50%;
+}
+.marginSpan {
+	margin: 0 5px;
+}
+/*.indexListNav {
+    position: fixed !important;
+    padding-top: .3rem !important;
+    border: solid 1px #ccc;
+    background-color: #fff !important;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 13rem !important;
+    margin-top: 1rem;
+}*/

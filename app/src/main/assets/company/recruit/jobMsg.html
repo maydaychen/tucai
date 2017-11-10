@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>通知</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<script src="../../static/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>					
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<link rel="stylesheet" href="../../static/css/deliver.css">
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back"></a>
+			<p class="barTab">
+				<a>聊天</a>
+				<a class="btActive">通知</a>
+			</p>
+			<p class="barRight">
+				<a class="br"></a>
+			</p>
+		</header>
+			<div class="tdTab">
+				<span class="tdActive">公告通知</span>
+				<span>谁看过我</span>
+				<span>消息提醒</span>
+			</div>
+		<div class="muiTop" id="app" style="width: 100%; height: 100%; float: left; overflow: hidden">
+			<div class="tdList" style="height: 96%">
+				<ul class="tdul scrolls" id="tdul_1" style="height: 100%;overflow: auto">
+					<div class="nojob" v-show="listAll==''">
+						<i class="iconfont">&#xe6ce;</i>
+						<p>暂无通知</p>
+					</div>
+					<li class="tsLi" v-for="(item, index) in listAll">
+						<img class="tdImg tdb" src="../../static/images/muwu.jpg"/>
+						<p class="ts1" v-text="item.title"></p>
+						<time v-text="item.addtime"></time>
+					</li>
+				</ul>
+				<ul class="tdul scrolls" id="tdul_2" style="height: 100%;overflow: auto">
+					<div class="nojob" v-show="listIng==''">
+						<i class="iconfont">&#xe6ce;</i>
+						<p>暂无看过</p>
+					</div>
+					<li class="tdLi" v-for="(item, index) in listIng" @click="goRs(item.resumeid)">
+						<div class="tdTop bnone">
+							<img class="tdImg tdb" :src="[item.avatar]"/>
+							<p class="td1"><a v-text="item.fullname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
+							<p class="td2">求职期望 {{item.jobs_name}}</p>
+							<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>
+							<p class="td4">看过：<a v-text="item.jobs_name"></a></p>
+							<time v-text="item.addtime"></time>
+						</div>
+					</li>
+				</ul>
+				<ul class="tdul scrolls" id="tdul_3" style="height: 100%;overflow: auto">
+					<div class="nojob" v-show="listOff==''">
+						<i class="iconfont">&#xe6ce;</i>
+						<p>暂无提醒</p>
+					</div>
+					<li class="tsLi" v-for="(item, index) in listOff">
+						<img class="tdImg tdb" src="../../static/images/muwu.jpg"/>
+						<p class="ts1" v-text="item.title"></p>
+						<time v-text="item.addtime"></time>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<footer class="navBar">
+			<ul>
+				<li>
+					<a data-href="../../index" >
+						<i class="iconfont">&#xe60e;</i>
+						<p>首页</p>
+					</a>
+				</li>
+				<li>
+					<a data-href="../../commom/discovery/discovery">
+						<i class="iconfont">&#xe647;</i>
+						<p>发现</p>
+					</a>
+				</li>
+				<li>
+					<a data-href="" class="active">
+						<i class="iconfont">&#xe60c;</i>
+						<p>消息</p>
+					</a>
+				</li>
+				<li>
+					<a data-href="../../personal/personalCenter/personalCenter">
+						<i class="iconfont">&#xe63d;</i>
+						<p>我的</p>
+					</a>
+				</li>
+			</ul>
+		</footer>
+	</body>	
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			$(function(){
+				FastClick.attach(document.body);
+
+			});
+
+            var page=[1,1,1];
+            var pagesize=10;
+            var pageflag = [true,true,true];
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    listAll:[],
+                    listIng:[],
+                    listOff:[]
+                },
+                methods: {
+                    loadAll:function(){
+                        var that=this;
+                        var parmas={page:page[0],pagesize:pagesize};
+                        ajaxRun(port.show_notice_list,parmas,true,'POST',function (data) {
+                            console.log('公告通知:',data);
+                            if(data.statuscode==1){
+                                that.listAll=that.listAll.concat(data.result);
+                                if(data.result.length<pagesize){
+                                    setTimeout(function () {
+                                        $('#tdul_1').off('scroll').append('<p class="nomore">无更多数据</p>');
+                                    },300)
+                                    return;
+                                }
+                                page[0]++;
+                            }else{
+
+                            }
+
+                        });
+                    },
+                    loadIng:function(){
+                        var that=this;
+                        var parmas={is_face:1,page:page[1],pagesize:pagesize};
+                        ajaxRun(port.getRecicveList,parmas,true,'POST',function (data) {
+                            console.log('谁看过我:',data);
+                            if(data.statuscode==1){
+                                that.listIng=that.listIng.concat(data.result);
+                                if(data.result.length<pagesize){
+                                    setTimeout(function () {
+                                        $('#tdul_2').off('scroll').append('<p class="nomore">无更多数据</p>');
+                                    },500)
+                                    return;
+                                }
+                                page[1]++;
+                            }else{
+
+                            }
+
+                        });
+                    },
+                    loadOff:function(){
+                        var that=this;
+                        var parmas={is_face:0,page:page[2],pagesize:pagesize};
+                        ajaxRun(port.show_message_list,parmas,true,'POST',function (data) {
+                            console.log('消息提醒:',data);
+                            if(data.statuscode==1){
+                                that.listOff=that.listOff.concat(data.result);
+                                if(data.result.length<pagesize){
+                                    setTimeout(function () {
+                                        $('#tdul_3').off('scroll').append('<p class="nomore">无更多数据</p>');
+                                    },500)
+                                    return;
+                                }
+                                page[2]++;
+                            }else{
+
+                            }
+
+                        });
+                    },
+                    goRs:function(id){
+                        location.href='resumes.html?id='+id
+                    },
+                    bindEle:function(){
+                        var that=this;
+                        $.each($('.tdTab span'),function(index){
+                            $('.tdTab span').eq(index).click(function(){
+                                //mui('.mui-scroll-wrapper').scroll().scrollTo(0,0,100);//100毫秒滚动到顶
+                                $('.tdTab span').removeClass('tdActive');
+                                $(this).addClass('tdActive');
+                                $('.tdList ul').hide();
+                                $('.tdList ul').eq(index).show();
+                            });
+                        });
+                        $('.tdTab span').eq(0).click();
+						$('.barTab a').eq(0).click(function () {
+                            location.href='../../commom/chatMsg/chatMsg.html?id='+userid
+                        });
+                    },
+                    bindScroll:function(ele,num){
+                        var that=this;
+                        ele.on('scroll', function() {
+                            var scrollHeight = $(this)[0].scrollHeight;
+                            var scrollTop = $(this)[0].scrollTop;
+                            var nDivHight = $(this).height();
+                            var tipHtml="<span id=\"loadTips\"><a></a></span>";
+                            if (pageflag[num] == true && scrollTop + nDivHight > scrollHeight - 30) {
+                                pageflag[num] = false;
+                                ele.append(tipHtml).show();
+                                setTimeout(function(){
+                                    $('#loadTips').remove();
+                                    if(num==0){
+                                        that.loadAll();
+                                    }
+                                    if(num==1){
+                                        that.loadIng();
+                                    }
+                                    if(num==2){
+                                        that.loadOff();
+                                    }
+                                    pageflag[num] = true;
+                                },1000)
+                            }
+                        });
+                    },
+
+                },
+                watch: {
+
+                },
+            })
+            app.bindScroll($('#tdul_1'),0);
+            app.bindScroll($('#tdul_2'),1);
+            app.bindScroll($('#tdul_3'),2);
+            app.bindEle();
+            app.loadAll();
+            app.loadIng();
+            app.loadOff();
+		</script>
+</html>

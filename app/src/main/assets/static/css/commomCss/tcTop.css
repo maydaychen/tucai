@@ -1,0 +1,36 @@
+.topBgImg {
+	margin-top: 45px;
+    height: 120px;
+    width: 100%;
+    background-color: #fff;
+}
+.mui-slider, .mui-slider>div {
+	height: 100%;
+}
+.mui-slider-item>a {
+    height: 100%;
+    width: 100%;
+}
+.mui-slider-item>a>img {
+    height: 100%;
+    width: 100%;
+}
+.topList {
+	display: flex;
+	height: 80px;
+	margin: 10px 0;
+    background-color: #fff;
+}
+.listImg {
+	width: 3.5rem;
+}
+.listContent {
+	margin: 5px 10px;
+}
+.listContent div{
+    display:-webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    color:#757575;
+}

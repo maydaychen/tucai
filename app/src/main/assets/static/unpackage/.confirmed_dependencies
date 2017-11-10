@@ -1,0 +1,196 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/update.js"
+		],
+		"refer": [
+			"index-menu.html",
+			"examples/guide.html",
+			"examples/info.html",
+			"examples/dialog.html",
+			"examples/accordion.html",
+			"setCompany.html",
+			"examples/actionsheet-plus.html",
+			"examples/badges.html",
+			"examples/ajax.html",
+			"resumeControl.html"
+		]
+	},
+	"examples/info.html": {
+		"resources": [
+			"images/qrcode.png",
+			"css/mui.min.css"
+		]
+	},
+	"examples/dialog.html": {
+		"resources": [
+			"css/mui.min.css"
+		]
+	},
+	"examples/accordion.html": {
+		"resources": [
+			"images/cbd.jpg",
+			"images/muwu.jpg",
+			"images/yuantiao.jpg",
+			"images/shuijiao.jpg"
+		]
+	},
+	"setCompany.html": {
+		"resources": [
+			"js/mui.picker.js",
+			"images/muwu.jpg",
+			"css/public.css",
+			"css/mui.picker.css",
+			"js/tmodjs.js",
+			"js/city.data-3.js",
+			"css/home.css",
+			"css/modeEle.css",
+			"js/fastclick.js",
+			"js/mui.poppicker.js",
+			"css/iconfont.css",
+			"js/effect.js",
+			"fonts/iconfont.ttf",
+			"css/mui.poppicker.css",
+			"js/city.data.js",
+			"js/flexible.js",
+			"js/jquery.js",
+			"setIndustry.html",
+			"css/mui.min.css",
+			"setIntro.html",
+			"setAddress.html",
+			"js/mui.min.js",
+			"js/update.js",
+			"resumeControl.html",
+			"js/config.js"
+		],
+		"refer": [
+			"setIndustry.html",
+			"setIntro.html",
+			"setAddress.html",
+			"resumeControl.html",
+			"index-menu.html",
+			"examples/info.html"
+		]
+	},
+	"setIndustry.html": {
+		"resources": [
+			"css/home.css",
+			"js/jquery.mockjax.js",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/public.css",
+			"setCompany.html"
+		],
+		"refer": [
+			"setCompany.html"
+		]
+	},
+	"setIntro.html": {
+		"resources": [
+			"setCompany.html",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/public.css",
+			"css/home.css",
+			"js/fastclick.js",
+			"js/mui.min.js",
+			"js/effect.js",
+			"js/update.js",
+			"fonts/iconfont.ttf",
+			"js/tmodjs.js",
+			"js/flexible.js",
+			"js/jquery.js"
+		],
+		"refer": [
+			"setCompany.html"
+		]
+	},
+	"setAddress.html": {
+		"resources": [
+			"setCompany.html",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/public.css",
+			"setAddressChild.html",
+			"css/home.css",
+			"css/modeEle.css",
+			"js/fastclick.js",
+			"js/mui.min.js",
+			"js/effect.js",
+			"js/update.js",
+			"fonts/iconfont.ttf",
+			"js/tmodjs.js",
+			"js/flexible.js",
+			"js/jquery.js"
+		],
+		"refer": [
+			"setCompany.html",
+			"setAddressChild.html"
+		]
+	},
+	"setAddressChild.html": {
+		"resources": [
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/public.css",
+			"setAddress.html",
+			"css/mui.poppicker.css",
+			"css/mui.picker.css",
+			"css/home.css"
+		],
+		"refer": [
+			"setAddress.html"
+		]
+	},
+	"examples/ajax.html": {
+		"resources": [
+			"css/mui.min.css"
+		]
+	},
+	"resumeControl.html": {
+		"refer": [
+			"setCompany.html",
+			"examples/actionsheet.html",
+			"resumes.html"
+		],
+		"resources": [
+			"css/mui.min.css",
+			"setCompany.html",
+			"images/muwu.jpg",
+			"css/public.css",
+			"js/tmodjs.js",
+			"css/home.css",
+			"js/fastclick.js",
+			"js/mui.min.js",
+			"css/iconfont.css",
+			"js/effect.js",
+			"js/update.js",
+			"fonts/iconfont.ttf",
+			"js/flexible.js",
+			"js/config.js",
+			"js/jquery.js"
+		]
+	},
+	"examples/actionsheet.html": {
+		"resources": [
+			"css/mui.min.css"
+		]
+	},
+	"index-menu.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"resumes.html": {
+		"resources": [
+			"css/home.css",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/public.css"
+		]
+	}
+}

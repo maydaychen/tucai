@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>涂才百科</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/wiki.css">
+	</head>
+	<body>		
+	    <header class="titleBar">
+	        <a class="write-barLeft br mui-action-back">取消</a>
+	        <p class="barTxt">评论</p>
+	        <p class="barRight" onclick="send()">
+	            <a class="br">发送</a>
+	        </p>
+	    </header>
+	    <div style="height:100%;overflow-y: auto">
+	    	<textarea class="commentContent" placeholder="内容"></textarea>
+	    	
+	    </div>
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+	<script src="../../static/js/api.js"></script> 
+	<script src="../../static/js/vue.min.js"></script>
+	<script>
+		var articleid = GetRequest().articalId;  
+		var uid = uid();    
+	    console.log("articleid" + articleid)
+		var url = host + 'c=tcbk&a=getTcbkInfo';
+		var categoryListUrl = host + 'c=tcbk&a=comment';
+		 	
+	 	function send() {
+	 		var content = $(".commentContent").val();
+	 		console.log(content)
+	 		if (content != '') {
+				var parmas = {id: articleid,uid: uid,content: content};
+	 			ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
+					if(data.statuscode==1){
+						location.href='index.html';
+						// mui.openWindow({
+			            //     url: 'index.html', 
+			            //     id: 'index.html'
+			            // });
+					}else{
+						rzState=0;
+						console.log(data.msg);	
+						mui.toast(data.msg,{ duration:1000}); 
+					}					
+											
+			 	});
+	 		} else {
+	 			
+	 		}
+	 	}
+	</script>
+</html>

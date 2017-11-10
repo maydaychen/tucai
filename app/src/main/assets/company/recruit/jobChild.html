@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>职位详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<script src="../../static/js/vue.min.js"></script>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>			
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<link rel="stylesheet" href="../../static/css/modeEle.css">
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">职位详情</p>
+			<p class="barRight">
+				<!--<a class="br iconfont">&#xe600;</a>-->
+				<!--<a class="br iconfont brleft">&#xe65f;</a>-->
+			</p>
+		</header>	
+		
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll muiTop">
+				<!--这里放置真实显示的DOM内容-->				
+				<div class="jobDetail" id="app">
+					<section class="jd">
+						<div class="jd_1">
+							<span v-text="jobsInfo.jobs_name"></span>
+							<a>【￥<em v-text="jobsInfo.salary_cn"></em>】</a>
+						</div>
+						<div class="jd_2">
+							<p><i class="iconfont">&#xe605;</i><a v-text="jobsInfo.district_cn"></a></p>
+							<p><i class="iconfont">&#xe61d;</i><a v-text="jobsInfo.experience_cn"></a></p>
+							<p><i class="iconfont">&#xe69e;</i><a v-text="jobsInfo.education_cn"></a></p>
+						</div>
+						<div class="jd_3" @click="goCom(jobsInfo.company_id)">
+							<img class="" :src="[jobsInfo.logo]"/>
+							<p class="jdt1" v-text="company_Profile.companyname"></p>
+							<p class="jdt2"><em v-text="company_Profile.trade_cn"></em> | <em v-text="jobsInfo.nature_cn"></em> | <em v-text="company_Profile.finance"></em></p>
+							<i class="iconfont">&#xe649;</i>
+						</div>
+					</section>
+					<section class="jd">
+						<div class="jd_4">
+							<h1 class="tzTitle"><i class="iconfont">&#xe8a0;</i>职位详情</h1>
+							<p class="jdt3" v-text="jobsInfo.contents"></p>
+						</div>						
+					</section>
+					<section class="jd">
+						<div class="jd_4">
+							<h1 class="tzTitle"><i class="iconfont">&#xe61b;</i>技能要求</h1>
+							<p class="jdt3">
+								<a style="width: 100%;float: left;color: #333" v-for="(item, index) in jobsInfo.skill" v-text="item"></a>
+							</p>
+						</div>						
+					</section>
+					<section class="jd">
+						<div class="jd_4">
+							<h1 class="tzTitle"><i class="iconfont">&#xe605;</i>工作地点</h1>
+							<p class="jdt3" v-text="jobsInfo.district_cn"></p>
+						</div>							
+					</section>
+					<section class="jd">
+						<div class="jd_4">
+							<h1 class="tzTitle"><i class="iconfont">&#xe63d;</i>职位发布者</h1>
+							<p class="jdt3" id="username" v-text="result.user.realname"></p>
+						</div>							
+					</section>					
+				</div>
+				
+			</div>	
+		</div>
+		
+		<div class="jobBot">
+			<a class="twoBtn" id="closeJob" onclick="delJob()">关闭职位</a>
+			<a class="twoBtn" onclick="goJob()">编辑职位</a>
+		</div>
+		
+	</body>	
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>		
+		<script>
+			FastClick.attach(document.body);
+	        var url=new GetRequest();
+	        var pageid=url.id;
+	        var cpid;
+           	console.log(pageid);
+
+			var app = new Vue({
+			  el: '#app',
+			  data: {
+			    result:{},
+                company_Profile:{},
+                jobsInfo:{}
+			  },
+			  methods: {
+			  	loadInfo:function(){
+			  		var that=this;
+					var parmas={id:pageid};
+					ajaxRun(port.getJobsInfo,parmas,true,'POST',function (data) {
+						console.log('getJobsInfo:',data);
+						toLogin(data);
+						if(data.statuscode==1){
+							that.result=data.result;
+                            that.company_Profile=data.result.company_Profile;
+                            that.jobsInfo=data.result.jobsInfo;
+							cpid=data.result.jobsInfo.id;
+						}else{
+							mui.toast('请求失败',{ duration:1000}); 
+						}					
+	       		 	});					  		
+			  	},
+			  	goCom:function(id){
+                    location.href="companyInfo.html?id="+id;
+			  	}
+			  },
+			  watch: {
+			  	
+			  },
+			});
+            app.loadInfo();
+			function delJob(){
+				var btnArray = ['否', '是'];
+				mui.confirm('关闭此职位？', '提示', btnArray, function(e) {
+					if (e.index == 1) {							
+						var parmas={jobid:pageid};
+						ajaxRun(port.deleteJob,parmas,true,'POST',function (data) {
+							console.log('deleteJob:',data);
+							if(data.statuscode==1){
+								mui.toast('已关闭！');
+								setTimeout(function(){
+									mui.back();
+								},1000)
+								
+							}else{
+								mui.toast('请求失败'); 
+							}					
+		       		 	});							
+						
+					} else {				
+					}
+				})
+			}
+			function goJob(){
+//		        mui.openWindow({
+//		            url:'jobEdit.html?id='+pageid,
+//		        })
+                location.href='jobEdit.html?id='+pageid
+			}
+
+		</script>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/personal.css">
+</head>
+<body>
+	<div id="app">
+	    <header class="titleBar">
+	        <a class="barLeft iconfont mui-action-back" href="personalPage.html">&#xe604;</a>
+	        <p class="barTxt" v-text="userInfo.username"></p>
+	        <p class="barRight">
+	            <a class="br"></a>
+	        </p>
+	    </header>
+	    <div style="height:100%;overflow-y: auto">
+	        <div class="personalBgImg">
+	            <img :src="articalInfo.small_img"/>
+	        </div>
+	        <div class="articleBg articleTitle" v-text="userInfo.title"></div>
+	        <div class="articleBg articleTime detialTime" v-text="userInfo.addtime"></div>
+	        <div class="articleBg articleContent" v-html="articalInfo.content"></div>
+	
+	        <!--<div class="articleBg articleBottom">
+	            <span>阅读1201</span>
+	            &nbsp;&nbsp;
+	            <span onclick="agree()"><i class="iconfont agreeBind">&#xe670;</i>160</span>
+	        </div>-->
+	
+	    </div>		
+	</div>
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/api.js"></script> 
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var articalInfo = '';
+	var userInfo = '';
+	var articalvue = new Vue({
+		el: '#app',
+		data: {
+			articalInfo: articalInfo,
+			userInfo: userInfo
+		}
+	})
+	var articleid = GetRequest().id;
+	console.log(articleid)
+	var url = host + 'c=tcbk&a=getPerArticleInfo';
+	var parmas = {id:articleid};
+	ajaxRun(url,parmas,true,'GET',function (data) {
+		articalvue._data.articalInfo = data.result.info;
+		articalvue._data.userInfo = data.result.user;
+ 	});
+ 	
+    function agree() {
+        $('.agreeBind').toggleClass("agreeState");
+    }
+</script>
+</html>

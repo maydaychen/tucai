@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>编辑职位</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<link href="../../static/css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../static/css/mui.poppicker.css" rel="stylesheet" />	
+		<link href="../../static/css/modeEle.css" rel="stylesheet" />	
+		<style type="text/css">	
+		</style>
+	</head>
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">编辑职位</p>
+			<p class="barRight">
+				<a class="br" style="display: none;">关闭</a>
+			</p>
+		</header>
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll muiTop" id="pages">
+			<!--这里放置真实显示的DOM内容-->
+				<a class="cow mgt" id="">
+					<h1>企业信息</h1>
+					<span>
+						<p id="val1"></p>
+						<!--<i class="iconfont">&#xe649;</i>-->
+					</span>
+				</a>
+				
+				<a class="cow" id="jobkind">
+					<h1>职位类型</h1>
+					<span>
+						<p id="val2" data-val = ""></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>
+				<div class="cow" id="jobname">
+					<h1>职位名称</h1>
+					<span>
+						<p data-val = "" id="jobnames"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</div>	
+				<div class="cowLine"></div>
+				<a class="cow mgt" id="areaPicker">
+					<h1>工作地点</h1>
+					<span>
+						<p data-val = "" id="areaVal"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+
+				<a class="cow" id="jobSkill">
+					<h1>技能要求</h1>
+					<span>
+						<p data-val = "" id="jnVal"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>					
+				<a class="cow mgt" id="xzPicker">
+					<h1>薪资范围</h1>
+					<span>
+						<p data-val = "" id="xzVal"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+			
+				<a class="cow" id="exPicker">
+					<h1>经验要求</h1>
+					<span>
+						<p data-val = "" id="exVal"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>					
+				<a class="cow mgt" id="xlPicker">
+					<h1>最低学历</h1>
+					<span>
+						<p data-val = "" id="xlVal"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>					
+				<a class="cow mgt" id="jobIntro">
+					<h1>职位描述</h1>
+					<span>
+						<p data-val = "" id="itVal">未填写</p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<p class="bop" style="opacity: .5;">职位信息、职位名称和工作城市发布后不可修改</p>
+				<button class="bigbtn" onclick="fabu()">保存</button>
+			</div>
+		</div>
+		
+		<div class="jobSkill muiTop" style="background: #f6f6f6; display: none;">
+			<div class="addTag">
+				<i class="iconfont" id="addtag">&#xe70a;</i>
+				<p>输入技能标签，最多三个</p>
+			</div>			
+			<ul class="idsUl" id="jnUl">
+		        			
+			</ul>					
+		</div>			
+		<div class="jobIntro muiTop" style="background: #f6f6f6; display: none;">
+			<div class="cow">
+				<textarea class="cowArea" placeholder="填写详细、清晰的职位描述。有助于您更准确的展开招聘需求" maxlength="1000" onkeyup="maxTxt(this)"></textarea>			
+			</div>				
+			<div class="cow mgt">
+				<p class="zs" id="txt">0/1000</p>		
+			</div>						
+		</div>			
+		<div class="jobKind" style="background: #f6f6f6; display: none;">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll muiTop">
+					<ul class="idsUl" id="idsUl" style="margin-bottom: 150px;">
+				        <script type="text/html" id="idsLi">
+				            <% each infos as info i%>
+				            <li class="idsLi" data-id = "<% i %>"><% info %></li>
+				            <% /each %>
+				        </script>
+					</ul>					
+				</div>
+			<div>				
+		</div>
+
+	
+		
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>	
+		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>			
+		<script src="../../static/js/mui.picker.min.js"></script>
+		<script>
+	        var url=new GetRequest();
+	        var pageid=url.id;		
+	        var category={};
+			var cp={};
+			var skill=[];
+			var result;
+			$(function(){
+
+		        loadInfo();
+				FastClick.attach(document.body);
+				bindEle();
+				loapz();	
+			});
+			
+			function bindEle(){
+				$('#jobkind').click(function(){
+					$('.jobKind').show().slideInLeft();
+					$('.br').show();
+				});
+				$('.br').click(function(){
+					$('.jobKind,.jobIntro,.jobSkill').slideOutRight();
+					$('.br').hide();
+				});
+				$('#jobIntro').click(function(){
+					$('.jobIntro').show().slideInLeft();
+					$('.br').show();
+				});			
+				$('#jobSkill').click(function(){
+					$('.jobSkill').show().slideInLeft();
+					$('.br').show();
+				});
+		        $('#jobname').click(function(){	        	
+		            $.malert({  
+		                text: "输入职位名称",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""||str.length>12){
+		                		mui.toast('输入不正确！');
+		                		return;
+		                	}
+		                    $('#jobnames').html(str).attr('data-val',str);
+		                }  
+		            })  
+		        });
+                $('#areaPicker').click(function(){
+                    $.malert({
+                        text: "输入工作地点",
+                        cancle: function () {
+                            console.log('关闭了')
+                        },
+                        ok: function () {
+                            var str=$.trim($('#mInput').val());
+                            if(str==""||str.length>30){
+                                mui.toast('输入不正确！');
+                                return;
+                            }
+                            $('#jnVal').html(str).attr('data-val',str);
+                        }
+                    })
+                });
+                $('#addtag').click(function(){
+		            $.malert({  
+		                text: "输入技能标签",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""){
+		                		mui.toast('输入不正确！');
+		                		return;
+		                	}
+		                	if(skill.length==3){
+		                		mui.toast('最多三个！');
+		                		return;
+		                	}
+		                	skill.push(str);
+		                    loadSkill();		                  
+		                }  
+		            })   
+		        });
+		        loadSkill();
+			}
+			function loadSkill(){
+				var html='';
+				for(var i=0;i<skill.length;i++){
+					html+='<li class="idsLi jn"><i>'+skill[i]+'</i><a>-</a></li>';	
+				}
+				$('#jnUl').html(html);
+				$.each($('.jn'), function(index) {
+					$('.jn').eq(index).click(function(){
+						var str=$('.jn').eq(index).find('i').html();
+						for(var i=0;i<skill.length;i++){
+							if(skill[i]==str){
+								skill.splice(i,1);
+								loadSkill();
+							}
+						}
+					})
+				});
+				$('#jnVal').html(skill.length+'个')
+			};
+			function maxTxt(ele){
+				var str=$(ele).val().length;
+				$('#txt').html(str+'/'+(1000-str));
+				$('#itVal').attr('data-val',$(ele).val());
+				if(str==0){				
+					$('#itVal').html('未填写');
+				}else{
+					$('#itVal').html('已填写');
+				}
+			}			
+
+			function loadInfo(){								
+       		 	var parmas2={id:pageid};
+       		 	ajaxRun(port.getJobsInfo,parmas2,true,'POST',function (data) {
+					console.log('getJobsInfo:',data);
+					toLogin(data);
+					if(data.statuscode==1){
+						result=data.result;
+						var cp=result.company_Profile;
+						var ji=result.jobsInfo;
+                        $('#val1').html(cp.companyname).attr('data-val',cp.id);
+                        $('#val2').html(cp.trade_cn).attr('data-val',cp.trade);
+                        $('#idsUl li[data-id="'+cp.category+'"]').click();
+						$('#jobnames').html(ji.jobs_name).attr('data-val',ji.jobs_name);
+						$('#areaVal').html(ji.district_cn).attr('data-val',ji.district_cn);
+						$('#xzVal').html(ji.salary_cn).attr('data-val',ji.salary);
+						$('#exVal').html(ji.experience_cn).attr('data-val',ji.experience);
+						$('#xlVal').html(ji.education_cn).attr('data-val',ji.education);
+
+						if(result.contents!=""){
+							$('#itVal').html('已填写').attr('data-val',ji.contents);
+							$('.cowArea').val(ji.contents);
+						}
+                        skill=ji.skill;
+                        loadSkill();
+					}else{
+						mui.toast('请求失败！',{ duration:1000});
+					}
+				});				    		 	
+			}
+            //加载配置信息
+			function loapz(){				
+       		 	var parmas={id:userid};
+				ajaxRun(port.companyInfo,parmas,true,'POST',function (data) {
+					console.log('category:',data);					
+					if(data.statuscode==1){
+						category=data.result.category;
+						cp=data.result.company_profile;
+
+						var content = template("idsLi",{infos:category.QS_trade});
+            			$("#idsUl").html(content);
+            			$.each($('.idsUl li'), function(index) {
+            				$('.idsUl li').eq(index).click(function(){
+            					$('.idsUl li').removeClass('idsActive');
+            					$(this).addClass('idsActive');
+            					var val=$(this).attr('data-id');
+            					var str=$(this).html();
+            					$('#val2').attr('data-val',val);
+            					$('#val2').html(str);
+            					$('.br').click();
+            				});
+            			});	
+            			
+			 			(function($, doc) {
+							$.init();
+							$.ready(function() {
+								var _getParam = function(obj, param) {
+									return obj[param] || '';
+								};
+								//公司地点
+								var ex=category.JY_citys;
+								var exArr=[];
+								$.each(ex, function(item,val) {
+									exArr.push({'value':item,'text':val});
+								});		
+								console.log(exArr);
+//								var areaPicker = new $.PopPicker();
+//								areaPicker.setData(exArr);
+//								var areaBtn = doc.getElementById('areaPicker');
+//								var areaHtml = doc.getElementById('areaVal');
+//								areaBtn.addEventListener('tap', function(event) {
+//									areaPicker.show(function(items) {
+//										console.log(items)
+//										areaHtml.innerHTML=items[0].text;
+//									});
+//								}, false);
+//
+//								areaPicker.pickers[0].setSelectedIndex(0)
+//								areaHtml.innerHTML=exArr[0].text;
+//								areaHtml.setAttribute('data-val',exArr[0].value);
+								
+								//经验
+								var ex=category.QS_experience;
+								var exArr=[];
+								$.each(ex, function(item,val) {
+									exArr.push({'value':item,'text':val});
+								});										
+								var exPicker = new $.PopPicker();
+								exPicker.setData(exArr);
+								var exBtn = doc.getElementById('exPicker');
+								var exHtml = doc.getElementById('exVal');
+								exBtn.addEventListener('tap', function(event) {
+									exPicker.show(function(items) {
+										console.log(items)
+										exHtml.innerHTML=items[0].text;
+										exHtml.setAttribute('data-val',items[0].value);
+									});
+								}, false);					
+																		
+								var exid=result.requireyear;
+								$.each(exArr, function(i) {
+									if(exid==exArr[i].value){
+										exPicker.pickers[i].setSelectedIndex(i)
+										exHtml.innerHTML=exArr[i].text;
+										exHtml.setAttribute('data-val',exArr[i].value);
+									}
+								});	
+								
+								//学历
+								var xl=category.QS_education;
+								var xlArr=[];
+								$.each(xl, function(item,val) {
+									xlArr.push({'value':item,'text':val});
+								});									
+								var xlPicker = new $.PopPicker();
+								xlPicker.setData(xlArr);
+								var xlBtn = doc.getElementById('xlPicker');
+								var xlHtml = doc.getElementById('xlVal');
+								xlBtn.addEventListener('tap', function(event) {
+									xlPicker.show(function(items) {
+										console.log(items)
+										xlHtml.innerHTML=items[0].text;
+										xlHtml.setAttribute('data-val',items[0].value);
+									});
+								}, false);					
+																		
+								var xlid=result.enducation;
+								$.each(xlArr, function(i) {
+									if(xlid==xlArr[i].value){
+										xlPicker.pickers[i].setSelectedIndex(i)
+										xlHtml.innerHTML=xlArr[i].text;
+										xlHtml.setAttribute('data-val',xlArr[i].value);
+									}
+								});				
+								
+								//薪资
+								var xz=category.QS_wage_k;
+								var xzArr=[];
+								$.each(xz, function(item,val) {
+									xzArr.push({'value':item,'text':val});
+								});							
+								var xzPicker = new $.PopPicker();
+								xzPicker.setData(xzArr);
+								var xzBtn = doc.getElementById('xzPicker');
+								var xzHtml = doc.getElementById('xzVal');
+								xzBtn.addEventListener('tap', function(event) {
+									xzPicker.show(function(items) {
+										console.log(items)
+										xzHtml.innerHTML=items[0].text;
+										xzHtml.setAttribute('data-val',items[0].value);
+									});
+								}, false);					
+								var xzid=result.salary;
+								$.each(xzArr, function(i) {
+									if(xzid==xzArr[i].value){
+										xzPicker.pickers[i].setSelectedIndex(i)
+										xzHtml.innerHTML=xzArr[i].text;
+										xzHtml.setAttribute('data-val',xzArr[i].value);
+									}
+								});									
+							});
+						})(mui, document);           			
+	
+					}else{
+						mui.toast('请求失败',{ duration:1000}); 
+					}					
+       		 	});				
+			}
+			
+			//发布
+			function fabu(){
+				var companyid= $('#val1').attr('data-val');//公司id
+				var companyname = result.companyname;
+				var jobtype= $('#val2').attr('data-val');//职位类型
+				var workapply=$('#jobnames').html();
+				var address= $('#areaVal').attr('data-val');//工作地点
+				//var skill= skill;//技能要求
+				var salary= $('#xzVal').attr('data-val');//薪资范围
+				var requireyear= $('#exVal').attr('data-val');//经验要求
+				var enducation= $('#xlVal').attr('data-val');//最低学历
+				var controduce= $('#itVal').attr('data-val');//职位描述
+				var parmas={
+					id:userid,
+					jobid:pageid,
+					companyname:companyname,
+					companyid:companyid,
+					jobtype:jobtype,
+					workapply:workapply,
+					address:address,
+					skill:skill,
+					salary:salary,
+					requireyear:requireyear,
+					enducation:enducation,
+					controduce:controduce
+				};
+				console.log(parmas);
+//				$.each(parmas, function(item,val) {
+//					if(val==""||val==undefined){
+//						mui.toast('请填写完整！',{ duration:1000});
+//						return;
+//					}
+//				});	
+				ajaxRun(port.pubJobs,parmas,true,'POST',function (data) {
+					console.log('pubJobs:',data);
+					if(data.statuscode==1){
+						mui.toast('修改成功！',{ duration:1000});
+					}else{
+						mui.toast('修改失败！',{ duration:1000});
+					}
+				});
+			}
+		
+
+		</script>
+</html>

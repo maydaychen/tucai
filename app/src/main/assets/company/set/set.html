@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>设置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body style="background: #f6f6f6;">
+<header class="titleBar">
+    <a class="barLeft iconfont mui-action-back">&#xe604;</a>
+    <p class="barTxt">设置</p>
+    <p class="barRight">
+        <a class="br"></a>
+    </p>
+</header>
+<div class="mBody">
+    <!--<a class="cow" id="setTel" data-href="../../personal/personalCenter/changed">-->
+    <!--<h1>手机号</h1>-->
+    <!--<span>-->
+    <!--<p>修改手机号</p>-->
+    <!--<i class="iconfont">&#xe649;</i>-->
+    <!--</span>-->
+    <!--</a>-->
+    <div class="cowLine"></div>
+    <a class="cow mgt" id="setPsd" data-href="../../personal/personalCenter/password">
+        <h1>登录密码</h1>
+        <span>
+					<p>修改密码</p>
+					<i class="iconfont">&#xe649;</i>
+				</span>
+    </a>
+    <a class="cow" data-href="setApprove">
+        <h1>企业认证</h1>
+        <span>
+					<p id="rz"></p>
+					<i class="iconfont">&#xe649;</i>
+				</span>
+    </a>
+    <div class="cowLine"></div>
+
+    <a class="cow mgt" data-href="setIntro">
+        <h1>企业信息</h1>
+        <span>
+					<i class="iconfont">&#xe649;</i>
+				</span>
+    </a>
+    <!--<a class="cow mgt">-->
+        <!--<h1>切换身份</h1>-->
+        <!--<span>-->
+					<!--<p>我要招人</p>-->
+					<!--<i class="iconfont">&#xe649;</i>-->
+				<!--</span>-->
+    <!--</a>-->
+
+    <a id="logOut" class="cow">
+        <h2>退出账户</h2>
+    </a>
+</div>
+</body>
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>
+<link href="../../static/css/modeEle.css" rel="stylesheet"/>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+
+        loadInfo();
+    });
+
+    //加载
+    function loadInfo() {
+        var parmas = {uid: userid};
+        ajaxRun(port.phone, parmas, true, 'POST', function (data) {
+            console.log('phone:', data);
+            toLogin(data);
+            if (data.statuscode == 1) {
+
+            } else {
+
+                mui.toast('加载失败', {duration: 1000});
+            }
+        });
+        ajaxRun(port.psd, parmas, true, 'POST', function (data) {
+            console.log('psd:', data);
+            if (data.statuscode == 1) {
+
+            } else {
+
+                mui.toast('加载失败', {duration: 1000});
+            }
+        });
+        ajaxRun(port.renzheng, {id: userid}, true, 'POST', function (data) {
+            console.log('renzheng:', data);
+            if (data.statuscode == 1) {
+                $('#rz').html('已认证')
+            } else {
+                $('#rz').html('未认证')
+            }
+        });
+
+
+    }
+
+    $("#logOut").on("tap", function () {
+        var params = {};
+        var url = host + "c=Login&a=logout";
+        ajaxRun(url, params, true, 'POST', function (data) {
+            console.log(data);
+            if (data.statuscode == 1) {
+                mui.alert(data.msg);
+                location.href = "../../personal/register/login.html";
+                localStorage.clear();
+            } else {
+                mui.alert(data.msg);
+            }
+        })
+    })
+
+
+</script>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>发现</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="../../static/css/mui.min.css">
+	<link rel="stylesheet" href="../../static/css/public.css">
+	<link rel="stylesheet" href="../../static/css/iconfont.css">
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../static/css/home.css">
+	<link rel="stylesheet" href="../../static/css/deliver.css">
+	<style type="text/css">
+		.mui-scroll-wrapper{
+			margin-top: 45px;
+		}
+		.mui-slider-item a .banner_txt{
+			width:80%;
+			height:.5rem;
+			position:absolute;
+			bottom:20%;
+			left:50%;
+			margin-left:-40%;
+			text-align: center;
+			line-height: .5rem;
+			font-size: .4rem;
+			color:#fff;
+		}
+		.barTxt{
+			font-size:.45rem;
+		}
+		.media_list li{
+			margin-top:10px;
+			background:#fff;
+			height:1.8rem;
+		}
+		.mui-table-view .mui-table-view-cell>a{
+			height:1.8rem;
+		}
+		.media_list ul.mui-table-view{
+			background:transparent;
+		}
+		.mui-table-view .mui-table-view-cell .square{
+			margin-top:.2rem;
+			width:.8rem;
+			height:.8rem;
+		}
+		.media_list .mui-table-view .mui-table-view-cell .mui-media-body{
+			font-size:.45rem;
+		}
+	</style>
+</head>
+
+<body>
+<header class="titleBar">
+
+	<p class="barTxt">发现</p>
+	<p class="barRight"></p>
+</header>
+<div class="mui-scroll-wrapper">
+	<div class="mui-scroll">
+		<div class="media_list">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a data-href="../tcTop.html">
+						<img class="mui-media-object mui-pull-left square" src="../../static/images/toutiao.png">
+						<div class="mui-media-body">
+							涂才 | 头条
+						</div>
+					</a>
+					<span class="mui-icon mui-icon-arrowright"></span>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a data-href="../company/personalList.html">
+						<img class="mui-media-object mui-pull-left square" src="../../static/images/renwen.png">
+						<div class="mui-media-body">
+							人物文栏
+						</div>
+					</a>
+					<span class="mui-icon mui-icon-arrowright"></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<footer class="navBar">
+	<ul>
+		<li>
+			<a data-href="../../index.html">
+				<i class="iconfont">&#xe60e;</i>
+				<p>首页</p>
+			</a>
+		</li>
+		<li>
+			<a class="active">
+				<i class="iconfont">&#xe647;</i>
+				<p>发现</p>
+			</a>
+		</li>
+		<li>
+			<a class="msg">
+				<i class="iconfont">&#xe60c;</i>
+				<p>消息</p>
+			</a>
+		</li>
+		<li>
+			<a class="center">
+				<i class="iconfont">&#xe63d;</i>
+				<p>我的</p>
+			</a>
+		</li>
+	</ul>
+</footer>
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/hrefJs/href.js"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+        swipeBack:false //启用右滑关闭功能
+    });
+    var utype=localStorage.getItem('utype');
+    //底部导航跳转
+    //消息
+    $('.navBar').on('tap','.msg',function(){
+        if(utype==1){
+            //"../../company/recruit/jobMsg.html"
+			location.href="../../company/recruit/jobMsg.html";
+            //mui.openWindow({url:"../../company/recruit/jobMsg.html"})
+        }else{
+            //"../chatMsg/chatMsg.html"
+			location.href="../chatMsg/chatMsg.html";
+           //mui.openWindow({url:"../chatMsg/chatMsg.html"})
+        }
+    })
+    //我的
+    $('.navBar').on('tap','.center',function(){
+        var utype=localStorage.getItem('utype');
+        console.log(utype);
+        if(utype==1){
+            //"../../company/companyCenter/companyCenter.html"
+			location.href="../../company/companyCenter/companyCenter.html";
+            //mui.openWindow({url:"../../company/companyCenter/companyCenter.html"})
+        }else{
+            //"../../personal/personalCenter/personalCenter.html"
+			location.href="../../personal/personalCenter/personalCenter.html";
+            //mui.openWindow({url:"../../personal/personalCenter/personalCenter.html"})
+        }
+    })
+
+    $(function(){
+        $('.titleBar .barLeft').click(function(){
+            // history.back() 或 history.go(-1)
+            history.go(-1);
+        })
+    });
+</script>
+</body>
+
+</html>

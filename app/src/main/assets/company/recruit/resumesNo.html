@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>简历</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+			
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">不合适</p>
+			<p class="barRight">
+				<a class="br" id="upInfo">提交</a>
+			</p>
+		</header>
+		<div class="mBody muiTop">
+			<!--这里放置真实显示的DOM内容-->
+			<a class="cow">
+				<textarea class="cowArea" placeholder="请写出该应聘者不合适的原因" maxlength="1000" onkeyup="maxTxt(this)"></textarea>			
+			</a>				
+			<a class="cow mgt">
+				<p class="zs" id="txt">0/1000</p>		
+			</a>
+		</div>
+		
+		
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+	        var url=new GetRequest();
+	        var pageid=url.id;				
+			$(function(){
+				FastClick.attach(document.body);			
+				$('.cowArea').focus();
+				
+				$('#upInfo').click(function(){
+					var txt=$.trim($('.cowArea').val());
+					var parmas={resumeid:pageid,type:0,content:txt};
+					ajaxRun(port.isFace,parmas,true,'POST',function (data) {
+						console.log('isFace:',data);
+						if(data.statuscode==1){
+							mui.toast('已提交！');
+						}else{
+							mui.toast('提交失败！');
+						}
+					});					
+					
+				});				
+			});
+
+			function maxTxt(ele){
+				var str=$(ele).val().length;
+				$('#txt').html(str+'/'+(1000-str))
+			}
+
+		</script>
+</html>

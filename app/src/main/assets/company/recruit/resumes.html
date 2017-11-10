@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>查看简历</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<script src="../../static/js/vue.min.js"></script>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>			
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+			
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">查看简历</p>
+			<p class="barRight">
+				<a class="br"></a>
+			</p>
+		</header>
+		<section id="1app" style="width: 100%; height: 100%;">
+		<div class="rsTab">
+			<a id="resumesNo">
+				<i class="iconfont">&#xe671;</i>
+				<p>不合适</p>
+			</a>
+			<a id="resumesOk">
+				<i class="iconfont">&#xe670;</i>
+				<p>可以面试</p>
+			</a>				
+		</div>			
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll muiTop">
+				<!--这里放置真实显示的DOM内容-->
+				<section class="rsInfo" id="app">
+					<div class="rs rss">
+						<img class="headImg2" :src="[rs.result6.thumb]">
+						<p class="rs1" v-text="rs.result6.realname"></p>
+						<p class="rs2" v-text="rs.result6.introduction"></p>
+					</div>
+					<div class="rs">
+						<h1 class="tith">基本信息</h1>
+						<p class="rsp">工作年限：<a v-text="rs.result6.experience_cn"></a></p>
+						<p class="rsp">最高学历：<a v-text="rs.result6.education_cn"></a></p>
+						<p class="rsp">所在城市：<a v-text="rs.result6.residence"></a></p>
+						<p class="rsp">联系电话：<a v-text="rs.result6.phone"></a></p>
+					</div>
+					<div class="rs">
+						<h1 class="tith">工作经历</h1>
+						<div class="gzjl" v-for="(item, index) in rs.result1">
+							<time><em v-text="item.starttime"></em>-<em v-text="item.endtime"></em></time>
+							<p class="rsa" v-text="item.companyname"></p>
+							<p class="rsb" v-text="item.jobs"></p>
+							<p class="rsb" v-text="item.achievements"></p>
+						</div>
+					</div>
+					<div class="rs">
+						<h1 class="tith">教育经历</h1>
+						<div class="gzjl" v-for="(item, index) in rs.result3">
+							<p class="rsc"><em v-text="item.endyear"></em>年毕业</p>
+							<p class="rsd" v-text="item.school"></p>
+							<p class="rsc"><em v-text="item.education_cn"></em>.<em v-text="item.speciality"></em></p>
+						</div>
+					</div>
+					<div class="rs">
+						<h1 class="tith">期望工作</h1>
+						<p class="rsd" v-text="rs.result4.jobname"></p>
+						<p class="rsc"><em v-text="rs.result4.type"></em>.<em v-text="rs.result4.salary"></em>.<em v-text="rs.result4.city"></em></p>
+					</div>
+					<div class="rs">
+						<h1 class="tith">技能描述</h1>
+						<p class="rsc" v-text="rs.result5.skill"></p>
+					</div>					
+				</section>
+				
+			</div>
+		</div>
+		
+		</section>
+	</body>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var url=new GetRequest();
+	        var pageid=url.id;
+	        var tid=url.tid;
+			$(function(){
+				FastClick.attach(document.body);
+			
+			});
+
+			var app = new Vue({
+			  el: '#app',
+			  data: {
+			    rs:{}
+			  },
+			  methods: {
+			  	loadInfo:function(){
+			  		var that=this;			  		
+					var parmas={id:pageid};
+					ajaxRun(port.resumeInfo,parmas,true,'POST',function (data) {
+						console.log('getResumeInfo:',data);
+						toLogin(data);
+						that.rs=data.result;
+						that.resumes(data.result.id);
+					});				  		
+			  	},
+			  	resumes:function(){
+			  		$('#resumesNo').click(function(){
+//			  			mui.openWindow({
+//			            	url:'resumesNo.html?id='+id,
+//			        	});
+			  			location.href='resumesNo.html?id='+tid
+			  		});
+			  		$('#resumesOk').click(function(){
+//			  			mui.openWindow({
+//			            	url:'resumesOk.html?id='+id, m
+//			        	});
+			  			location.href='resumesOk.html?id='+tid
+                    });
+			        			        		        
+			  	},
+			  },
+			  watch: {
+			  	
+			  },
+			})
+            app.loadInfo();
+            app.resumes();
+		</script>
+</html>

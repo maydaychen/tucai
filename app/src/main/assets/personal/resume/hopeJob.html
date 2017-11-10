@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>期望工作</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link href="../../static/css/mui.picker.css" rel="stylesheet" />
+    <link href="../../static/css/mui.poppicker.css" rel="stylesheet" />
+    <link href="../../static/css/mobileSelect.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../static/css/resume.css">
+    <link rel="stylesheet" href="../../static/css/resume_common.css">
+    <style type="text/css">
+        input{
+            background:#F6F6F6;
+        }
+        .add_container .mui-input-row label{
+            width:8%;
+            padding:20px 0;
+        }
+    </style>
+</head>
+
+<body style="background: #f6f6f6;">
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">期望工作</p>
+</header>
+<div class="mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="add_container">
+            <form class="mui-input-group">
+                <div class="mui-input-row">
+                    <label><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="期望职业" id="comName">
+                </div>
+                <div class="mui-input-row">
+                    <label><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="工作类型" id="jobName">
+                </div>
+                <div class="mui-input-row">
+                    <a id="showCityPicker3">
+                        <label><i></i></label>
+                        <p id="inJob">期望城市</p>
+                    </a>
+                </div>
+                <div class="mui-input-row">
+                    <a id="money" class="block">
+                        <label><i></i></label>
+                        <p id="leaveJob">期望月薪</p>
+                    </a>
+                </div>
+                <div class="submitBtn mui-button-row">
+                    <button type="button" id="btn" class="mui-btn" style="background:#41a6ff">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/mobileSelect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.picker.js"></script>
+<script src="../../static/js/mui.poppicker.js"></script>
+<script src="../../static/js/city.data.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/api.js"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+        swipeBack:true //启用右滑关闭功能
+    });
+
+    mui('.mui-scroll-wrapper').scroll({
+        scrollY: true, //是否竖向滚动
+        scrollX: false, //是否横向滚动
+        startX: 0, //初始化时滚动至x
+        startY: 0, //初始化时滚动至y
+        indicators: true, //是否显示滚动条
+        deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+        bounce: true //是否启用回弹
+    });
+    //选择薪水
+    var moneys = new MobileSelect({
+        trigger: '#leaveJob',
+        title: '',
+        wheels: [
+            {data:[
+                {id:'1',value:'1k'},
+                {id:'2',value:'2k'},
+                {id:'3',value:'3k'},
+                {id:'4',value:'4k'},
+                {id:'5',value:'5k'},
+                {id:'6',value:'6k'},
+                {id:'7',value:'7k'},
+                {id:'8',value:'8k'},
+                {id:'9',value:'9k'},
+                {id:'10',value:'10k'},
+                {id:'15',value:'15k'},
+                {id:'20',value:'20k'}
+            ]},
+            {data:[
+                {id:'2',value:'2k'},
+                {id:'3',value:'3k'},
+                {id:'4',value:'4k'},
+                {id:'5',value:'5k'},
+                {id:'6',value:'6k'},
+                {id:'7',value:'7k'},
+                {id:'8',value:'8k'},
+                {id:'9',value:'9k'},
+                {id:'10',value:'10k'},
+                {id:'15',value:'15k'},
+                {id:'20',value:'20k'},
+                {id:'+',value:'+'}
+            ]}
+        ],
+        callback:function(indexArr, data){
+            $('#leaveJob').html('期望月薪'+' '+data[0].value+'-'+data[1].value).css('color','#5e5e5e');
+        }
+    });
+    //选择地址
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            var _getParam = function(obj, param) {
+                return obj[param] || '';
+            };
+            //级联示例
+            var cityPicker3 = new $.PopPicker({
+                layer: 2,
+                title:'1'
+            });
+            cityPicker3.setData(cityData3);
+            var showCityPickerButton = doc.getElementById('showCityPicker3');
+            var cityResult3 = doc.getElementById('inJob');
+            showCityPickerButton.addEventListener('tap', function(event) {
+                cityPicker3.show(function(items) {
+                    var hopeCity=_getParam(items[1],'text');
+                    var arr=hopeCity.split('市');
+                    hopeCity=arr[0];
+                    cityResult3.innerHTML='期望城市'+''+hopeCity;
+                    cityResult3.style="color:#5e5e5e"
+                });
+            }, false);
+        });
+    })(mui, document);
+
+    $(document).ready(function(){
+        $('#comName').focus();
+        $('#btn').click(function(){
+            var check;
+            mui(".add_container input").each(function() {
+                //若当前input为空，则alert提醒
+                if(!this.value || this.value.trim() == ""|| $('#inJob').css('color')=='rgb(207, 207, 207)'
+                    ||$('#leaveJob').css('color')=='rgb(207, 207, 207)') {
+                    mui.alert("信息未填写完整");
+                    check = false;
+                    return false;
+                }else{
+                    check =true;
+                }
+            }); //校验通过，继续执行业务逻辑
+            if(check){
+                var job_name=$('#comName').val();
+                var type=$('#jobName').val();
+                var city=$('#inJob').html();
+                var city1=city.substring(4,city.length);
+                var salary=$('#leaveJob').html();
+                var salary1=salary.substring(4,salary.length);
+
+                var params={jobname:job_name,type:type,city:city1,salary:salary1};
+                var addHopeJob=host+'c=Personal&a=expectjob_add';
+                ajaxRun(addHopeJob,params,true,'POST',function(data){
+                    console.log(data);
+                    if(data.statuscode==1){
+                        mui.toast('添加成功！');
+                        $('#comName').val("");
+                        $('#jobName').val("");
+                        $('#inJob').html("期望城市").css('color','#CFCFCF');
+                        $('#leaveJob').html("期望月薪").css('color','#CFCFCF');
+                        location.href="resume.html";
+                    }else{
+                        mui.alert('保存失败！');
+                    }
+                })
+            }
+        })
+    });
+
+    $(function(){
+        $('.titleBar .barLeft').click(function(){
+            // history.back() 或 history.go(-1)
+            history.go(-1);
+        })
+    });
+</script>
+</body>
+
+</html>

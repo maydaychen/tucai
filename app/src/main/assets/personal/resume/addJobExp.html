@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>添加工作经历</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/mui.picker.css" />
+    <link  rel="stylesheet" href="../../static/css/mui.poppicker.css"/>
+    <link rel="stylesheet" href="../../static/css/resume.css">
+    <link rel="stylesheet" href="../../static/css/resume_common.css">
+    <style type="text/css">
+        .add_container .mui-input-row label.width8{
+            width:8%;
+            padding:20px 0;
+        }
+    </style>
+</head>
+<body style="background: #f6f6f6;" >
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">添加工作经历</p>
+</header>
+<div class="mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="add_container">
+            <form class="mui-input-group">
+                <div class="mui-input-row">
+                    <label class="width8"><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="公司名称" id="comName">
+                </div>
+                <div class="mui-input-row">
+                    <label class="width8"><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="工作职务" id="jobName">
+                </div>
+                <div class="mui-input-row">
+                    <a id="showTimePicker">
+                        <label class="width8"><i></i></label>
+                        <p id="inJob">入职时间</p>
+                    </a>
+                </div>
+                <div class="mui-input-row">
+                    <a id="showTimePicker2">
+                        <label class="width8"><i></i></label>
+                        <p id="leaveJob">离职时间</p>
+                    </a>
+                </div>
+                <div class="mui-input-row">
+                    <label class="width8"><i></i></label>
+                    <p class="e5">工作内容</p>
+                </div>
+                <div class="label">
+                    <textarea id="textarea" rows="5" placeholder="填写工作的具体内容"></textarea>
+                </div>
+                <div class="submitBtn mui-button-row">
+                    <button type="button" id="btn" class="mui-btn" disabled="disabled">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.picker.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.dtpicker.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+        swipeBack:true //启用右滑关闭功能
+    });
+    mui('.mui-scroll-wrapper').scroll({
+        scrollY: true, //是否竖向滚动
+        scrollX: false, //是否横向滚动
+        startX: 0, //初始化时滚动至x
+        startY: 0, //初始化时滚动至y
+        indicators: true, //是否显示滚动条
+        deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+        bounce: true //是否启用回弹
+    });
+    //选择时间
+    (function($, doc) {
+        $.init();
+        $.ready(function(){
+
+            //  获取时间年月
+            var yearArray = new Array();
+            for (var i = 77; i >= 0; i --) {
+                var monthArray = new Array();
+                for (var j = 1; j <= 12; j ++) {
+                    var month = new Object();
+                    if(j<=9){
+                        month.value = "0"+j;
+                    }else{
+                        month.value = j ;
+                    }
+//                    month.value = j  + "月";
+                    month.text = j + "月";
+                    monthArray.push(month);
+                }
+                var year = new Object();
+                year.value = i + 1940 + "年" ;
+                year.text = i + 1940 ;
+                year.children = monthArray;
+                yearArray.push(year);
+            };
+
+            var _getParam = function(obj, param) {
+                return obj[param] || '';
+            };
+            //	  参加工作年份级联示例
+            var timePicker = new $.PopPicker({
+                layer: 2,
+                title:'入职时间'
+            });
+            timePicker.setData(yearArray);
+            doc.getElementById('showTimePicker').addEventListener('tap', function() {
+                timePicker.show(function(items) {
+                    doc.getElementById('inJob').innerHTML = _getParam(items[0], 'text') +  "." + _getParam(items[1], 'value')+'入职';
+                    doc.getElementById('inJob').style="color:#5e5e5e";
+                });
+            }, false);
+            //					出生年月级联示例
+            var timePicker2 = new $.PopPicker({
+                layer: 2,
+                title:'离职时间'
+            });
+            timePicker2.setData(yearArray);
+            doc.getElementById('showTimePicker2').addEventListener('tap', function() {
+                timePicker2.show(function(items) {
+                    doc.getElementById('leaveJob').innerHTML =  _getParam(items[0], 'text') +  "." + _getParam(items[1], 'value')+'离职';
+                    doc.getElementById('leaveJob').style="color:#5e5e5e";
+                });
+            }, false);
+
+        });
+    })(mui, document);
+    $(function(){
+        $('.titleBar .barLeft').click(function(){
+            // history.back() 或 history.go(-1)
+            history.go(-1);
+        })
+    });
+    $(document).ready(function(){
+        $('#comName').focus();
+        $('#textarea').on('input propertychange',function(){
+            if(!this.value||this.value.trim()==""){
+                return false;
+            }else{
+                $('#btn').removeAttr('disabled').css('background','#41a6ff');
+            }
+        });
+
+        $('#btn').click(function(){
+            var check;
+            mui(".add_container input").each(function() {
+                //若当前input为空，则alert提醒
+                if(!this.value || this.value.trim() == ""|| $('#inJob').css('color')=='rgb(207, 207, 207)'
+                    ||$('#leaveJob').css('color')=='rgb(207, 207, 207)') {
+                    mui.alert("信息未填写完整");
+                    check = false;
+                    return false;
+                }else{
+                    if($('#textarea').val()&&$('#textarea').val().trim() !== ""){
+                        check =true;
+                    }else{
+                        check=false;
+                        mui.alert("信息未填写完整");
+                        return false;
+                    }
+                }
+            });
+            //校验通过，继续执行业务逻辑
+            if(check){
+                var company_name=$('#comName').val();
+                var jobname=$('#jobName').val();
+                var starttime=$('#inJob').html().substring(0,7);
+                var endtime=$('#leaveJob').html().substring(0,7);
+                var content=$('#textarea').val();
+
+                var params={company_name:company_name,job_name:jobname,
+                   starttime:starttime,endtime:endtime,content:content};
+                var addJobExp=host+'c=Personal&a=workexp_add';
+
+                ajaxRun(addJobExp,params,true,'POST',function(data){
+                    console.log(data)
+                    if(data.statuscode==1){
+                        mui.toast('保存成功！');
+                        $('#comName').val("");
+                        $('#jobName').val("");
+                        $('#inJob').html("入职时间").css('color','#CFCFCF');
+                        $('#leaveJob').html("离职时间").css('color','#CFCFCF');
+                        $('#textarea').val("");
+                    }else{
+                        mui.alert('保存失败！');
+                    }
+                })
+            }
+        })
+    })
+</script>
+</body>
+</html>

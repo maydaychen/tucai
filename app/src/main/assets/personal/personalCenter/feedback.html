@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>feedback</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">    
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/center.css">
+</head>
+
+<body style="background: #F5F5F5;">
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">反馈</p>
+</header>
+<section class="personal-name-con public-padding">
+    <textarea placeholder="在此填写关于本产品的建议和意见" id="fb"></textarea>
+</section>
+<div class="mui-button-row">
+    <button type="button" class="mui-btn  btn-confirm">提交</button>
+</div>
+
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff'  
+    });
+    $(document).ready(function(){
+    	$("#fb").focus();
+    	var check;
+    	$(".btn-confirm").on("click",function(){
+    		if(!$("#fb").val()||$("#fb").val().trim()==""){
+    			check = false;
+    			mui.toast("反馈不能为空");
+    			return false;
+    		}else{
+    			check = true;
+    		}
+    		console.log(check);
+    		if(check){
+    			var fb = $("#fb").val();
+    			var params = {feedback:fb};
+    			var fburl = host+'c=feedback&a=feedback';
+    			 ajaxRun(fburl,params,true,'GET',function(data){                   
+	                    if(data.statuscode==1){
+	                        mui.alert(data.msg);
+	                    }else{
+	                        mui.toast(data.msg);
+	                    }                                      
+                })
+    		}
+    	})
+    })
+    //页面跳转
+     $('.titleBar').on('tap','.barLeft',function(){
+     	var utype=localStorage.getItem('utype');
+     	if(utype==1){
+     		location.href='../../company/companyCenter/companyCenter.html';
+     	}else if(utype==2){
+     		location.href='personalCenter.html';
+     	}     	
+   })
+     $('body').on('tap','.mui-popup-button',function(){
+     	var utype=localStorage.getItem('utype');
+     	if(utype==1){
+     		location.href='../../company/companyCenter/companyCenter.html';
+     	}else if(utype==2){
+     		location.href='personalCenter.html';
+     	} 
+     })
+</script>
+
+</body>
+
+</html>

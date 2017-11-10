@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	    <title>导航</title>
+	    <link rel="stylesheet" href="../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../static/css/public.css">
+	    <link rel="stylesheet" href="../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../static/css/iconfont.css">
+	    <style>
+	    	.mapBottom {
+	    		position: absolute;
+				bottom: 0;
+				height: 120px;
+				width: 100%;
+				padding: 10px;
+				background-color: #FFFFFF;
+	    	}
+	    	.mapBottom>div>i {
+	    		margin-right: 10px;
+	    	}
+	    	.mapPosition>i {
+	    		color: #41A6FF;
+	    	}
+	    	.distance {
+	    		color: #999;
+	    		height: 30px;
+	    		line-height: 30px;	    		
+	    	}
+	    	.mapNav {
+	    		height: 40px;
+	    		width: 100%;
+	    		background-color: #41A6FF;
+	    		color: #FFFFFF;
+	    		line-height: 40px;
+	    		text-align: center;
+	    	}
+	    </style>
+	</head>
+	<body>		
+	    <header class="titleBar">
+		    <a class="barLeft iconfont mui-action-back">&#xe604;</a>
+	        <p class="barTxt">爬虫科技</p>
+	        <p class="barRight">
+	        </p>
+	    </header>
+	    
+	    
+	    <!--<div class="mapBottom">
+	    	<div class="mapPosition">
+	    		<i class="iconfont">&#xe605;</i>
+	    		<span>江苏-无锡-滨湖区 隐秀路</span>
+	    	</div>
+	    	<div class="distance">
+	    		<i class="iconfont">&#xe60a;</i>
+	    		<span>距离9.2km</span>
+	    	</div>
+	    	<div class="mapNav">导航</div>
+	    </div>-->
+	</body>
+	<script src="../static/js/jquery.js"></script>
+	<script src="../static/js/flexible.js"></script>
+	<script src="../static/js/mui.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nEGkX9kgDHoGGaivksKzwxTWxCsIZ7EU"></script> 
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>  
+	<script src="../../static/js/webapp.js"></script>
+    <script type="text/javascript">
+    	
+    	_webapp.getLocation();
+    	 mui.init(); 
+ 
+            mui.plusReady(function() { 
+ 
+                var longitude, latitude; 
+                //var map = new BMap.Map("container"); 
+ 
+//                navigator.geolocation.getCurrentPosition(function(position) { 
+//                    longitude = position.coords.longitude; 
+//                    latitude = position.coords.latitude; 
+// 
+//                    console.log("longitude:" + longitude + "==latitude:" + latitude); 
+//                    var point = new BMap.Point(longitude, latitude); 
+//                    map.centerAndZoom(point, 20); // 初始化地图，设置中心点坐标和地图级别   
+//                    var marker = new BMap.Marker(point); // 创建标注 
+//                    map.addOverlay(marker); // 将标注添加到地图中 
+//                    map.panTo(point); 
+//                }); 
+ 
+                plus.geolocation.getCurrentPosition(translatePoint, function(e) { 
+                    mui.toast("异常:" + e.message); 
+                }); 
+ 
+                function translatePoint(position) { 
+                    var currentLon = position.coords.longitude; 
+                    var currentLat = position.coords.latitude; 
+                    var gpsPoint = new BMap.Point(currentLon, currentLat); 
+                    BMap.Convertor.translate(gpsPoint, 2, initMap); //坐标转换 
+                } 
+ 
+                function initMap(point) { 
+                    map = new BMap.Map("container"); //创建地图 
+                    map.addControl(new BMap.NavigationControl()); 
+                    map.addControl(new BMap.ScaleControl()); 
+                    map.addControl(new BMap.OverviewMapControl()); 
+                    map.centerAndZoom(point, 15); 
+                    map.addOverlay(new BMap.Marker(point)); 
+ 
+                } 
+ 
+                //                setTimeout(function() { 
+                //                    var gpsPoint = new BMap.Point(longitude, latitude); 
+                //                    BMap.Convertor.translate(gpsPoint, 0, function(point) { 
+                //                        var geoc = new BMap.Geocoder(); 
+                //                        geoc.getLocation(point, function(rs) { 
+                //                            var addComp = rs.addressComponents; 
+                //                            mui.alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber); 
+                //                        }); 
+                //                    }); 
+                //                }, 3000); 
+ 
+            }); 
+            
+            
+        function back() {
+        	location.href = "companyDetail.html";
+        }
+    </script>
+</html>

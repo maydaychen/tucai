@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>公司信息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">		
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">公司信息</p>
+			<p class="barRight">
+				<a class="br"></a>
+			</p>
+		</header>	
+		
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll muiTop" id="pages">
+				<!--这里放置真实显示的DOM内容-->
+				<a class="cow" id="nameAll">
+					<h1>公司全称</h1>
+					<span>
+						<p id="val1" style="width: 80%"></p>
+					</span>
+				</a>
+				<div class="cowLine"></div>
+				<a class="cow mgt" id="nameSim">
+					<h1>公司简称</h1>
+					<span>
+						<p id="val2"></p>
+					</span>
+				</a>	
+	
+				<a class="cow">
+					<h1>公司LOGO</h1>
+					<span>
+						<img id="val3" class="logoImg" src="../../static/images/muwu.jpg"/>
+					</span>
+				</a>
+				<div class="cowLine"></div>
+				<a class="cow">
+					<h1>行业领域</h1>
+					<span>
+						<p id="val4"></p>
+					</span>
+				</a>
+				<div class="cowLine"></div>
+				<a class="cow" id="modePicker">
+					<h1>公司规模</h1>
+					<span>
+						<p id="val5"></p>
+					</span>
+				</a>
+				<div class="cowLine"></div>
+				<a class="cow mgt" id="stepPicker">
+					<h1>发展阶段</h1>
+					<span>
+						<p id="val6">不需要融资</p>
+					</span>
+				</a>
+				<a class="cow" id="setline">
+					<h1>公司地址</h1>
+					<span>
+						<p id="val7" style="width: 100%;"></p>
+					</span>
+				</a>
+				<div class="cowLine"></div>
+			</div>
+		</div>
+		
+		
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>
+
+		<script>
+            var url=new GetRequest();
+            var pageid=url.id;
+			FastClick.attach(document.body);
+			if(pageid==""||pageid==null){
+                loadInfo();
+            }else{
+                loadInfo2();
+			}
+
+
+			function loadInfo(){
+				var parmas={id:userid};
+                ajaxRun(port.companyInfo,parmas,true,'POST',function (data) {
+					console.log('data:',data);
+					if(data.statuscode==1){
+						$('.mui-toast-container').remove();
+						var cp=data.result.company_profile
+						$('#val1').html(cp.companyname);
+						$('#val2').html(cp.short_name);
+						$('#val3').attr('src',cp.logo);
+						$('#val4').html(cp.trade_cn);
+						$('#val5').html(cp.scale_cn);
+						$('#val6').html();
+						$('#val7').html(cp.address);
+					}else{
+						console.log('请求失败')	
+					}					
+       		 	});			
+			}
+            function loadInfo2(){
+                var parmas={id:pageid};
+                ajaxRun(port.getJobsInfo,parmas,true,'POST',function (data) {
+                    console.log('data:',data);
+                    if(data.statuscode==1){
+                        $('.mui-toast-container').remove();
+                        var cp=data.result.company_Profile;
+                        $('#val1').html(cp.companyname);
+                        $('#val2').html(cp.short_name);
+                        $('#val3').attr('src',cp.logo);
+                        $('#val4').html(cp.trade_cn);
+                        $('#val5').html(cp.scale_cn);
+                        $('#val6').html(cp.finance);
+                        $('#val7').html(cp.address);
+                    }else{
+                        console.log('请求失败')
+                    }
+                });
+            }
+			
+			
+		</script>
+</html>

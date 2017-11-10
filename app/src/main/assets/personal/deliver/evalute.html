@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>投递记录</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/registerCss/deliveryRecord.css">
+</head>
+<body>
+	<div id="app">
+		<header class="titleBar">
+		    <a class="barLeft iconfont" @click="back(record.id)">&#xe604;</a>
+		    <p class="barTxt">投递记录</p>
+		    <p class="barRight">
+		        <a class="br"></a>
+		    </p>
+		</header>
+	    <div style="height: calc(100% - 90px);overflow-y: auto">
+	        <div class="deliveryTop">
+	            <div class="topImg"><img src="" /></div>
+	            <div class="topRight">
+	                <div class="jopInfo">
+	                    <div class="jobPost">{{jobInfo.jobs_name}}</div>
+	                    <div class="deliveryTime">{{jobInfo.jobtime}}</div>
+	                </div>
+	                <div class="jobDetails">
+	                    <div class="detailLeft">
+	                        <div>
+	                            <span>{{jobInfo.companyname}}</span>
+	                            <!--<span>弘毅信息科技</span>-->
+	                        </div>
+	                        <div>{{jobInfo.minwage}}k~{{jobInfo.maxwage}}k</div>
+	                    </div>
+	                    <div class="arrowRight"><i class="iconfont">&#xe649;</i></div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="evaluteContent">
+	            <textarea class="evalute-content" placeholder="请描述你的面试过程，最好可以给其他用户一些建议。" v-model="content"></textarea>
+	        </div>
+	    </div>
+	    
+	    <div class="deliveryBottom">
+	        <div class="blueButton" @click="commit()">提交评论</div>
+	    </div>
+	</div>
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/public.js"></script>
+<script src="../../static/js/api.js"></script>
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var jobInfo = '';
+	var record = '';
+	var content = '';
+	var recordId = GetRequest().recordId;
+	var parmas = {id: recordId};
+	var url = host + 'c=personalJobsend&a=pingjia';
+	var commitvue = new Vue({
+		el: '#app',
+		data: {
+			jobInfo: jobInfo,
+			record: record,
+			content: content
+		},
+		methods: {
+			commit: function() {
+				console.log(this.content)
+				var commitParmas = {id:recordId,content:this.content}
+				ajaxRun(url,commitParmas,true,'GET',function (data) {	
+					if (data.statuscode == 1) {
+						location.href = "deliveryRecord.html?id=" + recordId;
+		//			commitvue._data.record = data.result;
+					} else {
+						rzState=0;
+						console.log(data.msg);	
+						mui.toast(data.msg,{ duration:1000}); 
+					}
+						
+			 	});	
+			}
+		},
+		watch:{
+			content:function(newValue){
+				console.log(newValue)
+			}
+		}
+	})
+	var categoryListUrl = host + 'c=personalJobsend&a=getSendInfo';
+	ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
+		commitvue._data.jobInfo = data.result.job;
+		commitvue._data.record = data.result.res;
+		var pingjia = data.result.res.pingjia;
+		if (pingjia != '' && pingjia != null) {
+			commitvue._data.content = pingjia;
+		}
+			
+ 	});	
+//	function commit() {
+//		var content = this.commitContent;
+//		var commitParmas = {id:recordId,content:this.commitContent}
+//		ajaxRun(url,parmas,true,'GET',function (data) {	
+//			if (data.statuscode == 1) {
+//				location.href = "deliveryRecord.html?id="
+////			commitvue._data.record = data.result;
+//			} else {
+//				rzState=0;
+//				console.log(data.msg);	
+//				mui.toast(data.msg,{ duration:1000}); 
+//			}
+//				
+//	 	});	
+//	}
+	
+	function back(){
+		location.href="deliveryRecord.html"
+	}
+</script>
+</html>

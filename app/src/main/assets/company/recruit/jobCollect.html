@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>我的收藏</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<script src="../../static/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>			
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+		
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">我的收藏</p>
+			<p class="barRight">
+				<a class="br"></a>
+			</p>
+		</header>
+			<div class="tdTab">
+				<span class="tdActive">人才</span>
+				<span>资讯</span>
+			</div>
+		<div class="muiTop" id="app" style="width: 100%; height: 100%; float: left; overflow: hidden">
+			<div class="tdList" style="height: 96%">
+				<!--这里放置真实显示的DOM内容-->
+
+					<ul class="tdul scrolls" id="tdul_1" style="height: 100%;overflow: auto">
+						<div class="nojob" v-show="rcList==''">
+							<i class="iconfont">&#xe6ce;</i>
+							<p>还没有收藏人才呢</p>
+						</div>											
+						<li class="tdLi" v-for="(item, index) in rcList" :key="item.id" @click="goRs(item.id)">
+							<div class="tdTop bnone">
+								<img class="tdImg" :src="[item.avatar]"/>
+								<p class="td1"><a v-text="item.fullname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
+								<p class="td2">求职期望 {{item.intention_jobs}}</p>
+								<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>
+								<time v-text="item.faddtime"></time>
+							</div>
+						</li>												
+					</ul>
+
+					<ul class="tdul scrolls" id="tdul_2" style="height: 100%;overflow: auto">
+						<div class="nojob" v-show="zxList==''">
+							<i class="iconfont">&#xe6ce;</i>
+							<p>还没有收藏资讯呢</p>
+						</div>
+						<li class="zxLi" v-for="(item, index) in zxList" :key="item.id" @click="goZx(item.tid)">
+							<img :src="[item.thumb]">
+							<h1 v-text="item.title"></h1>
+							<p v-text="item.detail"></p>
+						</li>
+						
+					</ul>	
+
+
+			</div>
+		</div>
+		
+		
+	</body>	
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			$(function(){
+				FastClick.attach(document.body);
+
+			});
+
+            var page=[1,1];
+            var pagesize=10;
+            var pageflag = [true,true];
+
+			var app = new Vue({
+			  el: '#app',
+			  data: {
+			    rcList:[],
+			    zxList:[]
+			  },
+			  methods: {
+			  	loadRc:function(){
+			  		var that=this;
+					var parmas={page:page[0],pagesize:pagesize};
+                    ajaxRun(port.getFavoritesList,parmas,true,'POST',function (data) {
+                        console.log('人才:',data);
+                        if(data.statuscode==1){
+                            that.rcList=that.rcList.concat(data.result);
+                            if(data.result.length<pagesize){
+                                setTimeout(function () {
+                                    $('#tdul_1').off('scroll').append('<p class="nomore">无更多数据</p>');
+                                },500)
+                                return;
+                            }
+                            page[0]++;
+                        }else{
+
+                        }
+                    });
+			  	},
+			  	loadZx:function(){
+			  		var that=this;
+                    var parmas={page:page[1],pagesize:pagesize};
+                    ajaxRun(port.collection_topline_list,parmas,true,'POST',function (data) {
+                        console.log('资讯:',data);
+                        if(data.statuscode==1){
+                            that.zxList=that.zxList.concat(data.result);
+                            if(data.result.length<pagesize){
+                                setTimeout(function () {
+                                    $('#tdul_2').off('scroll').append('<p class="nomore">无更多数据</p>');
+                                },500)
+                                return;
+                            }
+                            page[1]++;
+                        }else{
+
+                        }
+                    });
+			  	},
+			  	goRs:function(id){
+					location.href='resumes.html?id='+id
+			  	},
+                  goZx:function(id){
+					  location.href='../../commom/wiki/articalTop.html?tid='+id
+                  },
+				bindEle:function () {
+                    $.each($('.tdTab span'),function(index){
+                        $('.tdTab span').eq(index).click(function(){
+                            //mui('.mui-scroll-wrapper').scroll().scrollTo(0,0,100);//100毫秒滚动到顶
+                            $('.tdTab span').removeClass('tdActive');
+                            $(this).addClass('tdActive');
+                            $('.tdList ul').hide();
+                            $('.tdList ul').eq(index).show();
+                        });
+                    });
+                    $('.tdTab span').eq(0).click();
+                },
+                  bindScroll:function(ele,num){
+                      var that=this;
+                      ele.on('scroll', function() {
+                          var scrollHeight = $(this)[0].scrollHeight;
+                          var scrollTop = $(this)[0].scrollTop;
+                          var nDivHight = $(this).height();
+                          var tipHtml="<span id=\"loadTips\"><a></a></span>";
+                          if (pageflag[num] == true && scrollTop + nDivHight > scrollHeight - 30) {
+                              pageflag[num] = false;
+                              ele.append(tipHtml).show();
+                              setTimeout(function(){
+                                  $('#loadTips').remove();
+                                  if(num==0){
+                                      that.loadRc();
+                                  }
+                                  if(num==1){
+                                      that.loadZx();
+                                  }
+                                  pageflag[num] = true;
+                              },1000)
+                          }
+                      });
+                  },
+			  },
+			  watch: {
+			  	
+			  }
+			})
+            app.bindEle();
+            app.bindScroll($('#tdul_1'),0);
+            app.bindScroll($('#tdul_2'),1);
+            app.loadRc();
+            app.loadZx();
+		</script>
+</html>

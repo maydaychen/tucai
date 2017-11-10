@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>我的简历</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/resume.css">
+    <style type="text/css">
+        .mui-scroll-wrapper{
+            margin-top: 45px;
+        }
+        .td_all .jobs .jobUl{
+            padding-top:10px;
+        }
+        .mui-table-view .mui-table-view-cell .mui-media-body p{
+            line-height: normal;
+        }
+        .title{
+            position: relative;
+        }
+        i.iconfont{
+            position:absolute;
+            font-size:1rem;
+            color:#FEAD67;
+            left:2rem;
+            top:.1rem;
+        }
+        .widther{
+            padding:0 .2rem;
+        }
+        .heighter{
+            height:1rem;
+        }
+    </style>
+</head>
+
+<body style="background: #f6f6f6;">
+<header class="titleBar">
+    <a class="barLeft iconfont" href="../personalCenter/personalCenter.html">&#xe604;</a>
+    <p class="barTxt">我的简历</p>
+</header>
+<div class="mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="resume_container" id="app">
+            <div class="jobExp">
+                <div class="title"><span>工作经历</span><i class="iconfont">&#xe628;</i></div>
+                <div class="detail" v-for="(item, index) in jobList">
+                    <a data-href="editJobExp.html" class="rt" :data-id="item.id">编辑</a>
+                    <p><span v-text='item.starttime'></span>-<span v-text='item.endtime'></span></p>
+                    <h3><span v-text="item.companyname"></span><span class="widther">·</span><span v-text="item.jobs"></span></h3>
+                    <p v-text="item.achievements"></p>
+                </div>
+                <div class="add"><a data-href="addJobExp.html">+工作经历</a></div>
+            </div>
+            <div class="title"><span>项目经历</span><i class="iconfont">&#xe628;</i></div>
+            <div class="projectExp">
+                <div class="detail" v-for="(item, index) in proList" >
+                    <a data-href="editProjectExp.html" class="rt" :data-id="item.id">编辑</a>
+                    <p><span v-text='item.starttime'></span>-<span v-text='item.endtime'></span></p>
+                    <h3>项目名称：<span v-text="item.proname"></span></h3>
+                    <h3>项目职责：<span v-text="item.produty"></span></h3>
+                    <p v-text="item.prodescrib"></p>
+                </div>
+                <div class="add"><a data-href="addProject.html">+项目经历</a></div>
+            </div>
+            <div class="eduExp">
+                <div class="title"><span>教育经历</span><i class="iconfont">&#xe628;</i></div>
+                <div class="detail" v-for="(item, index) in eduList">
+                    <a data-href="editEduExp.html" class="rt" :data-id="item.id">编辑</a>
+                    <p><span v-text="item.endyear"></span>年毕业</p>
+                    <h3 v-text="item.school"></h3>
+                    <h3><span v-text="item.education_cn"></span><span class="widther">·</span><span v-text="item.speciality"></span></h3>
+                </div>
+                <div class="add"><a data-href="eduExp.html">+教育经历</a></div>
+            </div>
+            <div class="hopeJob">
+                <div class="title"><span>期望工作</span><i class="iconfont">&#xe628;</i></div>
+                <div class="detail no_dashed" v-for="(item, index) in hopeList">
+                    <a data-href="editHopeJob.html" class="rt" :data-id="item.id">编辑</a>
+                    <h3 v-text="item.jobname"></h3>
+                    <p><span v-text="item.type"></span><span class="widther">·</span><span v-text="item.city"></span><span class="widther">·</span><span v-text="item.salary"></span></p>
+                </div>
+                <div class="add" v-show="length1==0"><a data-href="hopeJob.html">+期望工作</a></div>
+            </div>
+            <div class="skill">
+                <div class="title"><span>技能描述</span><i class="iconfont">&#xe628;</i></div>
+                <div class="detail no_dashed">
+                    <a data-href="skillDesc.html" class="rt" :data-id="skillList.id">编辑</a>
+                    <p v-text="skillList.skill"></p>
+                </div>
+                <div class="add" v-show="length2==0"><a data-href="skillDesc.html">+技能描述</a></div>
+            </div>
+            <div class="heighter"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/hrefJs/href.js"></script>
+<script src="../../static/js/api.js"></script>
+<script src="../../static/js/vue.min.js"></script>
+<script>
+    //v-show="length==0"
+    mui.init({
+        statusBarBackground: '#41a6ff',
+        swipeBack:true //启用右滑关闭功能
+    });
+
+    mui('.mui-scroll-wrapper').scroll({
+        scrollY: true, //是否竖向滚动
+        scrollX: false, //是否横向滚动
+        startX: 0, //初始化时滚动至x
+        startY: 0, //初始化时滚动至y
+        indicators: true, //是否显示滚动条
+        deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+        bounce: true //是否启用回弹
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            jobList:null,
+            proList:null,
+            eduList:null,
+            hopeList:null,
+            skillList:{},
+            length1:null,
+            length2:null,
+            skill:''
+        },
+        methods: {
+            loadInfo:function(){
+                var that=this;
+                var getResume=host + "c=Personal&a=show_resume";
+                var params={};
+                ajaxRun(getResume, params, true, 'POST', function (data) {
+                    console.log(data);
+                    var info=data.result;
+                    if(data.statuscode==1){
+                        that.jobList=info.result1;
+                        that.proList=info.result2;
+                        that.eduList=info.result3;
+                        that.hopeList=info.result4;
+                        that.length1=info.result4.length;
+                        that.skillList=info.result5;
+                        if(info.result5==null){
+                            that.length2=0;
+                        }else{
+                            that.length2==1;
+                        }
+                    }else if(data.statuscode==-1){
+                        location.href='../register/login.html';
+                    }else{
+                        mui.toast('网络错误！请稍后重试！')
+                    }
+
+
+                },1)
+            }
+        },
+        watch: {}
+    });
+    app.loadInfo();
+    mui('.mui-scroll-wrapper').on('tap','a',function(){
+        var url=$(this).attr('data-href');
+        var itemid=$(this).attr('data-id');
+        localStorage.setItem('id',itemid);
+        location.href=url+'?id='+itemid;
+    });
+</script>
+</body>
+
+</html>

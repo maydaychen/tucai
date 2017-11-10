@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>搜索城市</title>
+	    <link rel="stylesheet" href="../../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../../static/css/public.css">
+	    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/commomCss/company.css">
+	    <style>
+	    	.cName{
+	    		width: 25%;
+			    color: #5E5E5E;
+			    text-align: center;
+			    border: 1px solid #DBDBDB;
+			    border-radius: 15px;
+			    margin: 0.25rem 4%;
+	    	}
+	    	#cityList p.active{
+	    		color: #45a8ff;
+	    		border: 1px solid #45a8ff;
+	    	}
+	    </style>
+	</head>
+	<body>
+	<header class="titleBar">
+	    <a class="barLeft iconfont" data-href="selectCity">&#xe604;</a>
+        <input type="text" class="searchCompany"  id="cSearch" placeholder="请输入城市"/>
+        <p class="barRight">
+            <a class="br"></a>
+        </p>
+	</header>
+	<div id="refreshContainer" class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+		    <div style="height:100%;overflow-y:auto;" id="app">
+		        <div style="margin-top:45px;display:flex;flex-wrap:wrap" id="cityList">
+		        	<p v-for="(list,i) in lists" class="cName" v-text="list.city_name"></p>
+		        </div>
+	        </div>
+	    </div>
+	</div>
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+	<script src="../../static/js/config.js"></script>
+	<script src="../../static/js/api.js"></script> 
+	<script src="../../static/js/vue.min.js"></script>
+	<script>
+//	$(function(){
+//     loadInfo();
+//  });
+// var status = doLocalStorage('get','status');
+// var status=localStorage.getItem('status');
+// console.log(status);
+   var list='';
+   var search = new Vue({
+		el:'#app',
+		data: {
+		lists: list
+		 }
+	}) 
+    $('#cSearch').bind('input propertychange', function() {
+			mui.toast('加载中...',{ duration:2000}) 
+            var name = $("#cSearch").val(); 
+            var page=1;var pagesize=10;
+            var url =host +'c=serach&a=city_serach';
+			var parmas = {page:page,pagesize:pagesize,city_name:name};
+			ajaxRun(url,parmas,true,'GET',function (data) {
+				console.log(data);
+				search._data.lists = data.result;
+		 	});
+    });
+
+   	$("#cityList").on("tap","p",function(){
+   		$(this).addClass("active").siblings().removeClass("active");
+   		var city=$(this).text();
+// 		localStorage.setItem('cName',city);
+		doLocalStorage('set','cName',city);
+//		if(status=='index'){
+//			location.href="../../index.html";
+//			doLocalStorage('remove','status');			
+//		}else if(status=='undefined'){
+			location.href='recruitment.html';
+//			doLocalStorage('remove','status');
+//		}  		 
+   	})
+   	$('.titleBar').on('tap','.barLeft',function(){
+   		location.href='selectCity.html'  		
+   })
+  
+	//加载更多
+	 var Flag = false;
+ 	 var page=2;
+ 	 var name = $("#cSearch").val();
+	 mui.init({
+	    pullRefresh : {
+		    container:"#refreshContainer",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+		    up : {
+			  	height:50,//可选.默认50.触发上拉加载拖动距离
+			  	auto:false,//可选,默认false.自动上拉加载一次
+			  	contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+			  	contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+			  	callback : pullupRefresh 
+	    	}
+	    }
+	});
+    
+    function pullupRefresh() {
+    	setTimeout(function () {
+         	mui('#refreshContainer').pullRefresh().endPullupToRefresh((Flag)); //参数为true代表没有更多数据了。
+    		loadMore();
+		}, 1500);
+    }
+    function loadMore() {  
+    	var url =host +'c=serach&a=city_serach';
+		var parmas = {city_name:name,page:page,pagesize:5};
+		ajaxRun(url,parmas,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				var list = data.result;
+				if(list.length < 5 || list == null || list == '') {
+					Flag = true;
+				}
+				search._data.lists = search._data.lists.concat(list);
+				page ++;
+			}else{	
+				mui.toast(data.msg,{ duration:1000}); 
+			}					
+									
+	   	},1);
+   }
+	</script>
+</html>

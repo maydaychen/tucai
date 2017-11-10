@@ -1,0 +1,50 @@
+.lf{float:left;}
+.rt{float:right;}
+ol{
+    list-style-type:decimal ;
+    margin-left:.4rem;
+}
+.resume_container{
+    padding:.3rem .2rem;
+}
+.resume_container a{
+    color:#41a6ff;
+}
+.title span{
+    font-size: .45rem;
+    color:#414141;
+}
+.tltle i{
+    font-size: .45rem;
+}
+.detail{
+    padding:.3rem .4rem;
+    border-bottom:1px  dashed  #EAEAEA;
+}
+.no_dashed{
+    border:0;
+}
+.detail h3{
+    font-size:.4rem;
+    margin:.2rem 0;
+    color:#5F5F5F;
+}
+.detail a{
+    font-size:.4rem ;
+}
+ol li{
+    color:#848484;
+    font-size: .35rem;
+}
+.add{
+    text-align: center;
+    padding:.3rem 0;
+}
+.add a{
+    font-size: .4rem;
+}
+.skill .detail p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

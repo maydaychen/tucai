@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../static/css/registerCss/register.css">
+	<style>
+	.reg_tab {margin-bottom:20px;overflow: hidden;border-radius:30px;}
+	.reg_tab li{width:50%;float:left;height:40px;line-height: 40px;background:#f0f0f0;text-align: center;color:#aaa;font-size: 13px;}
+	.reg_tab li.active{background:#41a6ff;color: #fff;font-weight: 700;}
+	</style>
+</head>
+<body>
+    <header class="titleBar">
+        <a class="iconfont mui-action-back">&#xe604;</a>
+        <p class="barTxt"></p>
+        <p class="barRight">
+            <a class="br"></a>
+        </p>
+    </header>
+    <div id="app">    	
+	    <div class="registerTitle">用户注册</div>
+	    <div class="mui-content-padded" style="margin: 0 20px;">
+			<ul class="reg_tab">
+				<li data="2" class="active">个人注册</li>
+				<li data="1">企业注册</li>
+			</ul>
+	        <div class="mui-input-row">
+	            <label class="register-icon"><i class="iconfont">&#xe61c;</i></label>
+	            <input class="register-text" type="number" placeholder="请输入手机号" v-model="telelphone"/>
+	        </div>
+	        <div class="mui-input-row">
+	            <label class="register-icon"><i class="iconfont">&#xe63e;</i></label>
+	            <input class="register-text" type="password" placeholder="请输入6~16位密码" v-model="pwd">
+	        </div>
+	        <div class="mui-input-row">
+	            <label class="register-icon"><i class="iconfont">&#xe608;</i></label>
+	            <div style="float:left;width:calc(80% - 100px);"><input class="register-text" type="number" placeholder="请填写验证码" v-model="code">
+	            </div>
+	            <input type="button" class="getCode" value="获取验证码" @click="getCode(telelphone)" />
+	        </div>
+	    </div>
+	    <div class="register-bottom" @click="registerBtn(telelphone,pwd,code)">确认</div>
+    </div>
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/public.js"></script>
+<script src="../../static/js/api.js"></script> 
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var telelphone = '';
+	var pwd = '';
+	var code = '';
+	var utype=-1;
+	var registerVue = new Vue({
+		el: '#app',
+		data: {
+			telelphone: telelphone,
+			pwd: pwd,
+			code: code
+		}
+	})
+
+	$('.reg_tab li').on('touchend',function(){
+		$(this).addClass('active').siblings('li').removeClass('active');
+		utype=$(this).attr('data');
+	});
+	
+	function registerBtn(telelphone,pwd,code) {
+		if(utype==-1) utype=$('.reg_tab li.active').attr('data');
+		var parmas = {utype:utype,mobile:telelphone,password:pwd,captcha:code};
+		var getCodeUrl = host + 'c=login&a=register';
+		ajaxRun(getCodeUrl,parmas,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				location.href = 'login.html';
+			}else{
+				mui.toast(data.msg,{ duration:1000}); 
+			}														
+	 	});
+		
+//		checkPhone(telelphone);
+	}
+</script>
+
+</html>

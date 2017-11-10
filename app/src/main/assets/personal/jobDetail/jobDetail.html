@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>职位详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/deliver.css">
+    <style type="text/css">
+        .mui-scroll-wrapper{
+            margin-top: 45px;
+        }
+        .jobs .jobUl{
+            padding-top:20px;
+        }
+        .jobDetail{
+            margin-bottom:1.3rem;
+        }
+        .jinfo h1{
+            width:60%;
+        }
+    </style>
+</head>
+
+<body>
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">职位详情</p>
+    <p class="barRight">
+        <a class="br">
+            <i class="iconfont" data-state="">&#xe606;</i>
+        </a>
+    </p>
+
+</header>
+<div class="mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="jobDetail">
+            <div class="jobs" id="app">
+                <div class="jobUl">
+                    <div class="jobLi" v-if="result!==null">
+                        <a class="ja" data-href="companyInfo.html" :data-id="result.company_Profile.id">
+                            <div class="jtxt">
+                                <span v-text="result.company_Profile.companyname"></span>
+                                <i v-text="result.jobsInfo.salary_cn"></i>
+                            </div>
+                            <div class="jtxt" id="font_txt">
+                                <p>
+                                    <span><i class="iconfont">&#xe605;</i><span v-text="result.jobsInfo.district_cn"></span></span>
+                                    <span><i class="iconfont">&#xe61d;</i><span v-text="result.jobsInfo.experience_cn"></span></span>
+                                    <span><i class="iconfont">&#xe69e;</i><span v-text="result.jobsInfo.education_cn"></span></span>
+                                </p>
+                            </div>
+                            <div class="jinfo">
+                                <img :src="result.company_Profile.logo"/>
+                                <h1 v-text="result.company_Profile.companyname" class="mui-ellipsis"></h1>
+                                <p>
+                                    <span v-text="result.jobsInfo.trade_cn"></span>
+                                    <span class="widther">|</span>
+                                    <span v-text="result.jobsInfo.scale_cn"></span>
+                                    <span class="widther">|</span>
+                                    <span v-text="result.company_Profile.finance"></span>
+                                </p>
+                                <span class="mui-icon mui-icon-arrowright"></span>
+                            </div>
+                        </a>
+                        <div class="jDetail">
+                            <div class="jDetInfo">
+                                <p><i class="iconfont">&#xe8a0;</i>职位详情</p>
+                                <p v-text="result.jobsInfo.contents"></p>
+                            </div>
+                            <div class="jDetInfo">
+                                <p><i class="iconfont">&#xe61b;</i>技能要求</p>
+                                <p v-text="result.jobsInfo.skill"></p>
+                            </div>
+                            <div class="jDetInfo">
+                                <a data-href="../mapGuide.html" class="address">
+                                    <p><i class="iconfont">&#xe605;</i>工作地点</p>
+                                    <p v-text='result.company_Profile.address'></p>
+                                    <span class="mui-icon mui-icon-arrowright"></span>
+                                </a>
+                            </div>
+                            <div class="jDetInfo">
+                                <p><i class="iconfont">&#xe640;</i>职位发布者</p>
+                                <div class="flex">
+                                    <div class="imgInfo">
+                                        <img :src="result.company_Profile.logo">
+                                    </div>
+                                    <div class="bossName">
+                                        <p v-text="result.user.realname"></p>
+                                        <p v-text="result.user.work_type"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="buttom_btn_list">
+    <button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" id="sendResume">发送简历</button>
+    <button type="button" class="mui-btn mui-btn-primary" id="chatWith">和TA聊聊</button>
+</div>
+
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/vue.min.js"></script>
+<script src="../../static/js/api.js"></script>
+<script>
+
+    $(function(){
+        //获取传入的jobDetailId
+        var jobDetailId = GetRequest().jobDetailId;
+        console.log(jobDetailId);
+
+        //渲染收藏标记之后重新获取数据
+        function collect() {
+            var parmas={id:jobDetailId};
+            var job_detail=host+'c=Jobs&a=job_detail';
+            ajaxRun(job_detail,parmas,true,'POST',function (data) {
+                console.log(data);
+                var state=data.result.is_collet;
+                if(data.statuscode==1){
+                    //渲染数据
+                    getCollect(state);
+                }else{
+                    mui.toast('网络错误，请稍后重试！');
+                }
+            });
+        }
+
+        //渲染收藏标记
+        function getCollect(state){
+            console.log('state:'+state);
+            if(state==1){
+                $('.barRight .iconfont').html('&#xe71a;').attr('data-state','1');
+            }else{
+                $('.barRight .iconfont').html('&#xe606;').attr('data-state','0');
+            }
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                result:null
+            },
+            methods:{
+                loadInfo:function(){
+                    var that=this;
+                    console.log(jobDetailId);
+                    var parmas={id:jobDetailId};
+                    var job_detail=host+'c=Jobs&a=job_detail';
+                    ajaxRun(job_detail,parmas,true,'POST',function (data) {
+                        console.log(data);
+                        var state=data.result.is_collet;
+                        if(data.statuscode==1){
+                            //渲染数据
+                            that.result=data.result;
+                            getCollect(state);
+                            var jobsInfo=data.result.jobsInfo;
+                            _company_id=jobsInfo.company_id;
+                        }else{
+                            mui.toast('网络错误，请稍后重试！');
+                        }
+                    });
+                }
+            },
+            watch: {},
+        });
+        app.loadInfo();
+        var _company_id;
+        $('.titleBar .barLeft').click(function(){
+            localStorage.removeItem('jobDetailId');
+            history.go(-1);
+        });
+        //
+        mui('.mui-scroll-wrapper').scroll({
+            scrollY: true, //是否竖向滚动
+            scrollX: false, //是否横向滚动
+            startX: 0, //初始化时滚动至x
+            startY: 0, //初始化时滚动至y
+            indicators: true, //是否显示滚动条
+            deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+            bounce: true //是否启用回弹
+        });
+        //
+        mui.init({
+            statusBarBackground: '#41a6ff',
+            swipeBack:true //启用右滑关闭功能
+        });
+
+
+
+        $('.barRight').on('tap','i',function(){
+            var state=$(this).attr('data-state');
+            if (state == 0){
+                var favorite_job_add = host + 'c=favorites&a=favorite_job_add';
+                var params1 = {job_id: jobDetailId};
+                ajaxRun(favorite_job_add, params1, true, 'POST', function (data) {
+                    console.log(data);
+                    if (data.statuscode == 1) {
+                        mui.toast('收藏成功');
+                        $('.barRight .iconfont').html('&#xe71a;');
+                        collect();
+                    } else {
+                        mui.toast('网络问题，请稍后重试！');
+                    }
+                });
+            }else{
+                var favorite_job_del = host + 'c=favorites&a=favorite_personal_job_delete';
+                var params2 = {jobs_id: jobDetailId};
+                ajaxRun(favorite_job_del, params2, true, 'POST', function (data) {
+                    console.log(data);
+                    if(data.statuscode==1){
+                        mui.toast('取消收藏成功');
+                        $('.barRight .iconfont').html('&#xe606;');
+                        collect();
+                    }
+                });
+            }
+        });
+
+
+
+
+    //发送简历
+        $('.buttom_btn_list').on('tap','#sendResume',function(){
+            var companyId=$('#app .ja').attr('data-id');
+            var  parmas={companyid:companyId,jobid:jobDetailId};
+            var send_resume=host+'c=personalJobsend&a=sendResume';
+            ajaxRun(send_resume,parmas,true,'POST',function (data) {
+                console.log(data);
+                if(data.statuscode==1){
+                    mui.toast('投递成功！');
+                    $('#sendResume').html('已投递').css('background-color','#5e5e5e')
+                        .css('color','#fff').css('border-color','#5e5e5e').attr('disabled','disabled').attr('data-state','1');
+                }else{
+                    mui.alert('网络错误，请稍后重试！');
+                }
+            })
+        })
+
+        //跟他聊聊
+        document.getElementById('chatWith').addEventListener('tap',function(){
+            var href='../../commom/chatMsg/chatPersonal.html';
+            console.log(_company_id);
+            location.href=href+'?company_id='+_company_id;
+        });
+
+        setTimeout(function(){
+            $('.jobLi').on('tap','.ja',function(){
+                var href=$(this).attr('data-href');
+                var company_id=$(this).attr('data-id');
+                console.log(company_id);
+                location.href=href+'?res_id='+company_id;
+            })
+
+            //跳转公司
+            $('.jDetInfo').on('tap','.address',function(){
+                var href=$(this).attr('data-href');
+                //var company_id=$(this).attr('data-id');
+                location.href=href;
+            })
+        },500)
+    })
+</script>
+</body>
+
+</html>

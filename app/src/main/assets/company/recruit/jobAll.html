@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>选择职位类型</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<script src="../../static/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>			
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">全部职位</p>
+		</header>
+
+		<div class="muiTop" id="app" style="width: 100%; height: 100%; float: left; overflow: hidden">
+			<div class="tdList" style="height: 96%; margin-top: 0">
+				<ul class="jobsUl scrolls" id="tdul" style="height: 100%;overflow: auto">
+					<div class="nojob" style="display: none;">
+						<i class="iconfont">&#xe607;</i>
+						<p>你目前没有在线职位</p>
+					</div>
+					<script type="text/html" id="listLi">
+						<% each lists as list%>
+						<li class="jobsLi" data-id = "<% list.id %>">
+							<a class="linkA">
+								<p><% list.jobs_name %></p>
+								<time><% list.addtime %>发布</time>
+								<i class="iconfont">&#xe649;</i>
+							</a>
+						</li>
+						<% /each %>
+					</script>
+				</ul>	
+			</div>	
+		</div>
+		
+		<div class="addAddress">
+			<a class="aaBtn" onclick="newJob()">发布新职位</a>
+		</div>
+		
+	</body>	
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>  
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+  		<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>  
+		<link href="../../static/css/modeEle.css" rel="stylesheet" />	
+		<script>
+			$(function(){
+				FastClick.attach(document.body);
+				rz();
+                bindScroll($('#tdul'));
+			});
+			//认证
+			var rzState;
+			function rz(){
+				var parmas={id:userid};
+				ajaxRun(port.renzheng,parmas,true,'POST',function (data) {
+					console.log('renzheng:',data);
+					toLogin(data);
+					if(data.statuscode==1){
+						rzState=1;
+						loadInfo();
+					}else{
+						rzState=0;
+						console.log('未认证');	
+						$('.nojob').show();
+						$('.jobsUl').hide();
+						 mui.toast('未认证',{ duration:1000}); 
+					}					
+       		 	});						
+			}
+
+            var lists=[];
+            var page=1;
+            var pagesize=10;
+            var pageflag=true;
+            function bindScroll(ele){
+                ele.on('scroll', function() {
+                    var scrollHeight = $(this)[0].scrollHeight;
+                    var scrollTop = $(this)[0].scrollTop;
+                    var nDivHight = $(this).height();
+                    var tipHtml="<span id=\"loadTips\"><a></a></span>";
+                    if (pageflag == true && scrollTop + nDivHight > scrollHeight - 30) {
+                        pageflag = false;
+                        ele.append(tipHtml).show();
+                        setTimeout(function(){
+                            $('#loadTips').remove();
+                            loadInfo();
+                            pageflag = true;
+                        },1000)
+                    }
+                });
+            }
+
+			function loadInfo(){
+				var parmas={page:page,pagesize:pagesize};
+				ajaxRun(port.getJobsList,parmas,true,'POST',function (data) {
+					console.log('getJobsList:',data);
+					if(data.statuscode==1){
+                        lists=lists.concat(data.result);
+                        $('.mui-toast-container').remove();
+                        var content = template("listLi",{lists:lists});
+                        $(".jobsUl").html(content);
+                        $('.nojob').hide();
+                        $('.jobsUl').show();
+                        $.each($('.jobsLi'), function(index) {
+                            $('.jobsLi').eq(index).click(function(){
+                                var pageid = $(this).attr('data-id');
+                                console.log(pageid);
+                                location.href="jobChild.html?id="+pageid;
+                            })
+                        });
+                        if(data.result.length<pagesize){
+                            setTimeout(function () {
+                                $('#tdul').off('scroll').append('<p class="nomore">无更多数据</p>');
+                            },500)
+                            return;
+                        }
+                        page++;
+					}else{
+						console.log('请求失败')	
+					}					
+       		 	});			
+			}
+			//发布新职位
+			function newJob(){
+				if(rzState==1){
+//			        mui.openWindow({
+//			            url:'jobAdd.html?id='+userid,
+//			        })
+					window.location.href="jobAdd.html";
+				}else{
+					var btnArray = ['取消', '去认证'];
+					mui.confirm('需要先完成企业认证身份才可发布职位？', '提示', btnArray, function(e) {
+						if (e.index == 1) {
+//					        mui.openWindow({
+//					            url:'../set/setApprove.html?id='+userid,
+//					        })
+                            location.href="../set/setApprove.html?id="+userid;
+						} else {
+					
+						}
+					})													
+				}
+			}
+		</script>
+</html>

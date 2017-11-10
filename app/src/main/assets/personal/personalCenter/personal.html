@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>个人信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">    
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/center.css">
+    <link rel="stylesheet" href="../../static/css/mui.picker.css" />
+    <link rel="stylesheet" href="../../static/css/mui.poppicker.css" />
+    <link href="../../static/css/mobileSelect.css" rel="stylesheet" />
+    <style>
+        .cow span {
+            width: 70%;
+        }
+
+        .barRight {
+            font-size: .4rem;
+            padding: .2rem;
+        }
+
+        #intru {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .img>img{
+        	width: 1rem;
+        	height: 1rem;
+        	border-radius: 50%;
+        }
+        
+        .rad{
+        	display: flex;
+			align-items: center;
+        }
+        .rad label{
+        	padding: 0 10px 0 2px;
+        }
+        .cow{
+        	height: 50px;
+        }
+        input[type=radio] {
+        	width: 15px;
+        	height: 15px;
+        }
+    </style>
+</head>
+
+<body style="background: #F5F5F5;">
+    <header class="titleBar">
+        <i class="barLeft iconfont">&#xe604;</i>
+        <p class="barTxt">个人信息</p>
+        <span class="barRight">保存</span>
+    </header>
+    <section class="personal-con public-padding">
+        <a class="cow  changeImg">
+            <h1>头像</h1>
+            <span>
+                <div class="img"></div>
+                <i class="iconfont">&#xe649;</i>
+            </span>
+        </a>
+        <!--更换头像-->
+        <!--<div class="fadeBottom"></div>
+        <div class="lightBottom">
+            <div class="lb" id="shot">
+                <i class="lbImg iconfont">&#xe7b6;</i>
+                <p>拍摄照片</p>
+            </div>
+            <div class="lb">
+                <i class="lbImg iconfont">&#xe7b7;</i>
+                <p>相册照片</p>
+                <input class="files" type="file" multiple="false" autocomplete="off" accept="image/jpg,image/jpeg,image/png,image/png" id="photo" value="" />
+            </div>
+            <a class="closeLb">取消</a>
+        </div>-->
+
+        <div class="cowLine"></div>
+        <a class="cow" data-href="personalName">
+            <h1>姓名</h1>
+            <span>
+                <p id="name">编辑姓名</p>
+                <i class="iconfont">&#xe649;</i>
+            </span>
+        </a>
+        <div class="cowLine"></div>
+        <div class="cow">
+            <h1>性别</h1>
+            <div class="rad">
+                <input type="radio" name="userGender"  id="female" value="2">
+                <label for="female">女</label>
+                <input type="radio" name="userGender" id="male" value="1" >
+                <label for="male">男</label>                
+            </div>
+        </div>
+        <div class="cowLine"></div>
+        <div class="cow" id="showTimePicker">
+            <h1>工作年限</h1>
+            <span>
+                <p id="timeResult">选择工作年限</p>
+                <i class="iconfont">&#xe649;</i>
+            </span>
+        </div>
+        <div class="cowLine"></div>
+        <div class="cow" id="showCityPicker3">
+            <h1>现居住地</h1>
+            <span>
+                <p id="address">选择地址</p>
+                <i class="iconfont">&#xe649;</i>
+            </span>
+        </div>
+        <div class="cowLine"></div>
+        <div class="cow" id="showTimePicker2">
+            <h1>出生年月</h1>
+            <span>
+                <p id="timeResult2">选择出生年月</p>
+                <i class="iconfont">&#xe649;</i>
+            </span>
+        </div>
+        <div class="cowLine"></div>
+        <a class="cow" data-href="selIntr">
+            <h1>介绍自己</h1>
+            <span>
+                <p id="intru">自我介绍..</p>
+                <i class="iconfont">&#xe649;</i>
+            </span>
+        </a>
+    </section>
+
+    <script src="../../static/js/mui.min.js"></script>
+    <script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/mobileSelect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/mui.picker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/mui.dtpicker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+    <script src="../../static/js/city.data.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/webapp.js"></script>
+    <script src="../../static/js/config.js"></script>
+    <script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var arrFiles = [];
+        mui.init({
+            statusBarBackground: '#41a6ff',
+        });
+        
+//      var pics=[];
+//      function uploadImg(){       	
+//			pics=[];
+//			_webapp.uploadImg(function (res) {
+//				console.log(res);
+//				alert(res);
+//			    for (var i=0;i<res.data.length;i++){
+//			        pics.push(res.data[i]);
+//				};
+//			})
+//             
+//      }
+       
+        
+        
+        
+      //    更换头像
+      function bindEle() {
+      	 var pics=[];
+      	$(".personal-con").on('tap',".changeImg",function(){
+      		pics=[];
+      		console.log(123);
+			_webapp.uploadImg(function (res) {
+				console.log(res);
+			    for (var i=0;i<res.data.length;i++){
+			        pics.push(res.data[i]);
+				};
+			})
+			
+      	});
+      	
+//        上传头像
+		$(".titleBar").on('tap','span',function(){
+			console.log(pics);
+			var param = {base64_string: pics};
+            var getInfo = host + "c=upload&a=avatar";
+            ajaxRun(getInfo, param, true, 'GET', function (data) {
+                console.log(data);
+                if (data.statuscode == 1) {
+                	console.log(data.msg);
+                } else {
+                	console.log(data.msg);
+                }
+            });
+		})
+      	
+      	
+      	
+//          $('.closeLb,.fadeBottom').on("tap", function () {
+//              $('.lightBottom').fadeOutDown();
+//              $('.fadeBottom').hide();
+//          });
+//          $('.changeImg').on("tap", function () {               
+//              $('.lightBottom').show().fadeInUp();
+//              $('.fadeBottom').show();
+//          });
+//			$('.lightBottom').on("tap","#photo",function(){
+//	            $('.lightBottom').fadeOutDown();	                
+//	            $('.fadeBottom').hide();
+//        	});
+//          $("#photo").change(function () {
+//              if (typeof (FileReader) != "undefined") {
+//                  var regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
+//                  $($(this)[0].files).each(function () {
+//                      var file = $(this);
+////                      arrFiles.push(file);
+//                      if (regex.test(file[0].name.toLowerCase())) {
+//                          var reader = new FileReader();
+//                          reader.onload = function (e) {
+//                              var html = "<img src=\"" + e.target.result + "\" />";
+//                              $('.img').append(html);
+//                              $('.closeLb').click();
+//                              arrFiles.push(reader.result);
+//                              console.log(arrFiles)
+//                              doLocalStorage('set','pic',arrFiles);
+//                          };
+//                          reader.readAsDataURL(file[0]);
+//                      }
+//                      else {
+//                          alert(file[0].name + "不是图片！");
+//                          return false;
+//                      }
+//                  });
+//              } else { 
+//              	alert("不支持");
+//              }
+//          });            
+    }
+        // 切换时间
+        (function ($, doc) {
+            $.init();
+            $.ready(function () {
+                //  获取时间年月
+                var yearArray = new Array();
+                for (var i = 77; i >= 0; i--) {
+                    var monthArray = new Array();
+                    for (var j = 1; j <= 12; j++) {
+                        var month = new Object();
+                        if (j <= 9) {
+                            month.value = "0" + j;
+                        } else {
+                            month.value = j;
+                        }
+                        //                    month.value = j  + "月";
+                        month.text = j + "月";
+                        monthArray.push(month);
+                    }
+                    var year = new Object();
+                    year.value = i + 1940 + "年";
+                    year.text = i + 1940;
+                    year.children = monthArray;
+                    yearArray.push(year);
+                };
+
+                var _getParam = function (obj, param) {
+                    return obj[param] || '';
+                };
+                //					出生年月级联示例
+                var timePicker2 = new $.PopPicker({
+                    layer: 2,
+                    title: '出生年月'
+                });
+                timePicker2.setData(yearArray);
+                doc.getElementById('showTimePicker2').addEventListener('tap', function () {
+                    timePicker2.show(function (items) {
+                        doc.getElementById('timeResult2').innerHTML = _getParam(items[0], 'text') + "-" + _getParam(items[1], 'value');
+//                      localStorage.setItem('time2', doc.getElementById('timeResult2').innerHTML);
+						doLocalStorage('set','time2',doc.getElementById('timeResult2').innerHTML);
+                    });
+                }, false);
+
+            });
+        })(mui, document);
+        //选择地址
+        (function($, doc) {
+            $.init();
+            $.ready(function() {
+                var _getParam = function(obj, param) {
+                    return obj[param] || '';
+                };
+                //级联示例
+                var cityPicker3 = new $.PopPicker({
+                    layer: 2,
+                    title:'1'
+                });
+                cityPicker3.setData(cityData3);
+                var showCityPickerButton = doc.getElementById('showCityPicker3');
+                var cityResult3 = doc.getElementById('address');
+                showCityPickerButton.addEventListener('tap', function(event) {
+                    cityPicker3.show(function(items) {
+                        var hopeCity=_getParam(items[1],'text');
+                        var arr=hopeCity.split('市');
+                        hopeCity=arr[0];
+                        cityResult3.innerHTML=hopeCity;
+//                      localStorage.setItem('liveCity', hopeCity);
+                        doLocalStorage('set','liveCity',hopeCity);
+                    });
+                }, false);
+            });
+        })(mui, document);
+
+        //选择工作年限
+        var years = new MobileSelect({
+            trigger: '#timeResult',
+            title: '',
+            wheels: [
+                {data:[
+                	{id:'0',value:'应届毕业生'},
+                    {id:'1',value:'0-1年'},
+                    {id:'2',value:'1-2年'},
+                    {id:'3',value:'2-3年'},
+                    {id:'4',value:'3-4年'},
+                    {id:'5',value:'4-5年'},
+                    {id:'6',value:'5-10年'},
+                    {id:'7',value:'10年以上'},
+                ]}
+            ],
+            callback:function(indexArr, data){
+                $('#timeResult').html(data[0].value);
+                var worktime = data[0].value;
+//               localStorage.setItem('time1', worktime);
+                 doLocalStorage('set','time1',worktime);
+            }
+        });
+        var sex_cn = $("input[name='userGender']:checked").val();
+        console.log(sex_cn);
+		doLocalStorage('set','sex',sex_cn);
+
+        $(document).ready(function () {
+            function getInfo(){
+                var url=host+"c=Personalinfo&a=show_personal_info";
+                ajaxRun(url,{},true,'POST',function(data){
+                    console.log(data);
+                    if(data.statuscode==1){
+                        var info = data.result;
+                        $('#name').html(info.realname);
+                        var sex_cn = info.sex;
+                        $("input[name='userGender'][value='" + sex_cn + "']").attr('checked', 'checked');
+                        $('#timeResult').html(info.workyear + '年');
+                        $('#timeResult2').html(info.birthday);
+                        $('#intru').html(info.introduction);
+                        $('#address').html(info.residence);
+                        //重新赋值
+                        var name = localStorage.getItem("name");
+			            var intru = localStorage.getItem("intru");
+			            var time1 = localStorage.getItem("time1");
+			            var time2 = localStorage.getItem("time2");
+			            var liveCity=localStorage.getItem("liveCity"); 
+			            var sex = localStorage.getItem('sex');
+//			            var pic =localStorage.getItem('pic');
+			            
+//			            var name=doLocalStorage('get','name');
+//			            var intru=doLocalStorage('get','intru');
+//			            var time1=doLocalStorage('get','time1');
+//			            var time2=doLocalStorage('get','time2');
+//			            var liveCity=doLocalStorage('get','liveCity');
+//			            var sex=doLocalStorage('get','sex');
+			            console.log(sex); 
+			            console.log(name);
+//			            if(pic!==null){
+//			            	var html = "<img src=\"" + pic + "\" />";
+//                          $('.img').append(html);
+//			            }
+			            if (name !== null) {
+						    $('#name').html(name);
+						}
+			            if(sex!==null){
+			            	$("input[name='userGender'][value='" + sex + "']").attr('checked', 'checked');
+			            }
+						if (intru !==null) {
+						    $('#intru').html(intru);
+						}
+						if (time1 !== null) {
+						    $('#timeResult').html(time1);
+						}
+						if (time2 !== null) {
+						    $('#timeResult2').html(time2);
+						}
+						if(liveCity!==null){
+						    $('#address').html(liveCity);
+						}
+						
+                    }else{
+                    	 mui.toast('您尚未设置个人信息！');
+                    }
+                });
+            }
+            getInfo();
+            bindEle();            
+//          var userid = localStorage.getItem('userid');
+//          var argument = { uid:userid,op:"edit"};
+//          var getInfo = host + "c=Personalinfo&a=personal_info_update";
+//          ajaxRun(getInfo, argument, true, 'GET', function (data) {
+//              console.log(data)
+//              if (data.statuscode == 1) {
+//              	
+//                  var info = data.result;
+//                  $('#name').html(info.realname);
+//                  var sex_cn = info.sex;
+//                  $("input[name='userGender'][value='" + sex_cn + "']").attr('checked', 'checked');
+//                  $('#timeResult').html(info.workyear + '年');
+//                  $('#timeResult2').html(info.birthday);
+//                  $('#intru').html(info.introduction);                                                           
+//              } else {
+//                  mui.toast('您尚未设置个人信息！')
+//              }
+//          });
+            $('.titleBar').on('tap', 'span', function () {
+                var realname = $('#name').html();
+                var introduction = $('#intru').html();
+                var sex = $("input[name='userGender']:checked").val();
+                console.log(sex);
+                var liveCity=$('#address').html();
+                var workyear = $('#timeResult').html().substring(0, 4);
+                var birthday = $('#timeResult2').html();
+                var params = { op: 'edit', uid: userid, realname: realname, sex: sex,
+                    workyear: workyear, birthday: birthday, introduction: introduction ,address:liveCity};
+                    console.log(params);
+                var infoUpdata = host + "c=Personalinfo&a=personal_info_update";
+                if (realname == "编辑姓名" ||sex==undefined ||introduction == "自我介绍..."
+                    || workyear == "选择年份" || birthday == "选择出生年月" || liveCity=="选择地址") {
+                    mui.alert('信息不完整');
+                } else {
+                    ajaxRun(infoUpdata, params, true, 'GET', function (data) {
+                        if (data.statuscode == 1) {
+                            mui.toast('更新信息成功！')
+                        } else {
+                            mui.toast('更新信息失败！')
+                        }
+                    });
+                }
+            });
+        });
+						 	
+        $('.titleBar').on('tap', 'i', function () {
+//          localStorage.removeItem("name");
+//          localStorage.removeItem("intru");
+//          localStorage.removeItem("time1");
+//          localStorage.removeItem("time2");
+//          localStorage.removeItem("liveCity");
+			doLocalStorage('remove','name');
+			doLocalStorage('remove','intru');
+			doLocalStorage('remove','time1');
+			doLocalStorage('remove','time2');
+			doLocalStorage('remove','liveCity');
+			doLocalStorage('remove','sex');
+//			doLocalStorage('remove','pic');
+			
+            //  页面跳转
+	    	location.href='personalCenter.html'		
+        }) 
+        
+       
+    </script>
+
+</body>
+
+</html>

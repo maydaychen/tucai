@@ -1,0 +1,130 @@
+.barRight{
+    font-size: 0.6rem;
+    color: #fff;
+    padding: 10px 0 10px 10px;
+}
+.hopeCity{
+    width: 100%;
+    /*height: 50px;*/
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    position: fixed;
+    top: 45px;
+    /*top: 70px;*/
+    padding: 0.3rem 5%;
+    border-bottom: 1px solid #E9E9E9;
+}
+.hopeCityTxt{
+    color: #676767;
+}
+.hopeCityDetail>p{
+    color: #45A8FF;
+    border: 1px solid #45A8FF;
+    border-radius: 15px;
+    padding: 0 10px;
+}
+.sCity{
+    margin-top: 95px;
+}
+.sCityNav{
+    padding: 0.1rem 5%;
+    color: #969696;
+    background: #F5F5F5;
+}
+.sCityDetail{
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0.1rem 1%;
+}
+.sCityDetail>p{
+    min-width: 25%;
+    color: #5E5E5E;
+    text-align: center;
+    border: 1px solid #DBDBDB;
+    border-radius: 15px;
+    margin: 0.25rem 1%;
+    padding: 0 10px;
+}
+/*求职招聘*/
+.rTopNav{
+    z-index: 100;
+    height: 45px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.rTopNav>p{
+    width: 25%;
+    text-align: center;
+    color: #696969;
+}
+.rTopNav>p.active{
+    color: #58B1FF;
+}
+.rContentJob{
+    padding-top: 45px;
+   	/*padding-top: 70px;*/
+    z-index: 10;
+}
+.rContent{
+    width: 100%;
+    z-index: 100;
+    display: none;
+    position: fixed;
+    top: -5px;
+    /*top: 20px;*/
+    left: 0;
+}
+.rContentDetail{
+    width: 100%;
+ 	height: 9rem; 
+    overflow: auto;
+    background: #fff;
+}
+.rContentDetail p.active{
+    color: #9CD1FF;
+    border: 1px solid #9CD1FF;
+}
+.rFoot{
+    width: 100%;
+    position: absolute;
+}
+.rFootCon{
+    display: flex;
+}
+.rFootCon>p{
+    width: 50%;
+    text-align: center;
+    padding: 0.2rem 0;
+}
+.rFootCon p:first-child{
+    color: #8D8D8D;
+    background: #fff;
+}
+.rFootCon p:nth-child(2){
+    color: #fff;
+    background: #41A6FF;
+}
+.recom>p{
+    width: 100%;
+    font-size: 0.5rem;
+    background: #fff;
+    padding: 0.5rem 5%;
+}
+.recom>p>i{
+    display: none;
+}
+.recom>p.active{
+    color: #47A9FF;
+}
+.recom>p.active i{
+    display: inline-block;
+}
+.selected p.active{
+	color: #47A9FF;
+	border: 1px solid #47A9FF;
+}

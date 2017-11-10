@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>关于企业</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<link href="../../static/css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../static/css/mui.poppicker.css" rel="stylesheet" />	
+		<link href="../../static/css/modeEle.css" rel="stylesheet" />			
+		<style type="text/css">
+			.mBody{
+				width: 100%;
+				float: left;
+				height: 100%
+				overflow-y:auto;
+				box-sizing: border-box;
+				padding-top: 1rem;
+			}
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">关于企业</p>
+			<p class="barRight">
+				<a class="br" onclick="upInfo()">保存</a>
+			</p>
+		</header>	
+		
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll muiTop">
+				<!--这里放置真实显示的DOM内容-->
+				<a class="cow" id="box1">
+					<h1>企业全称</h1>
+					<span>
+						<p id="val1">无锡创意创意科技</p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>				
+				<a class="cow" id="box2">
+					<h1>企业简称</h1>
+					<span>
+						<p id="val2">创意科技</p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>
+				<a class="cow" id="box3">
+					<h1>企业规模</h1>
+					<span>
+						<p id="val3">10-20人</p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>
+				<a class="cow" id="box4">
+					<h1>行业领域</h1>
+					<span>
+						<p id="val4">软件科技</p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>	
+				<a class="cow" id="box5">
+					<h1>发展阶段</h1>
+					<span>
+						<p id="val5"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>	
+				<a class="cow" id="box6">
+					<h1>公司地址</h1>
+					<span>
+						<p id="val6"></p>
+						<i class="iconfont">&#xe649;</i>
+					</span>
+				</a>	
+				<div class="cowLine"></div>					
+				<div class="cow">
+					<textarea id="val7" class="cowArea" placeholder="填写详细、清晰的职位描述。有助于您更准确的展开招聘需求" maxlength="1000" onkeyup="maxTxt(this)"></textarea>			
+				</div>								
+				<a class="cow mgt">
+					<p class="zs" id="txt">0/1000</p>		
+				</a>
+			</div>	
+		</div>
+		
+		
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>	
+		<script src="../../static/js/mui.picker.min.js"></script>
+		<script>
+
+			$(function(){
+				FastClick.attach(document.body);
+				loadInfo();
+				bindEle();
+			});
+			
+			function bindEle(){
+		        $('#box1').click(function(){	        	
+		            $.malert({  
+		                text: "输入企业全称",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""||str.length>20){
+		                		mui.toast('输入不正确！');
+		                		return;
+		                	}
+		                    $('#val1').html(str).attr('data-val',str);		                  
+		                }  
+		            })  
+		        }); 
+		        $('#box2').click(function(){	        	
+		            $.malert({  
+		                text: "输入企业简称",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""||str.length>20){
+		                		mui.toast('输入不正确！');
+		                		return;
+		                	}
+		                    $('#val2').html(str).attr('data-val',str);		                  
+		                }  
+		            })  
+		        }); 
+		        $('#box5').click(function(){	        	
+		            $.malert({  
+		                text: "输入发展阶段",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""||str.length>20){
+		                		mui.toast('输入不正确！');
+		                		return;
+		                	}
+		                    $('#val5').html(str).attr('data-val',str);		                  
+		                }  
+		            })  
+		        }); 
+		        $('#box6').click(function(){	        	
+		            $.malert({  
+		                text: "输入企业地址",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""||str.length>20){
+		                		mui.toast('输入不正确！');
+		                		return;
+		                	}
+		                    $('#val6').html(str).attr('data-val',str);		                  
+		                }  
+		            })  
+		        }); 
+				
+			}
+			function maxTxt(ele){
+				var str=$(ele).val().length;
+				$('#txt').html(str+'/'+(1000-str))
+			}
+			var rs;
+			function loadInfo(){
+				var parmas={id:userid};
+				ajaxRun(port.companyInfo,parmas,true,'POST',function (data) {
+					console.log('companyInfo:',data);
+					toLogin(data);
+					if(data.statuscode==1){
+						rs=data.result.company_profile.id;
+						var cg=data.result.category;
+						var cp=data.result.company_profile;
+						$('#val1').html(cp.companyname);
+						$('#val2').html(cp.short_name);
+						$('#val3').html(cp.scale_cn).attr('data-val',cp.scale);
+						$('#val4').html(cp.trade_cn).attr('data-val',cp.trade);
+						$('#val5').html(cp.finance);
+						$('#val6').html(cp.address);
+						$('#val7').val(cp.contents);
+
+			 			(function($, doc) {
+							$.init();
+							$.ready(function() {
+								var _getParam = function(obj, param) {
+									return obj[param] || '';
+								};
+								
+								//规模
+								var gm=cg.QS_scale;
+								var gmArr=[];
+								$.each(gm, function(item,val) {
+									gmArr.push({'value':item,'text':val});
+								});			
+								var gmPicker = new $.PopPicker();
+								gmPicker.setData(gmArr);
+								var gmBtn = doc.getElementById('box3');
+								var gmHtml = doc.getElementById('val3');
+								gmBtn.addEventListener('tap', function(event) {
+									gmPicker.show(function(items) {
+										console.log(items)
+										gmHtml.innerHTML=items[0].text;
+										gmHtml.setAttribute('data-val',items[0].value);
+									});
+								}, false);
+								
+								//行业领域
+								var hy=cg.QS_trade;
+								var hyArr=[];
+								$.each(hy, function(item,val) {
+									hyArr.push({'value':item,'text':val});
+								});			
+								var hyPicker = new $.PopPicker();
+								hyPicker.setData(hyArr);
+								var hyBtn = doc.getElementById('box4');
+								var hyHtml = doc.getElementById('val4');
+								hyBtn.addEventListener('tap', function(event) {
+									hyPicker.show(function(items) {
+										console.log(items)
+										hyHtml.innerHTML=items[0].text;
+										hyHtml.setAttribute('data-val',items[0].value);
+									});
+								}, false);
+
+								
+							});
+						})(mui, document); 
+					}else{
+						
+					}		
+				});						
+			}
+			
+			function upInfo(){
+				var companyname=$('#val1').html();
+				var short_name=$('#val2').html();				
+				var scale=$('#val3').attr('data-val');
+				var trade=$('#val4').attr('data-val');
+				var finance=$('#val5').html();
+				var address=$('#val6').html();
+				var contents=$('#val7').val();						
+				var parmas={id:rs,companyname:companyname,short_name:short_name,scale:scale,trade:trade,finance:finance,address:address,contents:contents};
+				console.log(parmas);
+				ajaxRun(port.editCompany,parmas,true,'POST',function (data) {
+					console.log('editCompany:',data);
+					if(data.statuscode==1){
+												
+						mui.toast('保存成功！');
+					}else{
+						mui.toast('保存失败！');
+					}
+				});	
+			}
+		</script>
+</html>

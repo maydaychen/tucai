@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>人物文栏</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/plist.css">
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="iconfont barIcon" onclick="discovery()">&#xe604;</a>
+		<p class="barTxt">人物文栏</p>			         
+        <a class="barIcon iconfont" onclick="sou()">&#xe61f;</a>
+	</header>
+	
+	<div class="mui-content">		
+		<div class=" mui-input-row mui-search" id="sou" style="background:#fafafa;position:relative;z-index: 1000;">					
+			<input id="searchPeople" type="search" class="mui-input-clear" placeholder="搜索" style="background:#fafafa;width:100%;">
+		</div>
+		<div id="refreshContainer" class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="app">
+					<ul class="listCon">						
+						<li v-for="(list,i) in lists" >
+							<div class="listItem" :data-id="[list.id]">
+		                        <img v-bind:src='list.img_url'>
+		                        <div>
+		                            <!--<h1>-->
+		                            	<span class="pName" v-text="list.username"></span><span class="daka">大咖</span>
+		                            <!--</h1>-->
+		                            <p v-text="list.descp"></p>
+		                        </div>
+		                    </div>						
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+		<script src="../../static/js/jquery.js"></script>
+		<script src="../../static/js/flexible.js"></script>
+		<script src="../../static/js/mui.js"></script>
+		<script src="../../static/js/vue.min.js"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">		
+			mui.init();
+			loadInfo();
+			var list='';
+			var searchvue=new Vue({
+			  el: '#app',
+			  data: {
+			    lists: list
+			  }
+			})
+			//搜索 
+			function sou(){
+				var sId = document.getElementById("sou");
+				if(sId){
+					if(sId.style.display == 'block'){
+						sId.style.display = 'none';	
+						$("#app").css("padding-top","0");
+					}else{
+						sId.style.display = 'block';
+						$("#app").css("padding-top","35px");
+					}
+				}
+			}
+			
+			//页面跳转
+			function discovery(){
+				location.href ='../../commom/discovery/discovery.html'
+			}
+			//跳转详情页
+			$('#app').on('tap','li',function(){
+			    var self=$(this);
+			    console.log(self);
+			    var id=self.children('div').attr('data-id');
+	            location.href ='../personalArtical/personalPage.html?id='+id;	
+			})
+									
+			function loadInfo(){
+				var page=1;
+				var params={page:page,pagesize:5};
+				var url= host+'c=tcbk&a=getPerList';
+				console.log(url);
+		   		ajaxRun(url,params,true,'GET',function(data){
+		   			console.log(data);
+	   				if(data.statuscode==1){
+	   					console.log(data.msg);
+	   					console.log(data);	   			   							
+	   					searchvue._data.lists = data.result;								   					
+	   				}else{
+	   					console.log(data.msg); 				
+	   				}
+		   		})
+			}
+			
+	$('#searchPeople').bind('input propertychange', function() {
+			mui.toast('加载中...',{ duration:2000}) 
+            var name = $("#searchPeople").val(); 
+            var page=1;var pagesize=5;
+            var url =host +'c=tcbk&a=getPerList';
+			var params = {page:page,pagesize:pagesize,keywords:name};
+			ajaxRun(url,params,true,'GET',function (data) {
+				if(data.statuscode==1){
+					console.log(data);
+					searchvue._data.lists = data.result;
+				}else{
+					console.log(data.msg);
+				}
+		 	});
+        });
+
+    //  加载更多
+ 	 var Flag = false;
+ 	 var page=[1,1];
+     mui.init({
+	    pullRefresh : {
+		    container:"#refreshContainer",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+		    up : {
+			  	height:50,//可选.默认50.触发上拉加载拖动距离
+			  	auto:false,//可选,默认false.自动上拉加载一次
+			  	contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+			  	contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+			  	callback : pullupRefresh 
+	    	}
+	    }
+	});
+    
+    function pullupRefresh() {
+    	setTimeout(function () {
+         	mui('#refreshContainer').pullRefresh().endPullupToRefresh((Flag)); //参数为true代表没有更多数据了。
+    		loadMore();
+		}, 1500);
+    }  
+    function loadMore() {
+    	var name = $("#searchPeople").val(); 
+    	if(name!==''){
+    		page[0]++;
+    		var params = {keywords:name,page:page[0],pagesize:5};
+    	}else{
+    		page[1]++;
+    		var params ={page:page[1],pagesize:5};
+    	}
+    	var url =host +'c=tcbk&a=getPerList';		
+		ajaxRun(url,params,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				var list = data.result;
+				if(list.length < 5 || list == null || list == '') {
+					Flag = true;
+				}
+				searchvue._data.lists = searchvue._data.lists.concat(list);
+//				page ++;
+			}else{	
+				mui.toast(data.msg,{ duration:1000}); 
+			}	
+	   	},1);
+   }
+</script>	
+</body>
+</html>

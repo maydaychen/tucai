@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/center.css">
+    <style>
+        .com{
+            color: #A998F6;
+        }  
+    </style>
+</head>
+<body>
+<!--<div class="mui-scroll-wrapper" >-->
+<div class="mui-scroll">
+<div id="app">
+<header class="center-head">
+    <div class="head-container flex" onclick="setInfo()">
+	        <div class="user-pic">
+	            <div>
+	                <img id="headImg" :src="[lists.thumb||'../../static/images/aboutTc.gif']" alt="">
+	            </div>
+	        </div>
+	        <div class="user-info">
+	            <div>
+	                <p class="user-name" id="uName" v-text="lists.realname||'你好，涂才'"></p>
+	                <p class="user-intro" id="intro" v-text="lists.work_type||'这个人很懒，什么也没留下'"></p>
+	            </div>
+	        </div>
+	        <div class="arrow">
+	            <i class="iconfont">&#xe649;</i>
+	        </div>
+    </div>
+</header>
+<ul class="f-list">
+    <li>
+    	<a data-href="../recruit/jobAll">
+	        <i class="iconfont">&#xe61d;</i>
+	        <p>职位管理</p>
+        </a>
+    </li>
+    <li><a data-href="../recruit/resumeControl">
+        <i class="iconfont">&#xe7b5;</i>
+        <p>投递管理</p>
+        </a>
+    </li>
+</ul>
+<ul class="s-list mui-table-view">
+    <li class="mui-table-view-cell">
+        <a class="mui-navigate-right"  data-href="../recruit/jobCollect"><i class="iconfont collect">&#xe62f;</i><span>我的收藏</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a class="mui-navigate-right" data-href="../../commom/wiki/index"><i class="iconfont ency">&#xe673;</i><span>我的百科</span></a>
+    </li>
+</ul>
+<ul class="s-list s-list-last mui-table-view">
+    <li class="mui-table-view-cell">
+        <a class="mui-navigate-right" data-href="../recruit/companyInfo"><i class="iconfont com">&#xe84c;</i><span>公司信息</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a class="mui-navigate-right" data-href="../../personal/personalCenter/feedback"><i class="iconfont retro">&#xe711;</i><span>建议反馈</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a class="mui-navigate-right" id="contact"><i class="iconfont contact">&#xe613;</i><span>联系我们</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a class="mui-navigate-right" data-href="../set/set"><i class="iconfont set">&#xe627;</i><span>设置</span></a>
+    </li>
+</ul>
+<!--</div>-->
+</div>
+</div>
+<ul class="t-list flex">
+    <li>
+        <a data-href="../../index">
+            <i class="iconfont">&#xe60e;</i>
+            <p>首页</p>
+        </a>
+    </li>
+    <li>
+        <a data-href="../../commom/discovery/discovery">
+            <i class="iconfont">&#xe647;</i>
+            <p>发现</p>
+        </a>
+    </li>
+    <li>
+        <a data-href="../../commom/chatMsg/chatMsg">
+            <i class="iconfont">&#xe60c;</i>
+            <p>消息</p>
+        </a>
+    </li>
+    <li class="active">
+        <a data-href="companyCenter">
+            <i class="iconfont">&#xe63d;</i>
+            <p>我的</p>
+        </a>
+    </li>
+</ul>
+<!--联系客服-->
+<div class="fadeBottom"></div>
+<div class="lightBottom">
+    <p class="contactTime">客服时间：9:00-18:00</p>    
+    <!--<a href="tel://0510-63251354" class="contactNum">0510-63251354</a>-->
+    <a class="contactNum">0510-63251354</a>    
+    <a class="closeLb">取消</a>
+</div>
+<script src="../../static/js/vue.min.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>-->
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/config.js"></script>
+
+
+<script>
+    mui.init();    
+    var list='';
+	var comvue=new Vue({
+	  el: '#app',
+	  data: {
+	    lists: list
+	  }
+	})
+	loadInfo();
+       
+    //页面跳转
+    function setInfo(){
+    	location.href ='../set/setInfo.html'
+    };
+    //联系我们
+    $('.closeLb,.fadeBottom').on("tap",function(){
+        $('.lightBottom').fadeOutDown();
+        $('.fadeBottom').hide();
+    });
+    $('#contact').on("tap",function(){
+        $('.lightBottom').show().fadeInUp();
+        $('.fadeBottom').show();
+    });
+ 	$(".lightBottom").on('tap','.contactNum',function(){
+    	location.href="tel://0510-63251354"
+    })
+ 	
+   function loadInfo(){
+ 	var url=host+"c=Personalinfo&a=show_personal_info";
+ 	ajaxRun(url,{},true,'POST',function(data){
+		console.log(data);
+		if(data.statuscode==1){
+			console.log(data.msg);
+			comvue._data.lists = data.result||[];				 
+		}else{
+			console.log(data.msg);	
+		}
+	})   	
+ 	
+ }
+</script>
+
+</body>
+</html>

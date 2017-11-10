@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>设置</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">设置</p>
+			<p class="barRight">
+				<a class="br" onclick="upInfo()">保存</a>
+			</p>
+		</header>	
+		<div class="mBody">
+			<div class="cow" id="setTel">
+				<h1>密码</h1>
+				<span>
+					<p id="telVal"></p>
+				</span>
+			</div>
+
+		</div>
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>  
+		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>  
+		<link href="../../static/css/modeEle.css" rel="stylesheet" />	
+		<script>
+			$(function(){
+				FastClick.attach(document.body);
+				
+				loadInfo();
+		        $('#setTel').click(function(){	    
+		            $.malert({  
+		                text: "输入密码",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""||!psdReg.test(str)){
+		                		mui.toast('密码由6-21字母和数字组成');
+		                		return;
+		                	}
+		                    $('#telVal').html(str);	
+		                    psd=str;
+		                }  
+		            })  
+		        });  
+	
+			});
+			var psd;			
+			function upInfo(){
+				var parmas={password:psd};
+				ajaxRun(port.psd,parmas,true,'POST',function (data) {
+					console.log('psd:',data);					
+					if(data.statuscode==1){
+						mui.toast('修改成功'); 
+					}else{
+						mui.toast('修改失败'); 
+					}					
+       		 	});						
+			}
+			
+			function loadInfo(){
+				var parmas={uid:userid};
+				ajaxRun(port.psd,parmas,true,'POST',function (data) {
+					console.log('psd:',data);					
+					if(data.statuscode==1){
+						$('#telVal').html(data.psd);	
+					}else{
+						mui.toast('获取失败'); 
+					}					
+       		 	});					
+			}
+
+		</script>
+</html>

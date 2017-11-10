@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="a3">#f8f8f8</color> <!--导航栏背景色-->
+    <color name="titlebar_bg">@color/a3</color>
+    <color name="c2">#666</color> <!--导航标题文字-->
+    <color name="grey">#e3e3e3</color>
+    <color name="c6">#e60000</color> <!--文字按钮;数字金额;切换标签选中文字;流程状态:已拒绝-->
+    <color name="touming">#ffffffff</color>
+    <color name="toolbarbg">#000000</color>
+    <color name="green">#10ce68</color>
+    <color name="windowBackground">#f5f5f5</color>
+    <color name="grey_f9">#f9f9f9</color>
+    <color name="black">#000</color>
+</resources>

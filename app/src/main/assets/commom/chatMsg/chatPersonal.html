@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <title>聊天</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	    <link rel="stylesheet" href="../../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../../static/css/public.css">
+	    <link rel="stylesheet" href="../../static/css/iconfont.css">	    		
+	   	<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/commomCss/chat.css">
+	</head>
+	<body style="height: calc(100% - 50px);">
+		<header class="titleBar">
+		    <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
+		    <p class="barTxt">爬虫科技 刘鑫</p>
+		    <p class="barRight">
+		        <a class="br"></a>
+		    </p>
+		</header>
+		<div id="scrolldIV" style="height:calc(100% - 50px);overflow-y: auto;-webkit-overflow-scrolling:touch;margin-top:50px;">
+			<!--<div class="jobInfo">
+				<div class="jobInfoFirst">
+					<div class="jobs">涂料研究员</div>	
+					<div class="jobSalary">5k-7k</div>	
+				</div>
+				<div class="jobCompany">爬虫科技</div>
+				<div class="jobDetails">
+					<span>无锡</span><span class="marginSpan">|</span>					
+					<span>滨湖区</span><span class="marginSpan">|</span>
+					<span>1-3年</span><span class="marginSpan">|</span>
+					<span>本科</span>
+				</div>
+			</div>-->
+			
+			<div class="chatContents">
+				<!--<div class='people-me'>
+					<div class='head-imgright'>
+						<img src="../../static/images/touxiang.jpg" />
+					</div>					
+					<div class='text text-right'>化学油漆专业细分越来越明确时光飞逝更换可实际专业技术人才缺</div>					
+					<div class='msgState'>已读</div>
+					<div style='clear: both'></div>
+				</div>
+				
+				<div class='people-left'>
+		   			<div class='head-img'>
+		   				<img src="../../static/images/touxiang.jpg" />
+		   			</div>
+		   			<div class='text text-left'>content.content</div>
+	   				<div style='clear: both'></div>
+		   		</div>-->
+			</div>
+		</div>
+		<div class="chatBottom">
+			<input type="text" class="chatMsg"/>
+			<div class="sendMsg" onclick="sendMsg()">发 送</div>
+		</div>
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/public.js"></script>
+	<script src="../../static/js/api.js"></script>
+	<script src="../../static/js/vue.min.js"></script>
+	<script src="../../static/js/mui.min.js"></script>	
+	<script>
+		
+        $('#chatMsg').focus();
+		var token = localStorage.getItem("userid");
+		var touid = GetRequest().touid;
+		var chatno = GetRequest().chatno;
+		console.log("touid:" + touid + ",chatno:" + chatno)
+		var historyParmas = '';
+		if (chatno == undefined) {
+			historyParmas = {touid: touid};
+		} else {
+			historyParmas = {chatno:chatno};
+		}
+		var lastId = '';
+		var historyMsg = host + "c=notice&a=chatContent";
+//		var historyParmas = {chatno:chatno,touid: touid};
+		ajaxRun(historyMsg,historyParmas,true,'POST',function (data) {
+			if(data.statuscode == 1) {	
+                var result = data.result;
+                var msgNum = result.length - 1;
+                lastId = result[msgNum].id;			
+            	console.log("lastId:" + lastId);
+                for(var i = 0; i < result.length; i++) {
+                	var msg = '';
+                	var msgInfo = result[i];
+                	var userId = msgInfo.fromuid;
+                	if (token == userId) {
+                		msg = mine(msgInfo);
+                	} else {
+                		msg = left(msgInfo);
+                	}
+                	$(".chatContents").append(msg);
+                }
+				setTimeout(toChatRecordsBottom(),3000);
+			} else {
+				mui.toast(data.msg,{ duration:1000}); 
+			}
+		});
+	
+		function toChatRecordsBottom() {
+			scrolldIV.scrollTop = scrolldIV.scrollHeight;
+		}
+		function loadMsg() {	
+        	console.log("lastId:" + lastId);
+			if (chatno == undefined) {
+				loadParmas = {touid:touid,id:lastId};
+			} else {
+				loadParmas = {chatno:chatno,id:lastId};
+			}
+//			var loadParmas = {chatno:'chatno1509622679',id:lastId}
+			ajaxRun(historyMsg,loadParmas,true,'POST',function (data) {
+				if(data.statuscode == 1) {				
+	//          	console.log(data);
+	                var result = data.result;
+	                for(var i = 0; i < result.length; i++) {
+	                	var msg = '';
+	                	var msgInfo = result[i];
+	                	var userId = msgInfo.fromuid;
+	                	if (token == userId) {
+	                		msg = mine(msgInfo);
+	                	} else {
+	                		msg = left(msgInfo);
+	                	}
+	                	$(".chatContents").append(msg);
+	                }
+	
+				} else {
+//					mui.toast(data.msg,{ duration:1000}); 
+				}
+			});
+		}
+		
+	window.onload = function(){ 
+		setInterval( function(){
+			loadMsg()
+		 },5000);
+	} 
+				
+	    function sendMsg() {
+            var msgInfo = $('.chatMsg').val();
+            if(msgInfo != '') {
+	            console.log(msgInfo)
+	            var sendParmas = '';
+	            if (chatno == undefined) {
+					sendParmas = {tuid:touid,message:msgInfo};
+				} else {
+					sendParmas = {tuid:touid,message:msgInfo,chatno:chatno};
+				}
+//	            var parmas={tuid:touid,message:msgInfo,chatno:'chatno1509622679'};
+	            var send_chatMsg=host+'c=notice&a=doChat';
+	            ajaxRun(send_chatMsg,sendParmas,true,'POST',function (data) {
+	            	if (data.statuscode == 1) {
+		                console.log(data);
+		                var msg = send(msgInfo);
+		                $(".chatContents").append(msg);
+		                $('.chatMsg').val('');
+		                lastId = data.result;
+		                setTimeout(toChatRecordsBottom(),3000);
+	            	} else {
+	            		mui.toast(data.msg,{ duration:1000}); 
+	            	}
+	                
+				});
+				setTimeout(toChatRecordsBottom(),5000);
+            } else {
+				mui.toast('请输入内容',{ duration:1000}); 
+            }
+		}
+
+
+		function back() {
+			//location.href = "chatMsg.html";
+            history.go(-1);
+		}
+		function send(message) {
+			var str = "<div class='people-me'>" +
+					"<div class='head-imgright'>" +
+						"<img src='../../static/images/touxiang.jpg' />" +
+					"</div>" +			
+					"<div class='text text-right'>" + message + "</div>" +					
+//					"<div class='msgState'>" + '已读' + "</div>" +
+					"<div style='clear: both'></div>" +
+				"</div>";
+			return str;
+		}
+		function mine(msgInfo) {
+			var str = "<div class='people-me'>" +
+					"<div class='head-imgright'>" +
+						"<img src='../../static/images/touxiang.jpg' />" +
+					"</div>" +			
+					"<div class='text text-right'>" + msgInfo.message + "</div>" +					
+//					"<div class='msgState'>" + '已读' + "</div>" +
+					"<div style='clear: both'></div>" +
+				"</div>";
+			return str;
+		}
+		function left(msgInfo) {
+			var str = "<div class='people-left'>" +
+		   			"<div class='head-img'>" +
+		   				"<img src='../../static/images/touxiang.jpg' />" +
+		   			"</div>" +
+		   			"<div class='text text-left'>" + msgInfo.message + "</div>" +
+	   				"<div style='clear: both'></div>" +
+		   		"</div>";
+			return str;
+		}
+	</script>
+</html>

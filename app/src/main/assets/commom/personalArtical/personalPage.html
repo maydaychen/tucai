@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/personal.css">
+</head>
+<body>
+    <header class="titleBar">
+        <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
+        <p class="barTxt"></p>
+        <p class="barRight">
+            <a class="br"></a>
+        </p>
+    </header>
+	        	
+	<div id="refreshContainer" class="mui-scroll-wrapper">
+    	<div class="mui-scroll">
+    		<!--<div style="height:100%;overflow-y: auto">-->
+	    		<div id="app">    		
+			        <div class="personalBgImg">
+			            <img src="../../static/images/new_banner.png" />
+			        </div>
+			        <div class="personalInfos" >
+			            <div class="personalHeadImg"><img :src="perInfo.logo" /></div>
+			            <div>
+			                <div class="personalName" v-text="perInfo.username"></div>
+			                <div class="personalCompany" v-text="perInfo.descp"></div>
+			            </div>
+			        </div>
+			        <div class="articleLists">
+			        	<div v-if="articalLists.length == 0" class="mui-pull"><div class="mui-pull-loading mui-icon mui-spinner mui-hidden"></div><div class="mui-pull-caption mui-pull-caption-nomore">没有更多数据了</div></div>
+			            <div v-if="articalLists.length != 0" class="article" v-for="(v,i) in articalLists" @click="articleDetails(v.id)">
+			                <div class="articleImg"><img :src="v.small_img" /></div>
+			                <div class="articleInfos">
+			                    <div class="articleTop">
+			                        <div class="articleTitleIntro" v-text="v.title"></div>
+			                        <div class="iconfont">&#xe649;</div>
+			                    </div>
+			                    <div class="articleTime" v-text="v.addtime"></div>
+			                </div>
+			            </div>
+		            </div>
+	          </div>
+	        <!--</div>-->
+    	</div>
+    </div>
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/api.js"></script> 
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var page = 2;
+	var Flag = false;
+	var perInfo = '';
+	var articalLists = '';
+	var personalVue = new Vue({
+		el: '#app',
+		data: {
+			perInfo: perInfo,
+			articalLists: articalLists
+		}
+	})	
+	var theRequest = GetRequest();
+	console.log("theRequest:" + JSON.stringify(theRequest))
+	var uid = theRequest.id;
+	var url = host + 'c=tcbk&a=getPerInfo';
+
+	var parmas = {uid:uid,page:1,pagesize:5};
+	ajaxRun(url,parmas,true,'GET',function (data) {					
+		if(data.statuscode == 1){
+			console.log(personalVue)
+			var personalName = data.result.perinfo.username;
+			$(".barTxt").html(personalName);
+			personalVue._data.perInfo = data.result.perinfo;
+			var tcbkList = data.result.tcbkList;
+			if(tcbkList.length < 5 || tcbkList == null || tcbkList == '') {
+				Flag = true;
+//				mui('#pullrefresh').pullRefresh().setStopped(true);
+			} else {
+				personalVue._data.articalLists = tcbkList;
+			}
+		}else{	
+			mui.toast(data.msg,{ duration:1000}); 
+		}					
+								
+   	},1);
+	
+    function articleDetails(pid) {
+        location.href = "artical.html?id=" + pid;
+    }
+    
+    function back() {
+    	location.href = "../company/personalList.html";
+    }
+    
+	mui.init({
+	    pullRefresh : {
+		    container:"#refreshContainer",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+		    up : {
+			  	height:50,//可选.默认50.触发上拉加载拖动距离
+			  	auto:false,//可选,默认false.自动上拉加载一次
+			  	contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+			  	contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+			  	callback : pullupRefresh 
+	    	}
+	    }
+	});
+    
+    function pullupRefresh() {
+    	setTimeout(function () {
+         	mui('#refreshContainer').pullRefresh().endPullupToRefresh((Flag)); //参数为true代表没有更多数据了。
+    		loadMore();	
+		}, 1500);
+    }
+    function loadMore() {   
+		var parmas = {uid:uid,page:page,pagesize:5};
+		ajaxRun(url,parmas,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				var tcbkList = data.result.tcbkList;
+				if(tcbkList.length < 5 || tcbkList == null || tcbkList == '') {
+					Flag = true;
+				}
+				personalVue._data.articalLists = personalVue._data.articalLists.concat(tcbkList);
+				page ++;
+			}else{	
+				mui.toast(data.msg,{ duration:1000}); 
+			}					
+									
+	   	},1);
+    	
+    }
+</script>
+</html>

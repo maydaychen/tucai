@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>企业广告</title>
+	    <link rel="stylesheet" href="../../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../../static/css/public.css">
+	    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/commomCss/company.css">
+	</head>
+	<body>
+		<div>
+	    <header class="titleBar">
+	    <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
+        <p class="barTxt">工业涂料</p>
+        <p class="barRight">
+            <a class="br"></a>
+        </p>
+	    </header>
+	    <div style="height:100%;overflow-y:auto;" id="app">
+	        <div class="produceBgImg">
+	            <img :src="[commanyAdv.logo]" />
+	        </div>
+	        <div class="companyInfo">
+	        	<div class="companyName" v-text="commanyAdv.companyname"></div>
+	        	<div class="companyPlace"><i class="iconfont">&#xe605;</i>
+	        		<span v-text="commanyAdv.district_cn"></span>
+	        	</div>
+	        	<div class="companyTel"><i class="iconfont">&#xe609;</i>
+	        		<span v-text="commanyAdv.company_phone"></span>
+	        	</div>
+	        </div>
+	        <div class="mainProduce">主营业务：<span v-text="commanyAdv.trade_cn"></span></div>
+	        <div class="companyIntroduce">
+	        	<div class="introduceInfo">公司介绍</div>
+	        	<div v-html="commanyAdv.contents"></div>
+        	</div>
+	        <div class="advertisementBottom" @click="companyDetail(commanyAdv.company_id)">点击进入企业官网</div>
+
+        </div></div>
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+	<script src="../../static/js/api.js"></script>
+	<script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+	<script>
+		var commanyAdv = '';
+		var ADVvue = new Vue({
+		  el: '#app',
+		  data: {
+		    commanyAdv: commanyAdv
+		  }
+		})
+		var url = host + 'c=Jobs&a=job_detail';
+		var companyid = GetRequest().id;
+		console.log("companyid:" + companyid);
+		var parmas = {id: companyid};
+		console.log(companyid )
+		ajaxRun(url,parmas,true,'GET',function (data) {
+			if(data.statuscode==1){
+				ADVvue._data.commanyAdv = data.result;
+				console.log(ADVvue)
+			} else {
+				rzState=0;
+				console.log(data.msg);
+				mui.toast(data.msg,{ duration:1000});
+			}
+
+	 	});
+
+		function companyDetail(companyId) {
+			location.href = "companyDetail.html?companyId=" + companyId;
+		}
+		function back() {
+			location.href="../../index.html";
+		}
+	</script>
+</html>

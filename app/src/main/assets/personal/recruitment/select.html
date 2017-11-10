@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>选择</title>
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	    <style>
+	    	body{
+	    		background: #F6F7F9;
+	    	}
+	    	.titleBar{
+	    		width: 100%;
+			    position: fixed;
+			    top: 0;
+			    left: 0;					
+			    padding: 0 4%;
+			    display: flex;			 
+			    padding-top: 10px;
+			    height: 55px;
+			   	/*padding-top: 30px;
+			   	height: 70px;*/
+			    overflow: hidden;
+	    	}
+	    	.barLeft{
+	    		color: #41a6ff;
+	    		padding: 10px;
+	    		font-size: 0.6rem;
+	    	}
+	    	.content{
+	    		margin-top: 40px;
+	    		/*margin-top: 70px;*/
+	    	}
+	    	.container{
+	    		width: 100%;
+	    		height: 450px;
+	    		text-align: center;	     		
+	    	}
+	    	.container img{
+	    		width: 70%;
+	    	}
+			.btn{
+				width: 30%;
+				color: #fff;
+				background: #48A9FF;
+				border-radius: 15px;
+				border:none;	
+				padding: 5px 0;
+			}
+			.orImg{
+				padding-top:1rem;
+			}
+	    </style>
+	</head>
+	<body>
+	<header class="titleBar">
+	    <a class="barLeft iconfont" data-href="../../index">&#xe604;</a>
+	</header>
+	<section class="content">
+		<div class="container">
+			<div  id="p-btn" >
+				<img src="../../static/images/personal.jpg" alt="" />
+			<button class="btn">我要找工作</button>
+			</div>
+			<img class="orImg" src="../../static/images/or.jpg" alt="" />
+			<div  id="c-btn" >				
+				<img src="../../static/images/com.jpg" alt="" />
+				<button class="btn">我要招人</button>
+			</div>			
+			
+		</div>
+	</section>	
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+	<script src="../../static/js/config.js"></script>
+	<script src="../../static/js/api.js"></script> 
+	<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$("#p-btn").on("tap",function(){
+			location.href='recruitment.html'  			
+		})
+		$("#c-btn").on("tap",function(){
+			location.href='../../company/recruit/jobShow.html' 
+		})
+	</script>
+</html>

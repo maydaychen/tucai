@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>搜索公司</title>
+	    <link rel="stylesheet" href="../../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../../static/css/public.css">
+	    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/iconfont.css">
+	    <link rel="stylesheet" href="../../static/css/commomCss/company.css">
+	</head>
+	<body>
+	<header class="titleBar">
+	    <a class="barLeft iconfont mui-action-back" href="companyList.html">&#xe604;</a>
+        <input type="text" class="searchCompany" />
+        <p class="barRight">
+            <a class="br"></a>
+        </p>
+	</header>
+	    <div style="height:100%;overflow-y:auto;">
+	        <div style="margin-top:70px;" id="app">
+			    <ul class="mui-table-view" >
+		            <li class="mui-table-view-cell mui-media" v-for="(v,i) in companyLists" @click="companyDetail(v.id)">
+		                <a href="javascript:;">
+		                    <img class="mui-media-object mui-pull-left" :src="[v.thumb]">
+		                    <div class="mui-media-body">
+		                        <div v-text="v.companyname"></div>
+		                        <p class='mui-ellipsis'>
+		                        	<span v-text="v.nature_cn"></span><span class="marginSpan">|</span>
+		                        	<span v-text="v.scale_cn"></span><span class="marginSpan">|</span>
+		                        	<span v-text="v.scale_cn"></span>
+		                        </p>
+		                    </div>
+		                </a>
+		            </li>
+		            
+		            <!--<li class="mui-table-view-cell mui-media">
+		                <a href="javascript:;">
+		                    <img class="mui-media-object mui-pull-left" src="../../static/images/touxiang.jpg">
+		                    <div class="mui-media-body">
+		                        糖果科技
+		                        <p class='mui-ellipsis'>
+		                        	油漆<span class="marginSpan">|</span>
+		                        	面漆
+		                        </p>
+		                    </div>
+		                </a>
+		            </li>-->
+		        </ul>
+	        </div>
+        </div>
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+	<script src="../../static/js/api.js"></script> 
+	<script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+	<script>
+		var companyLists = '';
+		var searchvue = new Vue({
+		  el: '#app',
+		  data: {
+		    companyLists: companyLists
+		  }	
+		})	
+		var url = host + 'c=Serach&a=company_serach';
+		var parmas = {};
+//		mui.toast('加载中...',{ duration:2000}) 
+//		ajaxRun(url,parmas,true,'GET',function (data) {
+//			if (data.statuscode == -1){
+//				location.href="../../personal/register/login.html";
+//			} else {
+//				rzState=0;
+//				console.log(data.msg);	
+//				mui.toast(data.msg,{ duration:1000}); 
+//			}
+//			console.log(data)
+//			console.log(searchvue)
+//			searchvue._data.companyLists = data.statuscode;							
+//	 	});
+		$('.searchCompany').bind('input propertychange', function() {
+			mui.toast('加载中...',{ duration:2000}) 
+            var name = $(".searchCompany").val(); 
+			var parmas = {seraching:name};
+			ajaxRun(url,parmas,true,'GET',function (data) {
+				searchvue._data.companyLists = data.result;
+		 	});
+        });
+        
+	 	
+		function companyDetail(companyId) {
+			location.href = "companyDetail.html?companyId=" + companyId;
+		}
+	</script>
+</html>

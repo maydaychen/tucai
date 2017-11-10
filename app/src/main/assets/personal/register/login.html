@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/registerCss/deliveryRecord.css">
+    <link rel="stylesheet" href="../../static/css/registerCss/login.css">
+	</head>
+	<body>
+				
+    <div class="cd-popup" role="alert">
+        <div class="modelContent" id="app">
+            <div class="modelTop">
+                <div class="modelTitle">登录涂才</div>
+                <!-- <div class="modelClose"><i class="iconfont">&#xe689;</i> </div> -->
+            </div>
+
+            <div class="mui-content-padded" style="margin: 0 20px;">
+                <div class="mui-input-row">
+                    <label class="register-icon"><i class="iconfont">&#xe61c;</i></label>
+                    <input class="register-text" type="number" placeholder="请输入手机号" v-model="telelphone">
+                </div>
+                <div class="mui-input-row">
+                    <label class="register-icon"><i class="iconfont">&#xe63e;</i></label>
+                    <input class="register-text" type="password" placeholder="请输入6~16位密码" v-model="pwd">
+                </div>
+            </div>
+            <div class="modelState">
+                <a class="registerNow" href="register.html">立即注册</a>
+                <a class="forgetPsw" href="forgetPassword.html">忘记密码</a>
+            </div>
+            <div class="loginButton">
+                <div class="blueButton" @click="login(telelphone,pwd)">登录</div>
+            </div>
+            <div class="modelTip">绑定后意味着同意涂才的<span>《用户协议》</span></div>
+            <div class="loginWays">
+                <hr>
+                <span> 你还可以通过以下方式登录</span>
+                <hr>
+            </div>
+            <div class="chooseWays">
+                <div id="login_wechat" style="margin-left:1.8rem;"><img src="../../static/images/wechat.jpg" /></div>
+                <div id="login_qq"><img src="../../static/images/qq.jpg" /></div>
+            </div>
+        </div>
+    </div>
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+    <script src="../../static/js/public.js"></script>
+    <script src="../../static/js/webapp.js"></script>
+	<script src="../../static/js/api.js"></script> 
+	<script src="../../static/js/vue.min.js"></script>
+	<script>
+		var telelphone = '';
+		var pwd = '';
+		var registerVue = new Vue({
+			el: '#app',
+			data: {
+				telelphone: telelphone,
+				pwd: pwd
+			}
+		})
+		
+		function login(telelphone,pwd) {
+			uid(telelphone, pwd);
+		}
+		
+		$(document).ready(function(e){
+		    $(".cd-popup").addClass('is-visible');
+		});
+		$(".modelClose").click(function () {
+		    event.preventDefault();
+		    $(".cd-popup").removeClass('is-visible');
+        });
+        //安卓端未好 先注释掉
+        // $('#login_wechat').on('touchend',login_wechat);
+
+        function login_wechat() {
+            _webapp.authLogin('wechat', function (res) {
+                if (res.statusCode == 0) {
+                    if (typeof res.data != 'object') {
+                        res.data = $.parseJSON(res.data);
+                    }
+                    //以下写返回的微信数据用来ajax登录 
+                }
+            });
+        }
+	</script>
+</html>

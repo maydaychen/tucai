@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>涂才LIVE</title>
+	    <link rel="stylesheet" href="../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../static/css/public.css">
+	    <link rel="stylesheet" href="../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../static/css/iconfont.css">
+	    <link rel="stylesheet" href="../static/css/commomCss/live.css">
+	</head>
+	<body>		   
+	    <header class="titleBar">
+		    <a class="barLeft iconfont mui-action-back" onclick="backPage()">&#xe604;</a>
+	        <p class="barTxt">涂才LIVE</p>
+	        <p class="barRight">
+	            <a class="br"></a>
+	        </p>
+	    </header>
+	    <div style="height:100%;overflow-y:auto;" id="tcbaApp">
+	    	<div class="liveTop">
+	    		<div class="liveNav" v-for="(category,index) in categoryLists" v-bind:class="{'activeTop':index==selected}" @click="selectBtn(index,index + 1)" :id="index + 1">{{category}}</div>
+	    		<!--<div class="liveNav" v-bind:class="{'activeTop':index==selected}" id="live-2">企业</div>
+	    		<div class="liveNav" v-bind:class="{'activeTop':index==selected}" id="live-3">行业</div>-->
+	    	</div>
+	    	<div>
+	    		<div class="live-1">
+	    			<div v-for="(v,i) in vedioLists"><video :src="v.link_url" controls="controls" /></video></div>
+	    			<!--<div><video  src="../static/images/live.png" controls="controls"></video></div>
+	    			<div><video src="../static/images/live.png"></video></div>-->
+	    			
+	    		</div>
+	    	</div>
+    	</div>
+	    
+	</body>
+	<script src="../static/js/jquery.js"></script>
+	<script src="../static/js/flexible.js"></script>
+	<script src="../static/js/mui.min.js"></script>
+	<script src="../static/js/public.js"></script>
+	<script src="../static/js/api.js"></script> 
+	<script src="../static/js/vue.min.js"></script>
+	<script>	
+		var categoryLists = '';
+		var vedioLists = '';
+		var vediovue = new Vue({
+		  el: '#tcbaApp',
+		  data: {
+		    categoryLists: ["推荐","企业","行业"],
+		    vedioLists: vedioLists,
+		    selected: 0
+		  },
+		  methods: {
+		  	selectBtn: function(index,typeId){
+		  		this.selected = index;
+		  		console.log("typeId:" + typeId)
+		  		getTcbkList(typeId);
+		  	}
+		  }
+		})	
+		var parmas = {typeId: 1};
+		var categoryListUrl = host + 'c=video&a=getvideoList';
+		ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				vediovue._data.vedioLists = data.result;
+				console.log(vediovue)
+				var typeId = 1;
+			}else{
+				mui.toast(data.msg,{ duration:1000});  
+			}					
+									
+	 	});
+	 	
+	 	function getTcbkList(typeId) {
+	 		console.log(11111111)
+	 		parmas = {type_id: typeId};
+	 		ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
+				if(data.statuscode==1){
+					vediovue._data.vedioLists = data.result;
+				}else{	
+					mui.toast(data.msg,{ duration:1000}); 
+				}					
+										
+		 	});
+	 	}
+		
+		$(".liveNav").click(function() {
+			var name = $(this).attr("id");
+			console.log(name)
+		    $(this).siblings().removeClass("activeTop");
+		    $(this).addClass("activeTop");			
+		    $("." + name).siblings().css("display", "none");
+		    $("." + name).css("display", "block");
+		})
+	</script>
+</html>

@@ -1,0 +1,378 @@
+/***************投递、收藏、聊天通知页面公用************************/
+.mBody{
+    width: 100%;
+    float: left;
+    height: 100%;
+    overflow-y:auto ;
+}
+/*************修改MUI ：列表项--固定样式***********************/
+.mui-media-body p span{
+    color:#41a6ff;
+}
+.mui-table-view-cell:after{
+    display:none;
+}
+.mui-table-view:after{
+    display: none;
+}
+.mui-table-view:before{
+    display:none;
+}
+.mui-table-view-cell{
+    height:2.5rem;
+    padding-right:0;
+}
+.mui-table-view .mui-table-view-cell>a{
+    height:2.5rem;
+    /*margin-left:-15px;*/
+    padding-right:20px;
+}
+.mui-table-view-cell>span{
+    position:absolute;
+    display:block;
+    height:.5rem;
+    line-height: .5rem;
+    right:.05rem;
+    top:0.3rem;
+    color:#8f8f94;
+    z-index: 100;
+    text-align: center;
+}
+.mui-slider-group .mui-table-view .mui-table-view-cell .mui-media-object{
+    width:1.2rem;
+    height:1.2rem;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-radius: 50%;
+    margin-top:.4rem;
+}
+.mui-table-view .mui-table-view-cell .square{
+    width:1rem;
+    height:1rem;
+    margin-top:.5rem;
+}
+.mui-table-view .mui-table-view-cell .mui-media-body{
+    /*height:2rem;*/
+    padding-top:.1rem;
+    font-size: .4rem;
+    padding-right:20px;
+    position:absolute;
+    top:50%;
+    margin-top:-1rem;
+    left:2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+@media screen and (min-width:413px){
+    .mui-table-view .mui-table-view-cell .mui-media-body{
+        padding-top:.3rem;
+    }
+}
+.mui-table-view .mui-table-view-cell .mui-media-body p{
+    line-height: 1rem;
+    box-sizing: border-box;
+    width:6rem;
+}
+.td_looked .mui-table-view .mui-table-view-cell .mui-media-body p{
+    width:7rem;
+}
+.msg_second .mui-table-view .mui-table-view-cell .mui-media-body p{
+    line-height: .6rem;
+}
+
+.all_list .mui-table-view .mui-table-view-cell .mui-media-body p{
+    line-height: .6rem;
+}
+.media_list .mui-table-view .mui-table-view-cell .mui-media-body{
+    padding-top:0;
+    line-height: 2rem;
+    font-size:.5rem;
+}
+@media screen and (max-width: 321px){
+    .all_list .mui-table-view .mui-table-view-cell .mui-media-body{
+        top:50%;
+    }
+    .msg_second .mui-table-view .mui-table-view-cell .mui-media-body{
+        top:60%;
+    }
+}
+/********中部导航***********/
+.mid_bar{
+    width:100%;
+    height:1rem;
+    /*padding-top:1.2rem;*/
+}
+.mid_bar ul{
+    display:flex;
+}
+.mid_bar ul li span{
+    display: block;
+    width:100%;
+    height:1rem;
+    text-align: center;
+    font-size: .35rem;
+    line-height: 1rem;
+    color:#8f8f94;
+}
+.mid_bar ul li span.active{
+    color:#41A6ff;
+    border-bottom: 2px solid #41a6ff;
+}
+/*******************主体内容样式**********************/
+.td_container{
+    min-height:500px;
+    padding-top:2.5rem;
+}
+/**********没有收藏或者没有投递----样式*****************/
+
+/**************收藏界面**********************/
+
+/********中部导航：3格***********/
+.mid_bar ul li.total3{
+    width:33.3%;
+    height:1rem;
+    padding:0 .5rem;
+}
+/*******子页面：资讯***************/
+.mui-table-view .mui-table-view-cell span.mui-icon{
+    display:inline-block;
+    width:.4rem;
+    height:.4rem;
+    position:absolute;
+    top:50%;
+    margin-top:-.2rem;
+    right:.5rem;
+    color:#8f8f94;
+}
+/***********子页面：公司*******************/
+.td_view li .jinfo{
+    margin-top:0;
+    border:0;
+}
+/************子页面：职位***************************/
+.jobs{
+    margin-top:0;
+}
+.jobs ul{
+    margin-top:0;
+}
+/****************投递界面****************/
+/****************投递页面 ：全部 蓝色TIPS ************************/
+ .mui-table-view-cell>i {
+    display: block;
+    width: 1.8rem;
+    height: .8rem;
+    line-height: .6rem;
+    background: url(../images/all_bg.png) no-repeat;
+    background-size: 100%;
+    font-style: normal;
+    color: #41a6ff;
+    text-align: center;
+    /* margin-top: -.4rem; */
+    position: absolute;
+    right: 0;
+    bottom: .2rem;
+    z-index: 100;
+}
+/********中部导航:4格***********/
+.mid_bar ul li.total4{
+    width:25%;
+    height:1rem;
+    padding:0 .4rem;
+}
+
+/*******************聊天通知页面******************************/
+/**********子页面：通知*******************/
+.msg_container{
+    background:#fff;
+    /*padding-top: .25rem;*/
+}
+.msg_container ul{
+    display:flex;
+}
+.msg_container ul li{
+    width:33.3%;
+}
+.msg_container ul li span{
+    display:block;
+    width:60%;
+    margin:0 auto;
+    text-align: center;
+    font-size: .4rem;
+    padding:.2rem 0;
+    height:40px;
+    color:#8f8f94;
+}
+.msg_container ul li span.active{
+    color:#41A6FF;
+    border-bottom: 2px  solid #41A6FF;
+}
+/***************顶部：聊天、通知按钮**************************/
+.titleBar span{
+    padding:.05rem .15rem;
+    width:1.6rem;
+    border-radius:0;
+    text-align: center;
+    border:1px solid #fff;
+}
+.titleBar .span1{
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color:#41a6ff;
+    color:#fff;
+    border-right:0;
+}
+.titleBar .span2{
+    border-top-right-radius:15px;
+    border-bottom-right-radius: 15px;
+    background-color:#41a6ff;
+    color:#fff;
+    border-left:0;
+}
+.titleBar span.active{
+    background-color:#fff;
+    color:#41a6ff;
+}
+
+/***********右上角：时间提示********************/
+.mui-table-view .mui-table-view-cell i.chat_time{
+    display: inline-block;
+    height:.6rem;
+    text-align: right;
+    position:absolute;
+    top:.2rem;
+    right:.3rem;
+    font-style: normal;
+    color:#8f8f94;
+    z-index: 100;
+}
+/*********底部导航*************/
+footer{
+    width:100%;
+    height:50px;
+    position:fixed;
+    bottom:0;
+    z-index: 100;
+    background:#F6F6F6;
+    border-top:1px solid #E3E3E3;
+}
+footer ul{
+    display:flex;
+}
+footer ul li{
+    width:25%;
+}
+footer ul li a{
+    display:block;
+    width:100%;
+    height:100%;
+    text-align: center;
+    padding-top:.15rem;
+}
+footer ul li a .iconfont{
+    font-size: .5rem;
+    color:#8f8f94;
+}
+footer ul li a.active .iconfont{
+    color:#41a6ff;
+}
+footer ul li a.active p{
+    color:#41a6ff;
+}
+
+/***************资讯 页面***********************/
+/*********************************/
+
+
+
+/**********职位详情页面***************/
+/********招聘要求前：图标***************/
+.jobDetail .jobs i{
+    color:#41a6ff;
+    font-size: .4rem;
+}
+.jobDetail .jobs .jobUl{
+    margin-top:0;
+}
+.jobDetail .jobs .jobUl .jtxt{
+    display:block;
+}
+.jobDetail .jobs .jobUl .jtxt p{
+    margin-top:.5rem;
+}
+.jobDetail .jobs .jobUl .jtxt:first-child span{
+    font-weight: bold;
+    font-size: .45rem;
+}
+.jobDetail .jobs .jobUl .jtxt:first-child i{
+    color: #F14E41;
+}
+/*********右：更多右三角图标*******************/
+.jobs .jobUl .jtxt>p>span{
+    font-size: .4rem;
+    display:inline-block;
+    width:2rem;
+}
+.jinfo{
+    position: relative;
+}
+.jinfo>span{
+    position:absolute;
+    right:0;
+    bottom:.6rem;
+    color:#8f8f94;
+}
+/*************招聘详细要求*********************/
+.jDetail{
+    clear:both;
+    padding-top:.5rem;
+}
+.jDetail .jDetInfo{
+    margin-bottom:1rem;
+}
+.jDetail .jDetInfo a span{
+    position:absolute;
+    right:.5rem;
+    bottom:6.3rem;
+    color:#8f8f94;
+}
+.jDetail .jDetInfo p:first-child{
+    font-size: .45rem;
+    color:#333;
+}
+.jDetail .jDetInfo p{
+    line-height: 1rem;
+}
+.jDetail .jDetInfo .flex{
+    display: flex;
+}
+.jDetail .jDetInfo .imgInfo{
+    width:2rem;
+    text-align: center;
+    padding:.4rem .4rem;
+}
+.jDetail .jDetInfo .imgInfo img{
+    width:1.2rem;
+    height:1.2rem;
+    border-radius: 50%;
+}
+/***********底部：简历、聊天按钮*****************/
+.buttom_btn_list{
+    width:100%;
+    height:1.6rem;
+    text-align: center;
+    background:#fff;
+    bottom:0;
+    padding-top:.2rem;
+    position:fixed;
+    z-index: 101;
+}
+.buttom_btn_list .mui-btn{
+    width:4rem;
+    height:1.2rem;
+}
+
+
+

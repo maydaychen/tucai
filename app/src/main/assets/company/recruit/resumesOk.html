@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>简历</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+			
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">可以面试</p>
+			<p class="barRight">
+				<a class="br" id="upInfo">提交</a>
+			</p>
+		</header>
+		<div class="mBody muiTop">
+			<!--这里放置真实显示的DOM内容-->
+			<a class="cow" id="areaPicker">
+				<h1>公司地点</h1>
+				<span>
+					<p id="areaVal"></p>
+				</span>
+			</a>
+			<div class="cowLine"></div>
+			<div class="cow mgt" id="tels">
+				<h1>联系电话</h1>
+				<span>
+					<p id="phone"></p>
+				</span>
+			</div>	
+			<a class="cow mgt btn" id="timePicker"
+			   data-options='{"type":"hour","customData":{"h":[
+			   {"text":"8:00","value":"8:00"},
+			   {"text":"9:00","value":"9:00"},
+			   {"text":"10:00","value":"10:00"},
+			   {"text":"11:00","value":"11:00"},
+			   {"text":"12:00","value":"12:00"},
+			   {"text":"13:00","value":"13:00"},
+			   {"text":"14:00","value":"14:00"},
+			   {"text":"15:00","value":"15:00"},
+			   {"text":"16:00","value":"16:00"},
+			   {"text":"17:00","value":"17:00"},
+			   {"text":"18:00","value":"18:00"},
+			   {"text":"19:00","value":"19:00"},
+			   {"text":"20:00","value":"20:00"},
+			   {"text":"21:00","value":"21:00"}]},"labels":["年", "月", "日", "时段", "分"]}'>
+				<h1>面试时间</h1>
+				<span>
+					<p id="timeVal">请选择</p>
+					<i class="iconfont">&#xe649;</i>
+				</span>
+			</a>	
+		</div>
+				
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/mui.picker.min.js"></script>
+		<link href="../../static/css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../static/css/mui.poppicker.css" rel="stylesheet" />	
+		<link href="../../static/css/modeEle.css" rel="stylesheet" />	
+		<script>
+	        var url=new GetRequest();
+	        var pageid=url.id;	
+			$(function(){
+				FastClick.attach(document.body);
+				
+				(function($, doc) {
+					$.init();
+					$.ready(function() {
+						var _getParam = function(obj, param) {
+							return obj[param] || '';
+						};					
+						var timeBtn = doc.getElementById('timePicker');
+						var timeHtml = doc.getElementById('timeVal');
+						timeBtn.addEventListener('tap', function() {
+							var optionsJson = this.getAttribute('data-options') || '{}';
+							var options = JSON.parse(optionsJson);
+							var id = this.getAttribute('id');
+							var picker = new $.DtPicker(options);
+							picker.show(function(rs) {
+								timeHtml.innerText = rs.text;
+								picker.dispose();
+							});
+						}, false);		
+						
+					});
+				})(mui, document);
+				
+				var parmas={id:userid};
+				ajaxRun(port.companyInfo,parmas,true,'POST',function (data) {
+					console.log('companyInfo:',data);
+					if(data.statuscode==1){
+						$('#areaVal').html(data.result.company_profile.address);
+						$('#phone').html(data.result.company_profile.telephone);
+						var dt=getNowFormatDate()+'10:00';
+						$('#timeVal').html(dt)
+					}else{
+						
+					}
+				});
+				
+				
+		        $('#tels').click(function(){	        	
+		            $.malert({  
+		                text: "输入联系电话",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(!phoneReg.test(str)){
+		                		mui.toast('手机号格式不正确！');
+		                		return;
+		                	}
+		                    $('#phone').html(str);	                  
+		                }  
+		            })  
+		        });  	
+
+		        $('#areaPicker').click(function(){	        	
+		            $.malert({  
+		                text: "输入面试地点",  
+		                cancle: function () {  
+		                    console.log('关闭了')  
+		                },  
+		                ok: function () {  
+		                	var str=$.trim($('#mInput').val());
+		                	if(str==""){
+		                		mui.toast('请输入面试地点！');
+		                		return;
+		                	}
+		                    $('#areaVal').html(str);		                  
+		                }  
+		            })  
+		        });  
+				
+				$('#upInfo').click(function(){
+					var area=$.trim($('#areaVal').html());
+					var phone=$.trim($('#phone').html());
+					var time=$.trim($('#timeVal').html());
+					
+					var parmas={resumeid:pageid,type:1,companyname:area,mobile:phone,time:time};
+					ajaxRun(port.isFace,parmas,true,'POST',function (data) {
+						console.log('resummeok:',data);
+						if(data.statuscode==1){
+							mui.toast('已提交！');
+						}else{
+							mui.toast('提交失败！');
+						}
+					});					
+					
+				});
+				
+			});
+
+			function getNowFormatDate() {
+			    var date = new Date();
+			    var seperator1 = "-";
+			    var seperator2 = ":";
+			    var month = date.getMonth() + 1;
+			    var strDate = date.getDate();
+			    if (month >= 1 && month <= 9) {
+			        month = "0" + month;
+			    }
+			    if (strDate >= 0 && strDate <= 9) {
+			        strDate = "0" + strDate;
+			    }
+			    return currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+			            + " ";
+			}
+
+		</script>
+</html>

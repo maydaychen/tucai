@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>简历详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/center.css">
+    <style>
+    	.dian{
+    		padding: 0 4px;
+    	}
+    </style>
+</head>
+
+<body style="background: #f5f5f5;">
+<div  id="app">
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">简历详情</p>
+    <p class="barRight br" @click="resumeCollect(result5.uid,state)">
+    	<i class="iconfont" >&#xe606;</i>
+    </p>
+</header>
+	<ul class="resume-con public-padding" style="overflow-y:scroll;padding-bottom:86px;"  >
+        <li class="rec mgt">
+            <div class="recTop" >
+                <img :src="[result6.thumb||'../../static/images/aboutTc.gif']" alt="">
+                <div class="recTopName">
+                    <p>
+                    	<span v-text="result6.realname"></span>
+                    	<i class="iconfont" id="male">&#xe629;</i>
+                    	<i class="iconfont" style="color: #fff;background: #fb9591;border-radius: 50%;" id="female">&#xe6d7;</i>                   	
+                    </p>
+                    <p v-text="result6.introduction"></p>
+                </div>
+            </div>
+            <div class="recCon">
+                <i class="iconfont">&#xe625;</i>
+                <!--<span>6K-8K</span>-->
+                <span v-text="result4.salary"></span>
+                <i class="iconfont" style="padding-left: 5%;">&#xe61d;</i>
+                <span v-text="result6.experience_cn"></span>
+                <i class="iconfont" style="padding-left: 5%;">&#xe69e;</i>
+                <span v-text="result3.education_cn"></span>
+            </div>
+        </li>
+        <li class="rec mgt">
+            <div class="recTop">
+                <i class="iconfont">&#xe8a0;</i>
+                <span>求职期望</span>
+            </div>
+            <div class="recCon">
+                <h1 v-text="result4.jobname"></h1>
+                <p>期望城市：<span v-text="result4.city"></span></p>
+                <p>期望薪资：<span v-text="result4.salary"></span></p>
+            </div>
+        </li>
+        <li class="rec mgt">
+            <div class="recTop">
+                <i class="iconfont">&#xe69e;</i>
+                <span>工作经历</span>
+            </div>
+            <div class="recCon" v-for="result1 in result1">
+                <h2>
+                	<span v-text="result1.companyname"></span>
+                	<p style="float:right">
+                		<span v-text="result1.starttime"></span>-<span v-text="result1.endtime"></span> 
+                	</p>
+                	
+                </h2>
+                <p v-text="result1.achievements"></p>
+            </div>
+            <div class="cowLine"></div>  
+        </li>
+        <li class="rec mgt">
+            <div class="recTop">
+                <i class="iconfont">&#xe69e;</i>
+                <span>项目经历</span>
+            </div>
+            <div class="recCon" v-for="result2 in result2">
+                <h2>
+                	项目名称：<span v-text="result2.proname"></span>
+                	<p style="float:right"><span v-text="result2.starttime"></span>-<span v-text="result2.endtime"></span></p> 
+                </h2>
+                <h2>项目职责：<span v-text="result2.produty"></span></h2>
+                <p v-text="result2.produty"></p>
+            </div>
+            <div class="cowLine"></div>
+        </li>
+        <li class="rec mgt">
+            <div class="recTop">
+                <i class="iconfont">&#xe69e;</i>
+                <span>教育经历</span>
+            </div>
+            <div class="recCon" v-for="result3 in result3">
+                <h2>
+                	<span v-text="result3.school"></span>
+                	<p style="float:right"><span v-text="result3.endyear"></span>年毕业</p> 
+                </h2>
+                <p><span v-text="result3.education_cn"></span><span class="dian">·</span><span v-text="result3.speciality"></span></p>
+            </div>
+        </li>
+        <li class="rec mgt">
+            <div class="recTop">
+                <i class="iconfont">&#xe61b;</i>
+                <span>技能描述</span>
+            </div>
+            <div class="recCon">
+                <p v-text="result5.skill"></p>
+            </div>
+        </li>
+	</ul>
+<div class="mui-button-row btn-chat">
+    <button type="button" class="mui-btn  btn-confirm" @click="chat(result5.id)">立即沟通</button>
+</div>
+</div>
+<script src="../../static/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>-->
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>-->
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/config.js"></script>
+
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+    });
+
+    $(function(){	
+        loadInfo();
+    });
+    var result1 = '';
+    var result2 = '';
+    var result3 = '';
+    var result4 = '';
+    var result5 = '';
+    var result6 = '';
+    var state = '';
+    var appvue=new Vue({
+		  el: '#app',
+		  data:{
+		    result1:result1,
+		    result2:result2,
+		    result3:result3,
+		    result4:result4,
+		    result5:result5,
+		    result6:result6,
+		    state: state
+		  }
+		});
+	var collect = '';  
+    var id=GetRequest().id;
+	console.log(id);
+    function loadInfo(){	 
+	 	var params={id:id};
+	 	var url=host+"c=company&a=resumeInfo";
+	 	ajaxRun(url,params,true,'GET',function(data){
+			console.log(data);
+			appvue._data.result1= data.result.result1;
+			appvue._data.result2= data.result.result2;
+			appvue._data.result3= data.result.result3;
+			appvue._data.result4= data.result.result4;
+			appvue._data.result5= data.result.result5;
+			appvue._data.result6= data.result.result6;
+			appvue._data.state= data.result.collect;
+			if(data.statuscode==1){
+				console.log(data.msg); 				
+				var sex=data.result.result6.sex;
+				console.log(sex);
+				if(sex==1){
+					$("#male").show();
+					$("#female").hide();
+				}else if(sex==2){
+					$("#male").hide();
+					$("#female").show();
+				}else{
+					$("#male").hide();
+					$("#female").hide();
+				}
+				if(appvue._data.state==1){
+					$('.barRight .iconfont').html('&#xe71a;');
+				}else{
+					$('.barRight .iconfont').html('&#xe606;');
+				}
+			}else{
+				console.log(data.msg); 				
+			}
+		})   	
+    }
+    
+    
+    
+    
+    function resumeCollect(resumeId,collectState){
+		var method = '';
+		console.log(collectState)
+		if(collectState != 1) {
+			collectState = 1;
+			method = "add";
+			$('.barRight .iconfont').html('&#xe71a;');
+		} else {
+			collectState = 0;
+			method = 'canlce';
+			$('.barRight .iconfont').html('&#xe606;');
+		}
+		console.log(method)
+		var url = host + 'c=company&a=favoritesresume';
+		var parmas = {
+			resumeid: resumeId,
+			type: method
+		}
+		ajaxRun(url,parmas,true,'GET',function (data) {
+			if(data.statuscode==1){
+				mui.toast(data.msg);
+	        	appvue._data.state = collectState;
+			} else {
+				mui.toast(data.msg,{ duration:1000}); 
+			}					
+	 	});		
+   }				
+
+    /*******页面跳转********/
+   function chat(id){
+   		location.href ='../../commom/chatMsg/chatPersonal.html?touid=' + id;
+   }
+   $(".titleBar").on("tap",".barLeft",function(){
+   		location.href ='../../company/recruit/jobShow.html'
+	})
+    
+</script>
+</body>
+</html>

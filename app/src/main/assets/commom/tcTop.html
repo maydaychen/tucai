@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>		
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	    <title>涂才头条</title>
+	    <link rel="stylesheet" href="../static/css/mui.min.css">
+	    <link rel="stylesheet" href="../static/css/public.css">
+	    <link rel="stylesheet" href="../static/fonts/iconfont.css">
+	    <link rel="stylesheet" href="../static/css/iconfont.css">
+	    <link rel="stylesheet" href="../static/css/commomCss/tcTop.css">
+		<link rel="stylesheet" href="../static/css/swiper-3.3.1.min.css">
+		<style>
+			.swiper-container img{
+				height:120px;
+				width:100%;
+			}
+			.swiper-container .swiper-pagination-bullet{
+				width:6px;
+				height:6px;
+				background:#EFEFF4;
+			}
+			.swiper-container .swiper-pagination-bullet-active{
+				background:#fff;
+			}
+		</style>
+	</head>
+	<body>		
+	    <header class="titleBar">
+		    <a class="barLeft iconfont mui-action-back" onclick="backPage()">&#xe604;</a>
+	        <p class="barTxt">涂才头条</p>
+	        <p class="barRight">
+	            <a class="br"></a>
+	        </p>
+	    </header>
+	    <div style="height:100%;overflow-y:auto;" id="app">
+	    	<div class="topBgImg" style="width: 100%;">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="item in toplineDetails">
+							<a><img :src="item.thumb"/></a>
+						</div>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+
+			<div class="topContent">
+				<div class="topList" v-for="toplineDetail in toplineDetails" @click="articalTop(toplineDetail.id)">
+					<img class="listImg" :src="[toplineDetail.thumb]">
+                    <div class="listContent">
+                        <div v-text="toplineDetail.title"></div>
+                    </div>
+				</div>
+            </div>
+	    </div>
+	</body>
+	<script src="../static/js/jquery.js"></script>
+	<script src="../static/js/flexible.js"></script>
+	<script src="../static/js/mui.min.js"></script>
+	<script src="../static/js/public.js"></script>
+	<script src="../static/js/api.js"></script>  
+	<script src="../static/js/vue.min.js"></script>
+	<script src="../static/js/swiper-3.3.1.min.js"></script>
+	<script>
+		var url = host + 'c=Topline&a=topline_list';
+		var parmas = {};
+		ajaxRun(url,parmas,true,'GET',function (data) {
+		    console.log(data)
+			var toplineDetail = data.result;
+			new Vue({
+			  el: '#app',
+			  data: {
+			    toplineDetails: toplineDetail
+			  }
+			})
+	 	});			
+		
+		function articalTop(tid) {
+			var tid = tid;
+			location.href="wiki/articalTop.html?tid=" + tid;
+		}
+		
+	    var gallery = mui('.mui-slider');
+	        gallery.slider({
+	  	    interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+	    });
+
+        setTimeout(function(){
+            var swiper = new Swiper('.swiper-container', {
+                pagination: '.swiper-pagination',
+                paginationClickable: true,
+                autoplay : 2000,
+                speed: 800,
+                autoplayDisableOnInteraction: false,//不禁用autoplay
+                loop:true,
+                observer:true,//修改swiper自己或子元素时，自动初始化swiper
+                observeParents:true//修改swiper的父元素时，自动初始化swiper
+            });
+        },500)
+	</script>
+</html>

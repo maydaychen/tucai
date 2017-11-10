@@ -1,0 +1,31 @@
+.liveTop {
+    margin-top: 70px;
+	height: 40px;
+	width: 100%;
+	box-shadow: 0 2px 4px #b3d6f5;
+    background-color: #fff;   
+    display: flex;
+}
+.liveTop>div {
+    flex: 1;
+	margin: 0 30px;
+	font-size: .45rem;
+	color: #666;
+	text-align: center;
+	line-height: 40px;
+}
+.activeTop {
+	border-bottom: solid 2px #41a6ff;
+	color: #41a6ff !important;
+	box-sizing: border-box;
+}
+.live-1>div,.live-2>div,.live-3>div {
+	margin-top: 10px;
+    background-color: #fff; 
+    height: 120px;
+    width: 100%;
+}
+.live-1>div>video {
+	height: 120px;
+    width: 100%;
+}

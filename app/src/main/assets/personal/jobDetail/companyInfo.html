@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>公司详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <!--<link rel="stylesheet" href="../../static/css/deliver.css">-->
+    <style type="text/css">
+        .mui-scroll-wrapper{
+            margin-top: 45px;
+        }
+        .clearlf{clear:left;}
+        .clearrt{clear:right;}
+        .clearall{clear:both}
+        .rt{float:right;}
+        .lf{float:left;}
+        /**********************/
+        .widther{
+            padding:0 .2rem;
+        }
+        .jobUl{
+            margin-top:0;
+        }
+        .jinfo{
+            border:0;
+            margin-top:0;
+        }
+        .jinfo h1{font-size: .4rem;}
+        .jinfo i{
+            background:url(../../static/images/renzheng.png) no-repeat;
+            background-size: 100%;
+            display:block;
+            width:1.5rem;
+            height:.5rem;
+            position: absolute;
+            top:0.6rem;
+            right:.8rem;
+            text-align: center;
+            line-height: .4rem;
+        }
+        /************/
+        .infoContainer{
+            background: #fff;
+            float:left;
+            width:100%;
+        }
+        /************/
+        .jobDetail{
+            border-bottom: 1px solid #ededed;
+            margin-bottom:0;
+        }
+        /******************/
+        .chose_list{
+            width:100%;
+            height:1.2rem;
+            float:left;
+            background:#fff;
+            margin-top:.4rem;
+            border-top:1px solid #ededed;
+        }
+        .chose_list ul{
+            width:100%;
+            height:1.2rem;
+            display:flex;
+            background:#fff;
+            border-bottom:1px solid #EBEBEB;
+        }
+        .chose_list ul li{
+            width:50%;
+        }
+        .chose_list ul li span{
+            display:block;
+            width:100%;
+            height:100%;
+            text-align: center;
+            line-height: 1.2rem;
+            font-size: .4rem;
+            color:#3B3B3B;
+        }
+        .chose_list ul li span.active{
+            border-bottom: 2px solid #41a6ff;
+            color:#41a6ff;
+            box-sizing: border-box;
+        }
+        /*******************/
+        .jobLi{
+            border-bottom:0;
+        }
+        /**********************/
+        .comInfo{
+            float:left;
+            width:100%;
+            padding:.5rem;
+            border-top:1px solid #ededed;
+            border-bottom: 1px solid #ededed;
+            margin-top:.5rem;
+        }
+        .infoContainer .comInfo1{
+            margin-top:0;
+            border-top: 0;
+        }
+        .comInfo h2{
+            font-size: .45rem;
+            border-bottom: 1px solid #EDEDED;
+            margin-bottom:.3rem;
+            padding-bottom: .3rem;
+        }
+        .comInfo p{
+            font-size:.3rem;
+            color:#949494;
+        }
+        /*****************/
+        .jobInfoContainer{
+            float:left;
+            width:100%;
+            /*margin-top:1px;*/
+            /*margin-top:.4rem;*/
+        }
+        .jobInfoContainer ul{
+            border-top:1px solid #E8E8E8;
+            border-bottom: 1px solid #E8E8E8;
+        }
+        .jobInfoContainer li{
+            height:2.7rem;
+            padding:.35rem .4rem;
+        }
+        .jobInfoContainer li a{
+            display: block;
+            height:2rem;
+            padding:.2rem .3rem;
+            /*border-bottom: 1px solid #E7E7E7;*/
+        }
+        .jobInfoContainer li a h2{
+            font-size: .5rem;
+            padding:.2rem 0;
+            color:#545454;
+        }
+        .jobInfoContainer li a h2 span{
+            color:#8E8E8E;
+        }
+        .jobInfoContainer li a p{
+            line-height: .8rem;
+            font-size: .4rem;
+        }
+        .jobInfoContainer li a p i{
+            font-style: normal;
+            color:#ED7E6E;
+        }
+        /*******************/
+        .titleBar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background: #41a6ff;
+            box-sizing: border-box;
+            padding: 0 4%;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            /*padding-top: 30px;*/
+            height: 45px;
+            overflow: hidden;
+        }
+        .barTxt {
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            color: #fff;
+            font-size: .4rem;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            box-sizing: border-box;
+            padding-bottom: 12px;
+        }
+        .barLeft {
+            box-sizing: border-box;
+            padding: .3rem 0;
+            color: #fff;
+            font-size: .6rem;
+            margin-left: -.5%;
+            width: 30px;
+        }
+        .barRight {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            align-items: center;
+            margin-right: 1%;
+        }
+        .barRight .br {
+            box-sizing: border-box;
+            padding: .2rem 0;
+            color: #fff;
+            font-size: .4rem;
+        }
+        .barRight .iconfont {
+            font-size: .5rem;
+        }
+        .jinfo p{
+            line-height:1rem;
+        }
+    </style>
+</head>
+
+<body>
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">公司详情</p>
+    <p class="barRight">
+        <a class="br">
+            <i class="iconfont" data-state="">&#xe606;</i>
+        </a>
+    </p>
+
+</header>
+<div class="mui-scroll-wrapper">
+    <div class="mui-scroll">
+            <div class="infoContainer" >
+            <div class="jobDetail">
+                <div id="app">
+                    <div class="jobs">
+                        <ul class="jobUl">
+                            <li class="jobLi">
+                                <a class="ja">
+                                    <div class="jinfo">
+                                        <img :src="[result.logo]">
+                                        <h1 class="mui-ellipsis" style="width:5rem" v-text="result.companyname"></h1><i></i>
+                                        <p><span v-text="result.trade_cn"></span><span class="widther">|</span><span v-text="result.scale_cn"></span><span class="widther">|</span><span v-text="result.finance"></span></p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="chose_list">
+                        <ul>
+                            <li><span v-bind:class="show" v-on:click="chose($event,1)">公司主页</span></li>
+                            <li><span v-bind:class="hide" v-on:click="chose($event,2)">招聘职位</span></li>
+                        </ul>
+                    </div>
+                    <div class="hideShow">
+                        <div class="comInfoContainer msg" id="page" v-show="isShow">
+                            <div class="comInfo comInfo1">
+                                <div>
+                                    <h2>公司介绍</h2>
+                                    <p v-text="result.contents"></p>
+                                </div>
+                            </div>
+                            <div class="comInfo">
+                                <div>
+                                    <h2>公司地址</h2>
+                                    <p v-text="result.address"></p>
+                                </div>
+                            </div>
+                            <div class="comInfo">
+                                <div>
+                                    <h2>面试评价 (1)</h2>
+                                    <div class="jobs">
+                                        <ul class="jobUl">
+                                            <li class="jobLi">
+                                                <a class="ja">
+                                                    <div class="jinfo">
+                                                        <img src="../../static/images/yuantiao.jpg"/>
+                                                        <h1>欧阳云露</h1>
+                                                        <p>已面试：UI设计师</p>
+                                                    </div>
+                                                </a>
+                                                <div>面试过程：公司不错，很锻炼人，很期待加入！</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jobInfoContainer msg" id="job" style="display: none" v-show="isHide">
+                            <ul>
+                                <li>
+                                    <a data-href="jobDetail.html">
+                                        <h2>UI设计师<span class="rt">09月11日</span></h2>
+                                        <p>无锡 | 1-3年 | 本科<i class="rt">3k-5k</i></p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-href="jobDetail.html">
+                                        <h2>UI设计师<span class="rt">09月11日</span></h2>
+                                        <p>无锡 | 1-3年 | 本科<i class="rt">3k-5k</i></p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-href="jobDetail.html">
+                                        <h2>UI设计师<span class="rt">09月11日</span></h2>
+                                        <p>无锡 | 1-3年 | 本科<i class="rt">3k-5k</i></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/hrefJs/href.js"></script>
+<script src="../../static/js/vue.min.js"></script>
+<script src="../../static/js/api.js"></script>
+<script>
+    $(function(){
+        $('.titleBar .barLeft').click(function(){
+            // history.back() 或 history.go(-1)
+            history.go(-1);
+        })
+    });
+    mui.init({
+        statusBarBackground: '#41a6ff',
+        swipeBack:true //启用右滑关闭功能
+    });
+
+    //获取传入的jobDetailId
+    var _companyid = GetRequest().res_id;
+    console.log(GetRequest().res_id);
+
+    //点击收藏和取消收藏
+
+    $('.barRight').on('tap','i',function(){
+        var state=$(this).attr('data-state');
+        console.log(state);
+        if (state == 0){
+            var favorite_company_add = host + 'c=favorites&a=collection_company_add';
+            var params1 = {companyid:_companyid };
+            ajaxRun(favorite_company_add, params1, true, 'POST', function (data) {
+                console.log(data);
+                if (data.statuscode == 1) {
+                    mui.toast('收藏成功');
+                    $('.barRight .iconfont').html('&#xe71a;');
+                    getData();
+                } else {
+                    mui.toast('网络问题，请稍后重试！');
+                }
+            });
+        }else{
+            var favorite_company_del = host + 'c=favorites&a=favorite_personal_company_delete';
+            var params2 = {company_id: _companyid};
+            ajaxRun(favorite_company_del, params2, true, 'POST', function (data) {
+                console.log(data);
+                if(data.statuscode==1){
+                    mui.toast('取消收藏成功');
+                    $('.barRight .iconfont').html('&#xe606;');
+                    getData();
+                }
+            });
+        }
+    });
+    //渲染收藏标记后重新获取数据
+    function getData(){
+        var parmas={companyid:_companyid };
+        var company_detail=host+'c=showCom&a=show_company_detail';
+        ajaxRun(company_detail,parmas,true,'POST',function (data) {
+            console.log(data);
+            var state=data.result.collect;
+            if(data.statuscode==1){
+                //重新渲染
+                star(state);
+            }else{
+                mui.toast('网络错误!');
+            }
+        })
+    }
+    //渲染收藏标记
+    function star(state){
+        console.log(state);
+        if(state==1){
+            $('.barRight .iconfont').html('&#xe71a;').attr('data-state','1');
+        }else{
+            $('.barRight .iconfont').html('&#xe606;').attr('data-state','0');
+        }
+    }
+
+
+    //获取公司信息
+        //渲染页面
+    var app = new Vue({
+        el: '#app',
+        data: {
+            result:{},
+            isShow:true,
+            isHide:false,
+            show:'active',
+            hide:null
+        },
+        methods: {
+            loadInfo:function(){
+                var that=this;
+                var parmas={companyid:_companyid };
+                var company_detail=host+'c=showCom&a=show_company_detail';
+                ajaxRun(company_detail,parmas,true,'POST',function (data) {
+                    console.log(data);
+                    var state=data.result.collect;
+                    if(data.statuscode==1){
+                        that.result=data.result;
+                        star(state);
+                    }
+                })
+            },
+            chose:function(event,i){
+                var that=this;
+                if(i==1){
+                   that.isShow=true;
+                   that.isHide=false;
+                   that.show='active';
+                   that.hide=null
+                }else if(i==2){
+                    that.isShow=false;
+                    that.isHide=true;
+                    that.show=null;
+                    that.hide='active'
+                }
+            }
+        },
+        watch: {},
+    })
+    app.loadInfo();
+    app.chose();
+</script>
+</body>
+
+
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>涂才百科</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/personal.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/wiki.css">
+</head>
+<body>
+	<div id="tcbkApp">
+		
+	    <header class="titleBar">
+	        <a class="barLeft iconfont" @click="backPage(tcbkInfo.id)">&#xe604;</a>
+	        <p class="barTxt">涂才百科</p>
+	        <p class="barRight">
+	            <a class="br"></a>
+	        </p>
+	    </header>
+	    <div style="height:100%;overflow-y: auto">
+	        <div class="personalBgImg">
+	            <img :src="tcbkInfo.author_img" />
+	        </div>
+	        <div class="articleBg articleTitle" v-text="tcbkInfo.title"></div>
+	        <div class="articleBg detialTime">
+	        	<div class="authorInfo">
+	        		<img src="" />
+	        		<div>刘楠</div>
+	        	</div>
+	        	<div class="articleTimeRight" v-text="tcbkInfo.addtime"></div>
+	        	
+	        </div>
+	        <div class="articleBg articleContent" v-html="tcbkInfo.content"></div>
+	
+			<div class="commentArea">
+				<div class="commentTop">
+					<hr>
+					<div>评论区</div>
+					<hr />
+				</div>
+				<div class="commentLists">
+					<div class="commentList" v-for="commentList in commentLists">
+						<img class="commentListImg" :src="commentList.avatar" />
+						<div class="commentListContent">
+							<div class="commentListContentTop" v-text="commentList.username"></div>
+							<div v-text="commentList.content"></div>
+							<div class="commentListContentBottom" v-text="commentList.time"></div>
+						</div>					
+					</div>
+				</div>
+			</div>
+	        <div class="articleBottom">
+	            <div @click="share(tcbkInfo.id)"><i class="iconfont">&#xe635;</i>分享</div>
+				<div @click="comment(tcbkInfo.id)"><i class="iconfont">&#xe610;</i>评论</div>
+				<div @click="agree(tcbkInfo.id)"><i class="iconfont agreeBind" :class="{'agreeState': tcbkInfo.zan ==1 }">&#xe670;</i>点赞</div>
+	        </div>
+	
+	
+	    </div>
+		<div class="cd-popup" role="alert">
+	    	<div>
+		    	<div class="shareMethods">
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/wechat.jpg" /></div>
+		    			<div>微信好友</div>
+		    		</div>
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/wechats.jpg" /></div>
+		    			<div>微信朋友圈</div>
+		    		</div>
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/qq.jpg" /></div>
+		    			<div>QQ好友</div>
+		    		</div>
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/qqs.jpg" /></div>
+		    			<div>QQ空间</div>
+		    		</div>
+		    	</div>
+		    	<div class="cancelShare">取消</div>
+	    		
+	    	</div>
+	    </div>
+	</div>
+
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/public.js"></script>
+<script src="../../static/js/api.js"></script> 
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var tcbkInfo = '';
+	var commentLists = '';
+	var authorId = '';
+	var articleid = '';
+	var articalvue = new Vue({
+	  el: '#tcbkApp',
+	  data: {
+	    tcbkInfo: tcbkInfo,
+	    commentLists: commentLists,
+	    authorId: authorId
+	  }
+	})	
+	
+    var articleid = GetRequest().articalId;   
+	var url = host + 'c=tcbk&a=getTcbkInfo';    
+    console.log("articleid" + articleid)
+       
+//  mui.ready(function(){
+//		var self = plus.webview.currentWebview();
+//		articleid= self.articalId;
+//		console.log(articleid)
+//	})  
+	var parmas = {id:articleid};
+	ajaxRun(url,parmas,true,'GET',function (data) {
+		if(data.statuscode==1){
+			articalvue._data.tcbkInfo = data.result.tcbkInfo;
+			articalvue._data.commentLists = data.result.commentList;
+			console.log(articalvue)
+			articalvue._data.authorId = data.result.tcbkInfo.author;
+			articalId = data.result.tcbkInfo.id;
+		} else {
+		 	rzState=0;
+			console.log(data.msg);	
+			mui.toast(data.msg,{ duration:1000}); 
+		}					
+ 	});
+ 	
+ 	function backPage(authorId) {
+ 		location.href = "index.html?authorId=" + authorId;
+// 		mui.openWindow({//目标页面 
+//          url: 'index.html', 
+////          id: pid, 
+////              extras: param 
+//      });
+ 	}
+ 	
+//	function share() {
+//		console.log("分享");
+//		$(".cd-popup").addClass('is-visible');
+//	}
+	$(".cancelShare").bind("click",function(){
+         event.preventDefault();
+         $(".cd-popup").removeClass('is-visible');
+    });
+
+	function comment(articalId) {
+		location.href = "comment.html?articalId=" + articalId;
+	}
+//  function agree() {
+//      $('.agreeBind').toggleClass("agreeState");
+//  }
+    
+</script>
+</html>

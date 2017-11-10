@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>主页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="static/css/mui.min.css">
+		<link rel="stylesheet" href="static/css/public.css">
+		<link rel="stylesheet" href="static/fonts/iconfont.css">
+		<link rel="stylesheet" href="static/css/iconfont.css">
+		<link rel="stylesheet" href="static/css/home.css">
+		<link rel="stylesheet" href="static/css/index.css">
+		<link rel="stylesheet" href="static/css/swiper-3.3.1.min.css">
+		<style type="text/css">
+			.search{
+				position:absolute;
+				top:14px;
+				/*top: 40px;*/
+				left:3.3rem;
+			}
+			.index_line{
+				height:13px;
+				/*background:#000;*/
+				/*background:#EFEFF4;*/
+				z-index: 1000;
+				width:100%;
+				position:absolute;
+				left:0;
+				bottom:0;
+				background:url(static/images/index.png) no-repeat;
+				background-size:100%;
+			}
+			.mui-slider-indicator{
+				bottom:10px;
+			}
+			#app3 .mui-slider-item{
+				height:3rem;
+			}
+			#app3 .mui-slider-item img{
+				width:100%;
+				height:3rem;
+			}
+			#app2{
+				height:3rem;
+			}
+			#app2 img:first-child{
+				height:3rem;
+			}
+			#app2 .vdTxt img{
+				height:2rem;
+			}
+			.jtxt p span{
+				color: #777;
+				font-size: .33rem;
+				margin-top: .1rem;
+			}
+			.widther{
+				padding:0 .15rem;
+			}
+			#app .block{
+				display:block;
+				width:100%;
+				min-height:20px;
+			}
+			#app2 .block{
+				display:block;
+				width:100%;
+				height:3rem;
+			}
+			.tcTitle{
+				background:#fff;
+			}
+			.tcTitle b{
+				display:block;
+				width:2px;
+				min-height:20px;
+				background: #EFEFF4;
+				float:left;
+				margin-left:.3rem
+			}
+			#app3{
+				float:left;
+			}
+			#app3 img{
+				width:375px;
+				height:120px;
+			}
+			.swiper-container .swiper-pagination-bullet{
+				background:#EFEFF4;
+				width:6px;
+				height:6px;
+			}
+			.swiper-container .swiper-pagination-bullet-active{
+				background:#fff;
+			}
+			.shareContainer{
+				display:none;
+				position:fixed;
+				bottom:0;
+				left:0;
+				z-index: 10001;
+				width:100%;
+				background:#fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="titleBar">
+			<div class="topBar">
+				<div class="tArea" data-statu="">
+					<a>无锡</a>
+					<i class="iconfont">&#xe605;</i>
+				</div>
+				<div class="tSch">
+					<i class="iconfont search">&#xe61f;</i>
+					<input class="sch iconfont" type="text" value="" placeholder="搜索职位/公司" id="jobSearch"/>
+				</div>
+				<div class="tLink iconfont">&#xe635;</div>
+			</div>
+		</header>
+		<div class="mui-scroll-wrapper" id="scroll">
+			<div class="mui-scroll">
+				<!--这里放置真实显示的DOM内容-->
+				
+			     <div id="slider" class="mui-slider banner">
+					<div class="mui-slider-group mui-slider-loop">
+						<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+						<div class="mui-slider-item mui-slider-item-duplicate">
+							<a data-href="commom/company/advertisement.html">
+								<img src="static/images/a1.png">
+							</a>
+						</div>
+						<!-- 第一张 -->
+						<div class="mui-slider-item">
+							<a data-href="commom/company/advertisement.html">
+								<img src="static/images/a1.png">
+							</a>
+						</div>
+						<div class="mui-slider-item">
+							<a data-href="commom/company/advertisement.html">
+								<img src="static/images/a1.png">
+							</a>
+						</div>
+						<div class="mui-slider-item">
+							<a data-href="commom/company/advertisement.html">
+								<img src="static/images/a1.png">
+							</a>
+						</div>
+						<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+						<div class="mui-slider-item mui-slider-item-duplicate">
+							<a data-href="commom/company/advertisement.html">
+								<img src="static/images/a1.png">
+							</a>
+						</div>
+					</div>
+					<div class="mui-slider-indicator">
+						<div class="mui-indicator mui-active"></div>
+						<div class="mui-indicator"></div>
+						<div class="mui-indicator"></div>
+					</div>
+					 <div class="index_line"></div>
+				</div>
+
+
+
+
+
+				<div class="nav">
+					<a class="navLi" data-href="personal/recruitment/select.html">
+						<img src="static/images/aa.png"/>
+						<p>招聘求职</p>
+					</a>
+					<a class="navLi" data-href="commom/company/companyList.html">
+						<img src="static/images/minglu.png"/>
+						<p>产品知库</p>
+					</a>
+					<a class="navLi" data-href="commom/wiki/index.html">
+						<img src="static/images/baike.png"/>
+						<p>涂才百科</p>
+					</a>
+				</div>
+				
+				<div class="tcTitle" id="app">
+					<a data-href="commom/tcTop.html" class="block" v-show="show==true">
+						<img src="static/images/a2.png"/>
+						<b></b>
+						<p v-text="topline.title"></p>
+						<i class="iconfont">&#xe649;</i>
+					</a>
+				</div>
+				<div style="width: 100%;float: left" id="app3">
+
+					<div class="swiper-container">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide" v-for="item in bannerList">
+								<a><img :src="item.thumb" :data-id="item.id"/></a>
+							</div>
+						</div>
+						<div class="swiper-pagination"></div>
+					</div>
+				</div>
+
+
+				
+				<div class="vdBar" id="app2" >
+					<a data-href="commom/live.html"  class="block" v-show="show==true">
+						<img class="vdImg" :src="tcLiveList.small_img"/>
+						<div class="vdTxt">
+							<img src="static/images/a7.png">
+						</div>
+						<img class="tabImg" src="static/images/tcLive.png"/>
+					</a>
+				</div>
+				
+				
+				<div class="jobs" id="refreshContainer">
+					<img class="tabImg" src="static/images/a3.png"/>
+					<ul class="jobUl">
+						<li class="jobLi" v-for="item in jobList">
+							<a class="ja" data-href="personal/jobDetail/jobDetail.html" :data-id="item.id" >
+								<div class="jtxt">
+									<span v-text="item.jobs_name"></span>
+									<i v-text="item.salary_cn"></i>
+								</div>
+								<div class="jtxt">
+									<p>
+										<span v-text="item.district_cn"></span>
+										<span class="widther">|</span>
+										<span v-text="item.experience_cn"></span>
+										<span class="widther">|</span>
+										<span v-text="item.education_cn"></span>
+									</p>
+									<p><span v-text="item.addtime"></span><span>发布</span></p>
+								</div>
+								<div class="jinfo">
+									<img src="static/images/yuantiao.jpg"/>
+									<h1 v-text="item.companyname"></h1>
+									<p>
+										<span v-text="item.trade_cn"></span>
+										<span class="widther">|</span>
+										<span v-text="item.scale_cn"></span>
+										<span class="widther" v-show="finance==0">|</span>
+										<span v-text="item.finance"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 返回顶部 -->
+		<a id="scrollToTop" class="backTop hide"> <span class="iconfont">&#xe60d;</span> </a>
+		<!-- 底部导航 -->
+		<footer class="navBar">
+			<ul>
+				<li>
+					<a class="active">
+						<i class="iconfont">&#xe60e;</i>
+						<p>首页</p>
+					</a>
+				</li>
+				<li>
+					<a data-href="commom/discovery/discovery.html" class="discovery">
+						<i class="iconfont">&#xe647;</i>
+						<p>发现</p>
+					</a>
+				</li>
+				<li>
+					<a class="msg">
+						<i class="iconfont">&#xe60c;</i>
+						<p>消息</p>
+					</a>
+				</li>
+				<li>
+					<a  class="center">
+						<i class="iconfont">&#xe63d;</i>
+						<p>我的</p>
+					</a>
+				</li>
+			</ul>
+		</footer>
+		<!-- 分享 -->
+		<div class="cd-popup" role="alert"></div>
+		<div class="shareContainer">
+			<div class="shareMethods">
+				<div class="shareMethod">
+					<div class="methodImg"><img src="static/images/wechat.jpg" /></div>
+					<div>微信好友</div>
+				</div>
+				<div class="shareMethod">
+					<div class="methodImg"><img src="static/images/wechats.jpg" /></div>
+					<div>微信朋友圈</div>
+				</div>
+				<div class="shareMethod">
+					<div class="methodImg"><img src="static/images/qq.jpg" /></div>
+					<div>QQ好友</div>
+				</div>
+				<div class="shareMethod">
+					<div class="methodImg"><img src="static/images/qqs.jpg" /></div>
+					<div>QQ空间</div>
+				</div>
+			</div>
+			<div class="cancelShare">取消</div>
+
+		</div>
+		
+		<script src="static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/js/mui.min.js"></script>
+		<script src="static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/js/webapp.js"></script>
+		<script src="static/js/swiper-3.3.1.min.js"></script>
+  		<script src="static/js/jquery.mockjax.js" type="text/javascript"></script>
+		<script src="static/js/vue.min.js"></script>
+		<script	src="static/js/api.js"></script>
+		<script>
+
+		$(function(){
+
+		    //分享
+		    $('.topBar').on('tap','.tLink',function(){
+		        console.log("分享")
+                var type={};
+                _webapp.shareTo(type,function(res){
+                    console.log(res);
+                });
+			});
+
+			//定位
+			var status=$('.tArea').attr("data-status");
+			if(status==""||status==null|status==undefined){
+                mui.toast("定位中...");
+                var data={};
+                var params={};
+                console.log("1:",params);
+                _webapp.getLocation(data,function(res){
+                    	console.log(res);
+                        var lat=res.data.lat;
+                        var lng=res.data.lng;
+                        var location1=lat+','+lng;
+                    params={
+						location:location1,
+						key:"OAABZ-D6BH6-PMJST-M5MET-56X4E-T3BY5"
+                    };
+                });
+                console.log("2:",params);
+                var getLocationUrl=host + 'c=login&a=getPostion';
+
+                ajaxRun(getLocationUrl,params,true,'GET',function(data){
+                    console.log(data);
+                    if(data.status==0){
+                        var  address= data.result.result.address_component.city;
+                        $('.tArea').attr('data-status','1');
+                        $('.tArea a').html(address);
+					}
+                });
+			}
+
+
+            var page = 2;
+            var Flag = false;
+            var jobListVue=new Vue({
+                el: '#refreshContainer',
+                data: {
+                    jobList:[],
+                    finance:0
+                }
+            });
+            var tcTopVue=new Vue({
+                el: '#app',
+                data: {
+                    topline: {},
+					show:false
+                }
+            });
+			var liveVue=new Vue({
+                el: '#app2',
+                data: {
+                    tcLiveList: {},
+					show:false
+                }
+            });
+			var infoImgVue=new Vue({
+                el: '#app3',
+                data: {
+                    bannerList: {},
+                    indicatorList:{}
+                }
+            });
+
+            $('.swiper-container').on('tap','.swiper-slide',function(){
+                var href="commom/company/companyDetail.html";
+                var id=$(this).children('a').children('img').attr('data-id');
+                location.href=href+"?id="+id;
+			});
+
+			setTimeout(function(){
+				function toAdver(id){
+					var href="commom/company/advertisement.html";
+					location.href=href+"?id="+id;
+				}
+			},500);
+
+			mui.init({
+				statusBarBackground: '#41a6ff',
+				swipeBack:true ,//启用右关闭功能
+				//下拉加载
+                pullRefresh : {
+                    container:"#scroll",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+                    up : {
+                        height:50,//可选.默认50.触发上拉加载拖动距离
+                        auto:false,//可选,默认false.自动上拉加载一次
+                        contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+                        contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+                        callback : pullupRefresh
+                    }
+                }
+			});
+            mui('.mui-scroll-wrapper').scroll({
+                scrollY: true, //是否竖向滚动
+                scrollX: false, //是否横向滚动
+                startX: 0, //初始化时滚动至x
+                startY: 0, //初始化时滚动至y
+                indicators: true, //是否显示滚动条
+                deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+                bounce: true //是否启用回弹
+            });
+
+            //第一个轮播图轮播
+			(function banner(){
+                slider = mui("#slider");
+                slider2=mui('#slider2');
+                slider.slider({
+                    interval: 1500
+                });
+			})();
+
+			//获取数据
+			$(function(){
+				loadInfo();
+				loadList();
+                tcTop();
+                getLive();
+			});
+			//加载视频信息
+			function getLive(){
+                var parmas = {};
+                var categoryListUrl = host + 'c=video&a=getvideoList';
+                ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {
+					console.log(data)
+                    if(data.statuscode==1){
+                        var liveList=data.result;
+                        var tcLiveList=liveList[liveList.length-1];
+                        liveVue._data.tcLiveList=tcLiveList;
+                        liveVue._data.show=true;
+                    }else{
+                        mui.toast(data.msg,{ duration:2000});
+                    }
+                },1);
+			};
+			//加载今日头条
+			function tcTop(){
+                var url = host + 'c=Topline&a=topline_list';
+                var parmas = {};
+                ajaxRun(url,parmas,true,'GET',function (data) {
+                    console.log(data);
+					if(data.statuscode==1){
+                        var tcTopList=data.result;
+                        var topList=tcTopList[tcTopList.length-1];
+                        tcTopVue._data.topline=topList;
+                        tcTopVue._data.show=true;
+					}else{
+					    mui.toast(data.msg);
+					}
+                },1);
+            };
+
+			//加载广告图片
+			function loadInfo(){
+                indexUrl=host + "c=Product&a=getCompList";
+                params = {};
+                ajaxRun(indexUrl, params, true, 'GET', function (data) {
+                    console.log(data);
+                   if(data.statuscode==-1){
+					  mui.toast('您尚未登录。')
+				   }else if(data.statuscode==1){
+                       console.log(data);
+//                       var html="<div class=\"mui-slider-group mui-slider-loop\">\n" +
+//                           "<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->\n" +
+//                           "<div class=\"mui-slider-item mui-slider-item-duplicate\">\n" +
+//                           "<div class=\"slider-img\">\n" +
+//                           "<img :src=\"bannerList[bannerList.length-1].thumb\">\n" +
+//                           "</div>\n" +
+//                           "</div>\n" +
+//                           "<div class=\"mui-slider-item\" v-for=\"item in bannerList\">\n" +
+//                           "<div @click=\"getMore(item.id)\" class=\"slider-img\">\n" +
+//                           "<img :src=\"item.thumb\"/>\n" +
+//                           "</div>\n" +
+//                           "</div class=\"slider-img\">\n" +
+//                           "<div class=\"mui-slider-item mui-slider-item-duplicate\">\n" +
+//                           "<div>\n" +
+//                           "<img :src=\"bannerList[0].thumb\">\n" +
+//                           "</div>\n" +
+//                           "</div>\n" +
+//                           "</div>\n" +
+//                           "<div class=\"mui-slider-indicator\" style=\"bottom: 0; text-align: right;\">\n" +
+//                           "<div class=\"mui-indicator\" v-for=\"item in indicatorList\"></div>\n" +
+//                           "</div>";
+
+                       var bannerList=data.result;
+                       var indicatorList=data.result;
+
+//                       $('#app3').html(html);
+
+//                       new Vue({
+//                           el: '#app3',
+//                           data: {
+//                               bannerList: bannerList,
+//                               indicatorList:indicatorList
+//                           },
+//                           methods:{
+//                               toAdver:function(e){
+//                                   console.log(e.currentTarget);
+//                                   var href=e.currentTarget.getAttribute('data-href');
+//                                   var id=e.currentTarget.getAttribute('data-id');
+//                                   console.log(href);
+//                                   console.log(id);
+//                                   location.href=href+"?id="+id;
+//                               }
+//                           }
+//                       });
+                       infoImgVue._data.bannerList=data.result;
+						console.log(bannerList)
+
+                       //$('#app3 .mui-slider-indicator').children('div:first-child').addClass('mui-active');
+				   }else{
+				       mui.toast('网络错误！')
+				   }
+
+//                    $('#app3').addClass('mui-slider');
+//                    mui('#app3').slider({interval: 2000});
+
+				},1);
+			};
+
+			function getMore(id){
+			    var href="commom/company/companyDetail.html";
+			    location.href=href+"?id="+id;
+			}
+
+			//加载推荐职位
+			function loadList(){
+                indexUrl=host + "c=index&a=show_index_jobs";
+                argument = {page:1,pagesize:5};
+                ajaxRun(indexUrl, argument, true, 'GET', function (data) {
+                    console.log(data);
+                    if(data.statuscode==1){
+                        jobListVue._data.jobList=data.result;
+                        if(data.result.finance!==""){
+                            jobListVue._data.finance=1;
+						}
+					}
+                },1)
+			};
+
+
+			//返回顶部按钮
+            scrollToTopBox = document.getElementById('scrollToTop'); //返回按钮tap
+			scrollToTopBox.onclick=function(){
+                mui('.mui-scroll-wrapper').scroll().scrollTo(0,0,100);//滚动到顶部
+			};
+
+//           if(mui.os.ios){
+//                document.getElementById('scroll11').addEventListener('scroll', function() {
+//                    if (mui('#scroll11').scroll().y >=0){
+//                        scrollToTopBox.classList.add('hide');
+//                    }else {
+//                        scrollToTopBox.classList.remove('hide');
+//                    }
+//                });
+//			}
+            //返回顶部显示隐藏
+            if (mui.os.android) {
+				window.addEventListener('scroll', function(e) {
+					if (window.pageYOffset >= window.innerHeight/3&& scrollToTopBox.classList.contains('hide')){
+						scrollToTopBox.classList.remove('hide');
+					}else if(window.pageYOffset < window.innerHeight/3 && !scrollToTopBox.classList.contains('hide')){
+						scrollToTopBox.classList.add('hide');
+					}
+				});
+			} else {
+				document.getElementById('scroll').addEventListener('scroll', function() {
+					if (mui('.mui-scroll-wrapper').scroll().y <= (window.innerHeight)/3* (-1) && scrollToTopBox.classList.contains('hide')){
+						scrollToTopBox.classList.remove('hide');
+					}else if(mui('.mui-scroll-wrapper').scroll().y > (window.innerHeight)/3* (-1) && !scrollToTopBox.classList.contains('hide')){
+						scrollToTopBox.classList.add('hide');
+					}
+				}); }
+
+
+
+			//跳转到搜索界面
+            document.getElementById('jobSearch').addEventListener('tap', function() {
+                //打开关于页面
+				var href='personal/recruitment/recruitmentSearch.html';
+                location.href=href;
+            });
+
+
+			//分享;
+			$(".cancelShare").bind("click",function(){
+                event.preventDefault();
+                $('.shareContainer').hide();
+                $(".cd-popup").removeClass('is-visible');
+            });
+			//分享点击空白处关闭
+			$('body').on('tap','.is-visible',function(){
+                $('.shareContainer').hide();
+                $(".cd-popup").removeClass('is-visible');
+			});
+
+
+            //底部导航跳转
+				//消息
+			$('.navBar').on('tap','.msg',function(){
+                utype=localStorage.getItem('utype');
+			    if(utype==1){
+					//"company/recruit/jobMsg.html"
+					location.href='company/recruit/jobMsg.html';
+			        // mui.openWindow({url:"company/recruit/jobMsg.html"});
+				}else{
+					//"commom/chatMsg/chatMsg.html"
+					location.href='commom/chatMsg/chatMsg.html';
+					// mui.openWindow({url:"commom/chatMsg/chatMsg.html"});
+				}
+			});
+				//我的
+            $('.navBar').on('tap','.center',function(){
+                utype=localStorage.getItem('utype');
+                if(utype==1){
+					//"personal/personalCenter/personalCenter.html"
+					location.href='company/companyCenter/companyCenter.html';
+                    // mui.openWindow({url:"company/companyCenter/companyCenter.html"});
+                }else{
+					//"company/companyCenter/companyCenter.html"
+					location.href='personal/personalCenter/personalCenter.html';
+                    // mui.openWindow({url:"personal/personalCenter/personalCenter.html"});
+                }
+			});
+
+            //发现
+			$('.navBar').on('tap','.discovery',function(){
+			    href=$(this).attr('data-href');
+			    location.href=href;
+			});
+
+			//推荐职位跳转
+			$('.jobs').on('tap','a',function(){
+			    href=$(this).attr('data-href');
+			    jobDetailId=$(this).attr('data-id');
+			    location.href=href+"?jobDetailId="+jobDetailId;
+			});
+
+			//涂才 LIVE 跳转
+			$('.vdBar').on('tap','a',function(){
+                location.href="commom/live.html";
+			});
+
+			//涂才头条跳转
+			$('.tcTitle').on('tap','a',function(){
+                location.href="commom/tcTop.html";
+			});
+
+			mui('.nav').on('tap','a',function(){
+            url=$(this).attr('data-href');
+           		location.href=url;
+            });
+			//tcTitle
+            mui('.tcTitle').on('tap','a',function(){
+                url=$(this).attr('data-href');
+                location.href=url;
+            });
+
+            mui('.vdBar').on('tap','a',function(){
+                url=$(this).attr('data-href');
+                location.href=url;
+            });
+
+            //下拉加载
+            function pullupRefresh() {
+                setTimeout(function () {
+                    mui('#scroll').pullRefresh().endPullupToRefresh((Flag)); //参数为true代表没有更多数据了。
+                    loadMore();
+                }, 1500);
+            };
+            function loadMore() {
+                console.log(page);
+                indexUrl=host + "c=index&a=show_index_jobs";
+                argument = {page:page,pagesize:5};
+                ajaxRun(indexUrl, argument, true, 'GET', function (data) {
+                    console.log(data)
+                    if(data.statuscode==1){
+                        if(data.result.length<5 || data.result==[] || data.result==null){
+                            Flag=true;
+						}
+						jobListVue._data.jobList=jobListVue._data.jobList.concat(data.result);
+                    }else{
+                        mui.toast(data.msg,{ duration:1000});
+                    }
+                    page++;
+                });
+            };
+
+            //初始化swiper轮播图
+            setTimeout(function(){
+                var swiper = new Swiper('.swiper-container', {
+                    pagination: '.swiper-pagination',
+                    paginationClickable: true,
+                    autoplay : 2000,
+                    speed: 1000,
+                    autoplayDisableOnInteraction: false,//不禁用autoplay
+                    loop:true,
+                    observer:true,//修改swiper自己或子元素时，自动初始化swiper
+                    observeParents:true,//修改swiper的父元素时，自动初始化swiper
+                    loopAdditionalSlides : 1,
+                    //slidesPerView : 'auto',
+                    //grabCursor:true,//抓手光标
+                    onInit: function(swiper){
+                        //Swiper初始化了
+                        console.log(swiper.activeIndex)
+                        //alert(swiper.activeIndex);//提示Swiper的当前索引
+                    }
+                });
+			},500);
+		});
+		</script>
+	</body>
+</html>

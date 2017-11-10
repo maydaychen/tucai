@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>招聘求职</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<script src="../../static/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>	
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<section  id="app" style="width: 100%;height: 100%;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">招聘求职</p>
+			<p class="barRight">
+				<a class="br"></a>
+			</p>
+		</header>
+		<div class="xlFade" style="display: none;"></div>
+		<div class="xlTab">
+			<div class="xl">
+				<span class="xlActive">
+					<a>推荐</a>
+					<i class="iconfont">&#xe603;</i>
+				</span>
+				<span>
+					<a>要求</a>
+					<i class="iconfont">&#xe603;</i>
+				</span>				
+			</div>
+			<div class="boxs tjBox" style="display: none;">
+				<span data-id = "0" class="tjActive"><a>推荐</a><i class="iconfont">&#xe634;</i></span>
+				<span data-id = "1"><a>最新</a><i class="iconfont">&#xe634;</i></span>
+			</div>
+			<div class="boxs yqBox" style="display: none;">
+				<h1>学历</h1>
+				<ul class="yqUl">
+					<li v-for="(item, index) in QS_education" :key="item.value" class="" :data-id = "item.value" v-text="item.text"></li>
+				</ul>
+				<h1>经验</h1>
+				<ul class="yqUl">
+					<li v-for="(item, index) in QS_experience" :key="item.value" class="" :data-id = "item.value">{{item.text}}</li>
+				</ul>				
+				<h1>薪水</h1>
+				<ul class="yqUl">
+					<li v-for="(item, index) in QS_wage_k" :key="item.value" class="" :data-id = "item.value">{{item.text}}</li>
+				</ul>		
+				<div class="sxBtns">
+					<p class="sxBtn" id="reset">重置</p>
+					<p class="sxBtn sxColor" id="sure">确认</p>
+				</div>				
+			</div>
+		</div>
+		<div class="" style="width: 100%; height: 100%; float: left; overflow: hidden">
+			<div class="tdList" style="height: 96%;">
+				<!--这里放置真实显示的DOM内容-->
+				<div class="tdList" style="height: 100%">
+					<ul class="tdul scrolls" id="tdul" style="display: block; height: 100%; overflow: auto">
+						<li class="tdLi" v-for="(item, index) in rsList" :key="item.id" @click="goRs(item.id)">
+							<div class="tdTop">
+								<img class="tdImg" :src="[item.photo_img]"/>
+								<p class="td1"><a v-text="item.fullname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
+								<p class="td2">求职期望 <em v-text="item.intention_jobs"></em></p>
+								<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>
+								<time v-text="item.addtime"></time>
+							</div>
+							<div class="tdBot">
+								<span style="margin-top: 5px;display: block;" v-text="item.specialty"></span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		</section>
+	</body>			
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>	
+		<script>
+			$(function(){
+				FastClick.attach(document.body);
+		
+			});
+		    var pageflag = true;
+		    var xg = true;	
+			var app = new Vue({
+			  el: '#app',
+			  data: {
+			  	tj:0,
+			  	xl:'',
+			  	jy:'',
+			  	xs:'',
+			    rsList:[],
+			    category:{},
+			    QS_education:null,
+			    QS_experience:null,
+			    QS_wage_k:null,
+			    page:1,
+			    pagesize:10
+			  },
+			  methods: {
+			  	loadInfo:function(){
+			  		var that=this;
+					var parmas={page:that.page,pagesize:that.pagesize,id:userid,tuijian:that.tj,xueli:that.xl,jingyan:that.jy,xinshui:that.xs};
+					console.log(parmas);
+					ajaxRun(port.resumeList,parmas,true,'POST',function (data) {
+						console.log('resumeList:',data);
+						toLogin(data);
+						that.rsList=that.rsList.concat(data.result);
+                        if(data.result.length<that.pagesize){
+                            setTimeout(function () {
+                                $('#tdul').off('scroll').append('<p class="nomore">无更多数据</p>');
+                            },500)
+                            return;
+                        }
+						that.page++;
+				        console.log('页数'+that.page);
+					});
+			  	},
+			  	goRs:function(id){
+//			        mui.openWindow({
+//			            url:'../resumeDetail/resumeDetail.html?id='+id,
+//			        });
+			        location.href='../resumeDetail/resumeDetail.html?id='+id
+			  	},
+			  	loadPz:function(){
+			  		var that=this;
+					var parmas={};
+					ajaxRun(port.category,parmas,true,'POST',function (data) {
+						console.log('category:',data);
+						that.category=data.result;
+						
+						var aa=data.result.QS_education;
+						var arrA=[];
+						$.each(aa, function(item,val) {
+							arrA.push({'value':item,'text':val});
+						});	
+						that.QS_education=arrA;
+						
+						var bb=data.result.QS_experience;
+						var arrB=[];
+						$.each(bb, function(item,val) {
+							arrB.push({'value':item,'text':val});
+						});
+						that.QS_experience=arrB;
+						
+						var cc=data.result.QS_wage_k;
+						var arrC=[];
+						$.each(cc, function(item,val) {
+							arrC.push({'value':item,'text':val});
+						});	
+						that.QS_wage_k=arrC;
+						setTimeout(function(){
+                            that.bindEle();
+                        },500)
+					});				  		
+			  	},	
+	 			bindEle:function(){
+	 				var that=this;
+					$('.xlFade').click(function(){
+						$('.xlFade,.tjBox,.yqBox').hide();
+					});
+					$.each($('.tjBox span'), function(index) {
+						$('.tjBox span').eq(index).click(function(){
+							$('.tjBox span').removeClass('tjActive');
+							$('.tjBox span').eq(index).addClass('tjActive');
+							$('.xlFade').click();
+							$('#sure').click();
+						});
+					});
+					$.each($('.xl span'), function(index) {
+						$('.xl span').eq(index).click(function(){
+							$('.xl span').removeClass('xlActive');
+							$('.xl span').eq(index).addClass('xlActive');
+							$('.xlFade').show();
+							$('.xlTab .boxs').hide();
+							$('.xlTab .boxs').eq(index).show();
+						});
+					});
+					$.each($('.yqBox ul'), function(index) {
+						var ele=$('.yqBox ul').eq(index).children('li');
+						$.each(ele, function(i) {
+							ele.eq(i).click(function(){
+								ele.removeClass('yqActive');
+								ele.eq(i).addClass('yqActive');
+							});
+						});					
+					});
+					$('#reset').click(function(){
+						$('.yqUl').eq(0).find('.yqActive').removeClass('yqActive');
+						$('.yqUl').eq(1).find('.yqActive').removeClass('yqActive');
+						$('.yqUl').eq(2).find('.yqActive').removeClass('yqActive');
+						that.tj='';
+			  			that.xl='';
+			  			that.jy='';
+			  			that.xs='';
+					});
+					$('#sure').click(function(){
+						var tjid=$('.tjActive').attr('data-id');//推荐id
+						var xlid=$('.yqUl').eq(0).find('li.yqActive').attr('data-id');//学历id
+						var jyid=$('.yqUl').eq(1).find('li.yqActive').attr('data-id');//经验id
+						var xsid=$('.yqUl').eq(2).find('li.yqActive').attr('data-id');//薪水id
+						$('.xlFade').click();
+						console.log(tjid,xlid,jyid,xsid);
+						that.tj=tjid;
+			  			that.xl=xlid;
+			  			that.jy=jyid;
+			  			that.xs=xsid;
+			  			that.page=1;
+			  			that.rsList=[];
+			  			that.loadInfo();
+					});
+								  	
+				},				  
+		        bindScroll:function(ele){
+		        	var that=this;
+		            ele.on('scroll', function() {
+		                var scrollHeight = $(this)[0].scrollHeight;
+		                var scrollTop = $(this)[0].scrollTop;
+		                var nDivHight = $(this).height();
+		                var tipHtml="<span id=\"loadTips\"><a></a></span>";
+		                if (pageflag == true && scrollTop + nDivHight > scrollHeight - 30) {
+                            pageflag = false;
+                            ele.append(tipHtml).show();
+                            setTimeout(function(){
+                                $('#loadTips').remove();
+								that.loadInfo();
+                                pageflag = true;
+                            },1000)
+                        }
+		            });
+		        },
+			  },
+			  watch: {
+			  	
+			  },
+			})
+            app.bindScroll($('#tdul'));
+            app.loadInfo();
+            app.loadPz();
+
+
+		</script>
+</html>

@@ -1,0 +1,117 @@
+.mui-scroll-wrapper{
+    margin-top: 45px;
+}
+.td_all .jobs .jobUl{
+    padding-top:10px;
+}
+.mui-table-view .mui-table-view-cell .mui-media-body p{
+    line-height: normal;
+}
+input{
+    border:0;
+    height:1.4rem;
+    padding-left:.6rem;
+    width:100%;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-user-select: auto;
+    -webkit-appearance:none;
+    outline: none;
+    border: none;
+    color:#5F5F5F;
+    background:#F6F6F6;
+}
+input::-webkit-input-placeholder{
+    color: #cfcfcf;opacity:1;
+}
+.add_container{padding:0 1rem;}
+.add_container label{
+    font-size: .45rem;
+    color:#818181;
+    padding-left:.7rem;
+}
+textarea{
+    width:100%;
+    min-height:3rem;
+    border-color:#EDEDED ;
+    margin-top:.4rem;
+    padding:.2rem;
+    outline: none;
+    background:#F6F6F6;
+    -webkit-user-select: auto;
+    font-size:.4rem;
+}
+textarea::-webkit-input-placeholder{
+    color: #cfcfcf;opacity:1;
+    font-size: .4rem;
+}
+.add_container i{
+    display: inline-block;
+    width:.5rem;
+    height:.5rem;
+    background:url(../../static/images/bianji.png) no-repeat;
+    background-size: 100%;
+    z-index: 100;
+    position:absolute;
+    top:50%;
+    margin-top:-.25rem;
+    left:0;
+}
+.label{position:relative;}
+.label i{
+    position:absolute;
+    left:0;
+    top:0;
+    margin-top:0;
+}
+.submitBtn button {
+    height:50px;
+    width:100%;
+    background:#CFCFCF;
+    color:#fff;
+    margin-top:20px;
+}
+/*****************-------------表单公用样式-----------**********************/
+.add_container .mui-input-group{
+    background:#F6F6F6;
+}
+.add_container .mui-input-group:before{
+    display:none;
+}
+.add_container .mui-input-group:after{
+    display:none;
+}
+.add_container .mui-input-row{
+    margin-top:.6rem;
+}
+.add_container .mui-input-row label.width8{
+    width:8%;
+    padding:20px 0;
+}
+.add_container .mui-input-row label~input{
+    width:90%;
+    height:40px;
+    font-size:.4rem;
+}
+.add_container .mui-input-group .label1:after{
+    position: absolute;
+    right: 0;
+    top: 30px;
+    left: 15px;
+    height: 1px;
+    content: '';
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    background-color: #c8c7cc;
+}
+.add_container .mui-button-row button{
+    border:0;
+}
+.mui-input-group p{
+    height:40px;
+    line-height:40px;
+    padding-left:.8rem;
+    color:#CFCFCF;
+}
+.mui-input-group p.e5{
+    color:#5e5e5e;
+}

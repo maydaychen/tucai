@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>企业认证</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<link rel="stylesheet" href="../../static/css/mui.min.css">
+		<link rel="stylesheet" href="../../static/css/public.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
+		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/home.css">
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<header class="titleBar">
+			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<p class="barTxt">设置</p>
+			<p class="barRight">
+				<a class="br" onclick="upImg()">提交</a>
+			</p>
+		</header>	
+		
+		<div class="mBody">
+			<a class="cow" id="box1">
+				<h1>企业全称</h1>
+				<span>
+					<p id="val1"></p>
+					<i class="iconfont">&#xe649;</i>
+				</span>
+			</a>
+			<div class="cowLine"></div>
+			<a class="cow mgt" id="box2">
+				<h1>企业邮箱</h1>
+				<span>
+					<p id="val2"></p>
+					<i class="iconfont">&#xe649;</i>
+				</span>
+			</a>
+			
+			<section class="cow">
+				<div class="upLeft">
+					<img src="../../static/images/a8.png"/>
+					<p>上传营业执照</p>
+				</div>
+
+				<div class="upRight">
+					<p>1.接收拍摄件/扫描件/复印件</p>
+					<p>2.请保证所有信息清晰完整</p>
+					<p>3.名称必须和公司全称相符</p>
+					<p>4。若为黑白复印件请加盖红印</p>
+				</div>
+			</section>
+			<section class="cow">
+				<div class="upImg">					
+					<div class="imgs">
+			
+					</div>
+					<img class="addImg" src="../../static/images/a9.png"/>
+				</div>
+			</section>
+		</div>
+		
+		<div class="fadeBottom"></div>
+		<div class="lightBottom">
+			<div class="lb" id="pic1">
+				<i class="lbImg iconfont">&#xe7b6;</i>
+				<p>拍摄照片</p>
+			</div>
+			<div class="lb" id="pic2">
+				<i class="lbImg iconfont">&#xe7b7;</i>
+				<p>相册照片</p>
+				<input style="display: none" class="files" type="file"   multiple="false" autocomplete="off" accept="image/jpg,image/jpeg,image/png,image/png" id="photo" value=""/>
+			</div>
+			<a class="closeLb">取消</a>
+		</div>
+		
+	</body>
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/mui.min.js"></script>
+		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/webapp.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+
+			var arrFiles=[];
+			$(function(){
+				FastClick.attach(document.body);
+				bindEle();
+				loadInfo();
+			});
+			
+			function bindEle(){
+				$('.closeLb,.fadeBottom').click(function(){
+					$('.lightBottom').fadeOutDown();
+					$('.fadeBottom').hide();
+					
+				});
+//				$('.addImg').click(function(){
+//					$('.lightBottom').show().fadeInUp();
+//					$('.fadeBottom').show();
+//				});
+
+				$('#box1').click(function(){
+					$.malert({
+						text: "输入企业全称",
+						cancle: function () {
+							console.log('关闭了')
+						},
+						ok: function () {
+							var str=$.trim($('#mInput').val());
+							if(str==""||str.length>20){
+								mui.toast('输入不正确！');
+								return;
+							}
+							$('#val1').html(str).attr('data-val',str);
+						}
+					})
+				});
+                $('#box2').click(function(){
+                    $.malert({
+                        text: "输入企业邮箱",
+                        cancle: function () {
+                            console.log('关闭了')
+                        },
+                        ok: function () {
+                            var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                            var str=$.trim($('#mInput').val());
+                            if(str==""||str.length>20||!reg.test(str)){
+                                mui.toast('输入不正确！');
+                                return;
+                            }
+                            $('#val2').html(str).attr('data-val',str);
+                        }
+                    })
+                });
+            	$("#photo").change(function () {
+					if (typeof (FileReader) != "undefined") {
+						var regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
+						$($(this)[0].files).each(function () {
+							var file = $(this);
+							//arrFiles.push(file);
+							if (regex.test(file[0].name.toLowerCase())) {
+								var reader = new FileReader();
+									reader.onload = function (e) {
+										var html="<img class=\"pic\" src=\""+e.target.result+"\" />";
+										$('.imgs').append(html);
+										$('.closeLb').click();
+                                        arrFiles.push(reader.result);
+                                        console.log(arrFiles)
+									};
+									reader.readAsDataURL(file[0]);
+							}
+							else {
+								alert(file[0].name + "不是图片！");
+								return false;
+							}
+						});
+					} else { alert("不支持"); }
+				});
+            	var pics=[];
+            	$('.addImg').click(function () {
+                    pics=[];
+                    _webapp.uploadImg(function (res) {
+						console.log(res);
+						alert(res);
+                        for (var i=0;i<res.data.length;i++){
+                            pics.push(res.data[i]);
+						};
+                    })
+                })
+			}
+			
+			var rs;
+			function loadInfo(){
+				var parmas={id:userid};
+				ajaxRun(port.companyInfo,parmas,true,'POST',function (data) {
+					console.log('companyInfo:',data);
+					//toLogin(data);
+					if(data.statuscode==1){
+						rs=data.result.company_profile.id;
+						var cg=data.result.category;
+						var cp=data.result.company_profile;
+						$('#val1').html(cp.companyname);
+						$('#val2').html(cp.email);
+					}
+				});
+			}
+			
+			function upImg() {
+                var parmas={base64_string:arrFiles};
+                ajaxRun(port.certificate_img,parmas,true,'POST',function (data) {
+                    console.log('上传图片:',data);
+                    if(data.statuscode==1){
+						
+                    }
+                });
+
+            }
+
+		</script>
+</html>

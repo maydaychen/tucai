@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>投递记录</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/registerCss/deliveryRecord.css">
+    <link rel="stylesheet" href="../../static/css/registerCss/login.css">
+</head>
+<body>
+	<div id="app">		
+	    <header class="titleBar">
+	        <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
+	        <p class="barTxt">投递记录</p>
+	        <p class="barRight">
+	            <a class="br"></a>
+	        </p>
+	    </header>
+	    <div style="height: calc(100% - 90px);overflow-y: auto">
+	        <div class="deliveryTop">
+	            <div class="topImg"><img :src="jobInfo.thumb" /></div>
+	            <div class="topRight">
+	                <div class="jopInfo">
+	                    <div class="jobPost" v-text="jobInfo.jobs_name"></div>
+	                    <div class="deliveryTime" v-text="jobInfo.jobtime"></div>
+	                </div>
+	                <div class="jobDetails">
+	                    <div class="detailLeft">
+	                        <div>
+	                            <span v-text="jobInfo.companyname"></span>
+	                           <!-- <span>弘毅信息科技</span>-->
+	                        </div>
+	                        <div>
+	                        	<span v-text="jobInfo.minwage"></span>k~<span v-text="jobInfo.maxwage"></span>k</div>
+	                    </div>
+	                    <div class="arrowRight"><i class="iconfont">&#xe649;</i></div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="evalute" v-if="record.is_face == 1" >
+	            <div class="evaluteLeft">
+	            	<span>面试评价</span>
+	            	<span v-if="evaluteState == 0">【未评价】</span>
+	            	<span v-if="evaluteState == 1">【已评价】</span>
+	            </div>
+	            <span class="evaluteRight" v-if="evaluteState == 0" @click="evalute(record.id)">现在去评价</span>
+	            <span class="evaluteRight" v-if="evaluteState == 1" @click="evalute(record.id)">评价内容</span>
+	        </div>
+	        <div class="result"  v-if="record.is_face == 0">
+	            <div class="resultTitle">投递结果 【<span>不合适</span>】</div>
+	            <div class="resultContent">非常荣幸收到您的简历，经过我们评估，认为您与该职务不合适，无法进入面试阶段。</div>
+	        </div>
+	        <div class="result" v-if="record.is_face == 1">
+	            <div class="resultTitle">投递结果 【<span>面试邀请</span>】</div>
+	            <div class="resultContent">
+	                <div>联系人：<span v-text="record.username"></span></div>
+	                <div>面试时间：<span v-text="record.facetime"></span></div>
+	                <div>联系电话：<span v-text="record.phone"></span></div>
+	                <div>面试地址：<span v-text="record.address"></span></div>
+	            </div>
+	        </div>
+	        <div class="deliverySchedule">
+	        	<div v-if="record.is_face == 0">        		
+		            <div class="received">
+		                <div class="leftImg">
+		                    <i class="iconfont">&#xe69d;</i>
+		                    <div class="leftLine"></div>
+		                </div>
+		                <div>
+		                    <div class="rightTop">简历被标为不合适</div>
+		                    <div v-text="record.dealtime"></div>
+		                </div>
+		            </div>
+		            <div class="received">
+		                <div class="leftImg">
+		                    <i class="iconfont passState">&#xe6a9;</i>
+		                    <div class="leftLine"></div>
+		                </div>
+		                <div>
+		                    <div class="rightTop">查看了你的简历</div>
+		                    <div v-text="record.seetime"></div>
+		                </div>
+		            </div>
+	        	</div>
+	        	<div v-if="record.is_face == 1">        		
+		            <div class="received">
+		                <div class="leftImg">
+		                    <i class="iconfont">&#xe69d;</i>
+		                    <div class="leftLine"></div>
+		                </div>
+		                <div>
+		                    <div class="rightTop">简历被标为合适</div>
+		                    <div v-text="record.dealtime"></div>
+		                </div>
+		            </div>
+		            <div class="received">
+		                <div class="leftImg">
+		                    <i class="iconfont passState">&#xe6a9;</i>
+		                    <div class="leftLine"></div>
+		                </div>
+		                <div>
+		                    <div class="rightTop">查看了你的简历</div>
+		                    <div v-text="record.seetime"></div>
+		                </div>
+		            </div>
+	        	</div>
+	        	
+	            <div class="received" v-if="record.is_face == 2">
+	                <div class="leftImg">
+	                    <i class="iconfont passState">&#xe6a9;</i>
+	                    <div class="leftLine"></div>
+	                </div>
+	                <div>
+	                    <div class="rightTop">查看了你的简历</div>
+	                    <div v-text="record.seetime"></div>
+	                </div>
+	            </div>
+	            <div class="received">
+	                <div class="leftImg"><i class="iconfont passState">&#xe672;</i></div>
+	                <div>
+	                    <div class="rightTop">已成功接收你的简历</div>
+	                    <div v-text="record.addtime"></div>
+	                </div>
+	            </div>
+	        </div>
+	
+	    </div>
+	    <div class="deliveryBottom">
+	        <div class="blueButton" @click="chat(jobInfo.uid)">和TA聊聊</div>
+	    </div>
+	</div>
+
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/public.js"></script>
+<script src="../../static/js/api.js"></script>
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var recordId = GetRequest().deliverId;
+	console.log(recordId)
+	var jobInfo = '';
+	var record = '';
+	var evaluteState = '';
+	var recordvue = new Vue({
+		el: '#app',
+		data: {
+			jobInfo: jobInfo,
+			record: record,
+			evaluteState: evaluteState
+		}
+	})	
+	var parmas = {id: 4};
+	var categoryListUrl = host + 'c=personalJobsend&a=getSendInfo';
+	ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {	
+		recordvue._data.jobInfo = data.result.job;
+		recordvue._data.record = data.result.res;
+		var pingjia = data.result.res.pingjia;
+		if (pingjia != '' && pingjia != null) {
+			evaluteState = 1;
+		} else {
+			evaluteState = 0;
+		}
+		recordvue._data.evaluteState = evaluteState;
+ 	});			
+		
+	function chat(uid) {
+		location.href= "../../commom/chatMsg/chatPersonal.html?touid=" + uid;
+	}
+	
+	function back() {
+		location.href="deliver.html"
+	}
+	
+	function evalute(recordId) {
+		location.href = 'evalute.html?recordId=' + recordId;
+	}
+</script>
+</html>

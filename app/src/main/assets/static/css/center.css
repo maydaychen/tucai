@@ -1,0 +1,496 @@
+body{
+    width: 100%;
+    height: 100%;
+}
+.flex{
+    display: flex;
+    justify-content: space-between;
+}
+.public-padding{
+    padding-top: 45px;
+   /*padding-top: 70px;*/
+}
+/********个人中心*******/
+.center-head{
+    width: 100%;
+    /*height: 4.67rem;*/
+    height: 170px;
+    background: #41A6FF;
+    position: relative;
+}
+.head-container{
+    width: 100%;
+    height: 2rem;
+    position: absolute;
+    top: 1.5rem;
+    left: 0;
+}
+.user-pic{
+    width: 30%;
+    height: 100%;
+    position: relative;
+}
+.user-info{
+    width: 60%;
+    height: 100%;
+    position: relative;
+    overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+.arrow{
+    width: 10%;
+    height: 100%;
+}
+.user-pic img{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 2px solid #7AC1FF;
+    position: absolute;
+    top: 0.2rem;
+    left: 15%;
+}
+.user-name{
+    font-size: 0.5rem;
+    color: #fff;
+    font-weight: 600;
+    margin: 0.1rem 1%;
+}
+.user-intro{
+    font-size: 0.3rem;
+    color: #fff;
+}
+.user-info div{
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+}
+.arrow i{
+    color: #fff;
+    position: absolute;
+    top: 0.8rem;
+    left: 90%;
+}
+.f-list{
+	height: 80px;
+    background: #fff;
+    padding: 0.5rem 5%;
+    margin-bottom: 4%;
+    border-top: 1px solid #8DCAFF;
+    border-bottom: 1px solid #EEE;
+    display: flex;
+    justify-content: space-around;
+}
+.f-list li,.t-list li{
+    text-align: center;
+}
+.f-list p{
+    font-size: 0.3rem;
+    color: #585858;
+}
+.s-list{
+    margin-bottom: 4%;
+    border-top: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+}
+.s-list span{
+    font-size: 0.4rem;
+    padding: 0.1rem 4%;
+    color: #6B6B6B;
+}
+.f-list i{
+    font-size: 0.6rem;
+    color: #4FACFF;
+}
+.s-list i{
+	font-size: 0.6rem;
+	vertical-align: top;
+}
+.collect{
+    color: #45CA8D;
+}
+.ency{
+    color: #FFAE66;
+}
+.retro{
+    color: #41A6FF;
+}
+.contact{
+    color: #F7524E;
+}
+.set{
+    color: #9798A3;
+}
+.s-list-last{
+    margin-top: 4%;
+}
+.t-list{
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid #CFCFCF;
+    background: #F6F6F6;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+}
+.t-list li{
+    width: 25%;
+}
+.t-list li a{
+	display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top: .15rem;
+}
+.t-list i{
+    font-size: 0.5rem;
+    color: #5E5E5E;
+}
+.s-list li{
+	height: 50px;
+    padding: 0.34rem 5%;
+}
+.t-list li.active p,.t-list li.active i{
+    color: #66B5FD;
+}
+.mui-scroll{
+    padding-bottom: 55px;
+}
+.t-list{
+	z-index: 100;
+}
+   /*联系客服*/
+ .contactTime{
+    color: #383838;
+     font-size: 0.35rem;
+     text-align: center;
+     padding: 0.3rem 0;
+     border-bottom: 1px solid #e5e5e5;
+ }
+ .contactNum{
+     display: block;
+     font-size: 0.6rem;
+     color: #333;
+     text-align: center;
+     padding: 0.5rem 0;
+ }
+
+
+
+/********修改手机号*******/
+.p-con{
+    width: 100%;
+    /*height: 11rem;*/
+    height: 420px;
+    background: #fff;
+    margin-bottom: 4%;
+}
+.p-container{
+    width: 80%;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 3.5rem;
+    left: 15%;
+}
+.p-icon{
+    width: 20%;
+    height: 100%;
+    margin-right: 0.5rem;
+}
+.p-icon i{
+    font-size: 1.45rem;
+    color: #72BDFF;
+    position: absolute;
+    top: 0.4rem;
+    left: 2%;
+}
+.p-info{
+    width: 80%;
+}
+.p-info p:nth-child(2){
+    color: #74BEFF;
+}
+.p-form{
+    width: 94%;
+    height: 5rem;
+    position: absolute;
+    top: 7rem;
+    left: 3%;
+}
+.p-form input{
+	height: 35px;
+    border: none;
+}
+.p-form input::-webkit-input-placeholder{
+    color: #DFDFDF;
+}
+.p-form div{
+    border-bottom: 1px solid #E7E7E7;
+    margin-bottom: 0.4rem;
+    line-height: 35px;
+    height: 40px;
+}
+.p-arrow{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #CFCFCF;
+    margin: 0 0.1rem;
+}
+.btn-confirm{
+    width: 90%;
+    font-size: 0.5rem;
+    color: #fff;
+    line-height: 40px;
+    background: #41A6FF;
+    border: 1px solid #41A6FF;
+    letter-spacing: 2px;
+}
+input[type=button].yzm{
+    float: right;
+    color: #4DABFF;!important;
+    font-size: 0.3rem;!important;
+    /*margin-top: 0.3rem;*/
+    /*padding: 0;*/
+}
+/********登录密码*******/
+.p-form span{
+    display: inline-block;
+    width: 20%;
+    font-size: 0.4rem;
+    color: #3D3D3D;
+/*    padding-right: 5%;*/
+	text-align: center;
+}
+.p-form-position{
+    top: 6rem;
+}
+/********屏蔽企业*******/
+.privacy-con h1{
+    font-size: 0.35rem;
+    color: #333;
+    padding: 0.5rem 5%;
+}
+.privacy-con-not{
+    color: #727272;
+    font-size: 0.35rem;
+    margin: 0 5% 0.5rem 5%;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #F3F3F3;
+}
+.privacy-con-not a{
+    float: right;
+    color: #79BEFF;
+}
+.privacy-con-com{
+    display: flex;
+    flex-wrap: wrap;
+}
+.privacy-con-com span{
+    color: #888;
+    margin: 0.1rem 5%;
+    padding: 0.1rem 2%;
+    border: 1px solid #E4E4E4;
+    border-radius: 15px;
+    cursor: pointer;
+}
+/********添加企业*******/
+.add-con{
+    background-color: #fff;
+    margin-bottom: 0.5rem;
+}
+.add-con h1{
+    font-size: 0.3rem;
+    color: #333;
+    margin: 1rem 0;
+    text-align: center;
+}
+.add-con input{
+    width: 96%;
+    height: 35px;
+    /*color: #D5D5D5;*/
+    font-size: 0.3rem;
+    padding: 0 5%;
+    margin: 0 2%;
+    border: none;
+    border-top: 1px solid #F3F3F3;
+    border-bottom: 1px solid #F3F3F3;
+}
+.add-con input::-webkit-input-placeholder{
+    color: #DFDFDF;
+    letter-spacing: 2px;
+}
+.add-con p{
+    color: #D5D5D5;
+    font-size: 0.2rem;
+    padding: 0.5rem 5% 1.5rem;
+}
+/********个人信息*******/
+/*.personal-con img{*/
+.img{
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+}
+.personal-con label{
+    /*padding: 0 5%;*/
+    color: #818181;
+}
+.personal-con h1{
+     color: #444;
+}
+.personal-con p{
+    color: #CFCFCF;
+}
+/********个人信息-分页-姓名*******/
+.personal-name-con input{
+    width: 100%;
+    height: 1rem;
+    border: none;
+    background: #fff;
+    padding: 0 5%;
+    font-size: 0.4rem;
+}
+.personal-name-con span{
+    padding-right: 2%;
+    color: #D1D1D1;
+    float: right;
+}
+.personal-name-con span i{
+    font-style: normal;
+    color: #41A6FF;
+}
+.checkIcon{
+    color: #fff;
+}
+/********个人信息-分页-自我介绍*******/
+.personal-name-con textarea{
+    width: 100%;
+    /*height: 3rem;*/
+    height: 150px;
+    overflow-y: auto;
+    border: none;
+    padding: 0.2rem 5%;
+}
+/********简历详情*******/
+.barRight{
+    color: #fff;
+    font-size: 0.8rem;
+}
+.rec{
+    /*height: 100%;*/
+    background: #fff;
+}
+.recTop{
+    width: 90%;
+    /*height: 100%;*/
+    margin: 0 5%;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #F0F0F0;
+    position: relative;
+}
+.recTop img{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+.recTopName{
+    width: 75%;
+    position: absolute;
+    top: 0.5rem;
+    left:  25%;
+}
+.recTopName p{
+    color: #737373;
+}
+.recTopName p span{
+    color: #343434;
+    font-size: 0.5rem;
+    padding-right: 5%;
+}
+.recTopName p i{
+    color: #fff;
+    background: #41A6FF;
+    border-radius: 50%;
+}
+.recCon{
+    padding: 0.3rem 5%;
+}
+.recCon i{
+    font-size: 0.5rem;
+    color: #49AAFF;
+}
+.recCon span{
+    font-size: 0.4rem;
+    color: #444;
+/*    padding-right: 5%;*/
+}
+.recTop i{
+    color: #62B5FF;
+    font-size: 0.5rem;
+}
+.recTop span{
+    color: #404040;
+    font-size: 0.5rem;
+}
+.recCon h1{
+    font-size: 0.5rem;
+    color: #3D3D3D;
+    padding: 0.3rem 0;
+}
+.recCon h2{
+    font-size: 0.4rem;
+    color: #5E5E5E;
+    padding: 0.2rem 0;
+}
+.recCon h2 span{
+    /*float: right;*/
+    font-size: 0.3rem;
+    padding: 0;
+}
+.recCon p{
+    font-size: 0.3rem;
+    color: #959595;
+}
+.btn-chat{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    padding: 0.5rem 0;
+    z-index: 100;
+}
+.btn-chat button{
+    width: 90%;
+}
+.recTopName b{
+    font-size: 0.1rem;
+    font-weight: normal;
+    float: right;
+}
+/*求职招聘*/
+.topNav{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.topNav li{
+    width: 50%;
+    text-align: center;
+    background: #fff;
+    padding: 0.3rem 0;
+}
+.topNav li a{
+    color: #737373;
+}
+.topNav li a>i{
+    font-size: 0.4rem;
+}

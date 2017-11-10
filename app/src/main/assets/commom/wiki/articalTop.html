@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>涂才头条</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/personal.css">
+</head>
+<body>
+    <header class="titleBar">
+        <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
+        <p class="barTxt">涂才头条</p>
+        <p class="barRight">
+            <a class="br"></a>
+        </p>
+    </header>
+    <div style="height:100%;overflow-y: auto" id="tcbkApp">
+        <div class="personalBgImg">
+            <img :src="articalInfo.thumb" />
+        </div>
+        <div class="articleBg articleTitle" v-text="articalInfo.title"></div>
+        <div class="articleBg articleTime detialTime" v-text="articalInfo.addtime"></div>
+        <div class="articleBg articleContent" v-html="articalInfo.detail"></div>
+		
+        <div class="articleBg articleBottom">
+            <div class="bottomLeft">            	
+	            <span>阅读<span v-text="articalInfo.readnum"></span></span>
+	            &nbsp;&nbsp;
+	            <span @click="topAgree(articalInfo.id)">
+	            	<i class="iconfont agreeBind" :class="{'agreeState': articalInfo.zan == 1}">&#xe670;</i>
+	            	<span v-text="articalInfo.click"></span>
+	            </span>
+            </div>
+            <div class="bottomRight" @click="topCollect(articalInfo.id,articalInfo.collect)"><i class="iconfont collectBind" :class="{'collectState': articalInfo.collect == 1}">&#xe600;</i>收藏</div>
+        </div>
+
+
+    </div>
+
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/flexible.js"></script>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/public.js"></script>
+<script src="../../static/js/api.js"></script> 
+<script src="../../static/js/vue.min.js"></script>
+<script>
+	var articalInfo = '';
+	var articalvue = new Vue({
+	  el: '#tcbkApp',
+	  data: {
+	    articalInfo: articalInfo
+	  }
+	})	
+	
+	var theRequest = GetRequest();
+	console.log("theRequest:" + JSON.stringify(theRequest))
+	var tid = theRequest.tid;
+	var url = host + 'c=Topline&a=topline_detail';
+	var parmas = {tid:tid};
+	ajaxRun(url,parmas,true,'GET',function (data) {
+		if (data.statuscode == 1) {
+			articalvue._data.articalInfo = data.result;
+		} else {
+			
+		}
+		
+ 	});
+	
+    function back() {
+    	location.href = "../tcTop.html";
+    }
+    
+</script>
+</html>

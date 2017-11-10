@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>招聘求职</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/selectCity.css">
+    <style>
+        .jobUl{
+            margin-top: 6px;
+        }
+        .rTopNav a{
+            color: #696969;
+            text-decoration: none;
+        }
+        .fadeBottom{
+        	display: none;
+        	width: 100%;
+        	height: 100%;
+        	position: fixed;
+        	background:rgba(0,0,0,0.5);
+        }
+        .rTopNav span{
+        	font-size: 0.35rem;
+        }
+        .recom span{
+        	font-size: 0.45rem;
+        }
+    </style>
+</head>
+<body style="background: #F5F5F5;">
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">招聘求职</p>
+    <a class="barRight iconfont" onclick="recruitmentSearch()">&#xe61f;</a>
+</header>
+<nav class="hopeCity rTopNav" id="rTopNav">
+    <p><span class="topNavTxt">推荐</span><i class="iconfont">&#xe603;</i></p>
+    <a class="hCityName"><span id='cityName'>城市</span> <i class="iconfont">&#xe603;</i></a>
+    <p><span id="com">公司</span> <i class="iconfont">&#xe603;</i></p>
+    <p><span id="request">要求</span> <i class="iconfont">&#xe603;</i></p>
+    <!--推荐详情-->
+    <div>
+    <div class="sCity rContent rDetail recom" data-code="0">
+        <p class="active"  id="tuijian"><span>推荐 </span><i class="iconfont">&#xe634;</i></p>
+        <p id="is_new"><span>最新 </span><i class="iconfont">&#xe634;</i></p>
+    </div>
+    <!--公司-->
+    <div class="sCity rContent rDetail" data-code="1">
+        <div class="rContentDetail">
+            <div class="sCityNav">融资规模</div>
+            <div class="sCityDetail" id="finance">           
+                <script type="text/html" id="financeList">
+					<% each lists as list%>
+		                <p><% list.finance%></p>
+		            <% /each %>
+				</script>    
+            </div>
+            <div class="sCityNav">团队规模</div>
+            <div class="sCityDetail" id="scale">
+                 <script type="text/html" id="scaleList">
+					<% each lists as list%>
+		                <p><% list.scale_cn%></p>
+		            <% /each %>
+				</script>
+            </div>
+            <div class="sCityNav">行业领域</div>
+            <div class="sCityDetail" id="trade">
+                 <script type="text/html" id="tradeList">
+					<% each lists as list%>
+		                <p><% list.trade_cn%></p>
+		            <% /each %>
+				</script>
+            </div>
+        </div>
+        <footer class="rFoot">
+            <div class="rFootCon">
+                <p class="reset">重置</p>
+                <p class="ensure" id="comSure">确认</p>
+            </div>
+           <!-- <div class="fadeBottom"></div>-->
+        </footer>
+    </div>
+    <!--要求详情-->
+    <div class="sCity rContent rDetail" data-code="2">
+        <div class="rContentDetail">
+            <div class="sCityNav">最低学历</div>
+            <div class="sCityDetail" id="edu">
+            	 <script type="text/html" id="eduList">
+					<% each lists as list%>
+		                <p><% list.education_cn%></p>
+		            <% /each %>
+				</script>
+            </div>
+            <div class="sCityNav">经验</div>
+            <div class="sCityDetail" id="exp">
+                 <script type="text/html" id="expList">
+					<% each lists as list%>
+		                <p><% list.experience_cn%></p>
+		            <% /each %>
+				</script>
+            </div>
+            <div class="sCityNav">薪资</div>
+            <div class="sCityDetail" id="wage">
+                <script type="text/html" id="wageList">
+					<% each lists as list%>
+		                <p><% list.wagerange%></p>
+		            <% /each %>
+				</script>
+            </div>
+        </div>
+        <footer class="rFoot">
+            <div class="rFootCon">
+                <p class="reset">重置</p>
+                <p class="ensure"  id="reqSure">确认</p>
+            </div>
+        </footer>
+    </div>
+</div>
+</nav>
+<div class="fadeBottom"></div>	
+<div id="refreshContainer" class="mui-scroll-wrapper">
+<div class="mui-scroll">
+<section class="tdList jobs rContentJob">
+    <ul class="jobUl">
+    	<script type="text/html" id="listLi">
+			<% each lists as list%>
+		        <li class="jobLi">
+		            <a class="ja" data-id="<% list.id %>">
+		                <div class="jtxt">
+		                    <span><% list.jobs_name%></span>
+		                    <i><%list.minwage%>k-<%list.maxwage%>k</i>
+		                </div>
+		                <div class="jtxt">
+		                    <p><%list.district_cn%>| <%list.experience_cn%> | <%list.education_cn%></p>
+		                    <p><%list.addtime%>发布</p>
+		                </div>
+		                <div class="jinfo">
+		                    <img src="<%list.thumb%>"/>
+		                    <h1><%list.companyname%></h1>
+		                    <p><%list.nature_cn%>| <%list.scale_cn%>| <%list.finance%></p>
+		                </div>
+		            </a>
+		        </li>
+	        <% /each %>
+		</script>    
+    </ul>
+</section>
+</div>
+</div>
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>-->
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+    });
+    job_apply();
+    comList();
+	reqList();
+    
+    $(".jobUl").on("tap",'a',function(){
+        var jobDetailId=$(this).attr('data-id');
+        console.log(jobDetailId);
+        var href='../jobDetail/jobDetail.html';
+        location.href=href+"?jobDetailId="+jobDetailId;
+    });
+//默认
+function job_apply(){
+		n=0;
+	    doLocalStorage('set','n',n);
+	    console.log(n);
+		var params = {uid:userid,page:1,pagesize:5,op:'edit'};
+   		var url=host+"c=personal&a=job_apply";
+   		ajaxRun(url,params,true,'GET',function(data){
+   			if(data.statuscode==1){
+	   			console.log(data.msg);
+   				console.log(data);
+   				var content = template("listLi",{lists:data.result})   
+	            $(".jobUl").html(content);		            
+	            //推荐
+	            $("#tuijian").on("click",function(){
+					tuijian();	
+					n=1;
+	            	doLocalStorage('set','n',n);
+	            	console.log(n);
+				});
+	            //最新
+	            $("#is_new").on("click",function(){
+					is_new();	
+					n=2;
+	            	doLocalStorage('set','n',n);
+	            	console.log(n);
+				});
+	            //公司
+	            $("#comSure").on("click",function(){
+					company();
+					n=3;
+	            	doLocalStorage('set','n',n);
+	            	console.log(n);
+				});
+	            //要求
+	            $("#reqSure").on("click",function(){
+					require();
+					n=4;
+	            	doLocalStorage('set','n',n);
+	            	console.log(n);
+				});
+				var cityName=localStorage.getItem('cName');
+//				var cityName=doLocalStorage('get','cName')
+				if(cityName!==null){
+			   		$('#cityName').html(cityName);
+			   		work_city();
+			   		n=5;
+	            	doLocalStorage('set','n',n);
+	            	console.log(n);
+				}					
+   			}else{
+   				console.log(data.msg); 				
+   			}
+   		})   	
+}
+//公司列表
+function comList(){
+		var params = {};
+		var url=host+"c=personal&a=company_serach_job";
+// 		console.log(url);
+   		ajaxRun(url,params,true,'GET',function(data){
+   			if(data.statuscode==1){
+   				console.log(data.msg);
+   				var finance= template("financeList",{lists:data.result.result1})  
+   				var scale= template("scaleList",{lists:data.result.result2})   
+   				var trade= template("tradeList",{lists:data.result.result3})   
+	            $("#finance").html(finance);
+	            $("#scale").html(scale);
+	            $("#trade").html(trade);
+	            $(".rContentDetail p").click(function(){
+			        $(this).addClass("active").siblings().removeClass("active");
+			    });
+   			}else{
+   				console.log(data.msg); 				
+   			}            
+		})	
+}
+//要求列表
+function reqList(){
+	var params = {};
+	var url=host+"c=personal&a=require_serach";
+//	console.log(url);
+	ajaxRun(url,params,true,'GET',function(data){
+//  	console.log(data);
+		if(data.statuscode==1){
+			console.log(data.msg);
+			var edu= template("eduList",{lists:data.result.result1})  
+			var exp= template("expList",{lists:data.result.result2})   
+			var wage= template("wageList",{lists:data.result.result3})   
+            $("#edu").html(edu);
+            $("#exp").html(exp);
+            $("#wage").html(wage);
+            $(".rContentDetail p").click(function(){
+		        $(this).addClass("active").siblings().removeClass("active");
+		    });
+		}else{
+			console.log(data.msg); 				
+		}            
+	})	
+}
+
+//推荐 
+function tuijian(){
+	var params = {page:1,pagesize:10};
+	var url=host+"c=personal&a=is_tuijian";
+	console.log(url);
+	ajaxRun(url,params,true,'GET',function(data){
+		console.log(data);
+		if(data.statuscode==1){
+   			console.log(data.msg);
+			console.log(data);
+			var content = template("listLi",{lists:data.result});   
+            $(".jobUl").html(content);
+		}else{
+			console.log(data.msg); 				
+		}
+   	})   	
+}
+//最新 
+	 function is_new(){
+   			var params = {page:1,pagesize:10};
+	   		var url=host+"c=personal&a=is_new";
+	   		console.log(url);
+	   		ajaxRun(url,params,true,'GET',function(data){
+	   		    console.log(data)
+	   			if(data.statuscode==1){
+	   				console.log(data.msg);
+	   				console.log(data);
+	   				var content = template("listLi",{lists:data.result});   
+		            $(".jobUl").html(content);
+	   			}else{
+	   				console.log(data.msg); 				
+	   			}
+	   		})
+   }	    
+//公司
+ function company(){
+	var trade= $("#trade .active").text();
+	var scale= $("#scale .active").text();
+	var finance= $("#finance .active").text();
+	var params = {				
+		trade: trade,
+		scale: scale,
+		finance: finance,
+		page:1,
+		pagesize:5,
+		op:'edit'
+	};
+	console.log(params);
+	var url=host+"c=personal&a=company_serach_job";
+	console.log(url);
+	ajaxRun(url,params,true,'POST',function(data){
+		console.log(data);
+		if(data.statuscode==1){
+			console.log(data.msg);
+			var content = template("listLi",{lists:data.result})   
+            $(".jobUl").html(content);
+		}else{
+			console.log(data.msg); 				
+		}            
+	})
+}		
+//要求
+ function require(){
+	var edu= $("#edu .active").text();
+	var exp= $("#exp .active").text();
+	var wage= $("#wage .active").text();
+	var params = {
+		education_cn: edu,
+		experience_cn: exp,
+		wagerange: wage,
+		page:1,
+		pagesize:5,
+		op:'edit'
+	};
+	console.log(params);
+	var url=host+"c=personal&a=require_serach";
+	console.log(url);
+	ajaxRun(url,params,true,'POST',function(data){
+		console.log(data);
+		if(data.statuscode==1){
+			console.log(data.msg);
+			var content = template("listLi",{lists:data.result})   
+            $(".jobUl").html(content);
+		}else{
+			console.log(data.msg); 				
+		}            
+	})	
+}  
+var cityName=localStorage.getItem('cName');
+//var cityName=doLocalStorage('get','cName');
+console.log(cityName);
+ function work_city(){
+	var params = {		
+		page:1,
+		pagesize:5,
+		op:'edit',
+		work_city:cityName
+	};
+	console.log(params);
+	var url=host+"c=personal&a=work_city";
+//	console.log(url);
+	ajaxRun(url,params,true,'POST',function(data){
+		console.log(data);
+		if(data.statuscode==1){
+			console.log(data.msg);
+			var content = template("listLi",{lists:data.result});   
+            $(".jobUl").html(content);
+		}else{
+			console.log(data.msg); 				
+		}            
+	})
+ }
+ 
+	$(".recom p").click(function(){
+   		var that= this;
+        $(that).addClass("active").siblings().removeClass("active");
+        var t= $(that).children("span").text();
+        $(".topNavTxt").text(t);
+        $(".rContent").hide();
+        $(".fadeBottom").hide();
+  })
+
+    $("#rTopNav>p").click(function(){
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
+        $(".fadeBottom").css({"display":"block", "z-index":"95"});
+        var index= $('#rTopNav>p').index($(this));
+        getShowHide(index);
+    });
+
+    $(".reset").click(function(){
+        $(".rContentDetail p").removeClass("active");
+    });
+
+    $(".ensure").click(function(){
+        $(".rContent").hide();
+        $(".fadeBottom").hide();
+        $("#rTopNav>p").removeClass("active");
+    });
+    
+    $(".fadeBottom").click(function(){
+        $(".rContent").hide();
+        $(".recom").hide();
+        $(".fadeBottom").hide();
+        $("#rTopNav>p").removeClass("active");
+    });
+	
+    function getShowHide(index){
+        $('.rDetail').each(function(index1){
+            if(index1==index){
+                $(this).show().siblings().hide();
+            }
+        })
+    }
+    
+    //页面跳转
+    function recruitmentSearch(){
+    	location.href='../recruitment/recruitmentSearch.html'
+    }
+
+	$(".hCityName").on("click",function(){
+		location.href='../recruitment/selectCity.html'
+	});
+	
+	$(".titleBar").on("tap",".barLeft",function(){
+//      localStorage.removeItem("cName");
+		doLocalStorage('remove','cName');
+		doLocalStorage('remove','n');		
+        location.href='select.html'	;
+	})
+	
+//  加载更多	 
+   	 var Flag = false;
+   	 var page=[1,1,1,1,1,1];
+     mui.init({
+	    pullRefresh : {
+		    container:"#refreshContainer",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+		    up : {
+			  	height:50,//可选.默认50.触发上拉加载拖动距离
+			  	auto:false,//可选,默认false.自动上拉加载一次
+			  	contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+			  	contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+			  	callback : pullupRefresh 
+	    	}
+	    }
+	});
+    
+    function pullupRefresh() {
+    	setTimeout(function () {
+         	mui('#refreshContainer').pullRefresh().endPullupToRefresh((Flag)); //参数为true代表没有更多数据了。
+    		loadMore();   	
+		}, 1500);
+    }  
+    function loadMore() {
+    	var n=localStorage.getItem('n');
+	 	console.log(n);
+    	if(n==0){
+    		page[0]++;
+    		var params = {uid:userid,page:page[0],pagesize:5,op:'edit'};
+   			var url=host+"c=personal&a=job_apply";
+    	}else if(n==1){
+    		page[1]++;
+    		var params = {page:page[1],pagesize:5,op:'edit'};
+			var url=host+"c=personal&a=is_tuijian";
+    	}else if(n==2){
+    		page[2]++;
+    		var params = {page:page[2],pagesize:5,op:'edit'};
+	   		var url=host+"c=personal&a=is_new";
+    	}else if(n==3){
+    		page[3]++;
+    		var trade= $("#trade .active").text();
+			var scale= $("#scale .active").text();
+			var finance= $("#finance .active").text();
+			var params = {trade: trade,scale: scale,finance: finance,page: page[3],pagesize: 5,op: 'edit'};
+			var url=host+"c=personal&a=company_serach_job";
+    	}else if(n==4){
+    		page[4]++;
+    		var edu= $("#edu .active").text();
+			var exp= $("#exp .active").text();
+			var wage= $("#wage .active").text();
+			var params = {education_cn: edu,experience_cn: exp,wagerange: wage,page:page[4],pagesize: 5,op:'edit'};
+			var url=host+"c=personal&a=require_serach";
+    	}else if(n==5){ 
+    		page[5]++;
+			var params = {page:page[5],pagesize: 5,op: 'edit',work_city:cityName};
+			var url=host+"c=personal&a=work_city";
+    	}   	   	
+		ajaxRun(url,params,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				var list = data.result;
+				if(list.length < 5 || list == null || list == '') {
+					Flag = true;
+				}
+				var content = template("listLi",{lists:list})   
+	            $(".jobUl").append(content);
+//				page ++;
+			}else{	
+				mui.toast(data.msg,{ duration:1000}); 
+			}	
+	   	},1);
+   }				
+</script>
+</body>
+</html>

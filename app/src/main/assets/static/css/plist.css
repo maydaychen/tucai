@@ -1,0 +1,100 @@
+html,
+body {
+	height: 100%;
+	/*overflow: hidden;*/
+}
+.mui-search.mui-active:before {
+	padding-top:8px;
+}
+.listCon{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.listCon>li{
+	margin-bottom: 10px;
+	background: #fff;
+}
+#app{
+	margin-top: 45px;
+	/*margin-top: 70px;*/
+}
+.mui-bar {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	height: 45px;
+	/*height: 70px;*/
+	/*padding-top: 30px;*/
+	background: #41a6ff;	
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.mui-bar-nav~.mui-content {
+    padding-top: 45px;
+   /*padding-top: 70px;*/
+}
+/*.mui-indexed-list-bar{
+    border: 1px solid #F0F0F0;
+    border-radius: 15px;
+    background: #fff;
+    padding: 0.5rem 0;
+    top: 8%;
+    right: 2%;
+    height: 88%!important;
+}
+.mui-indexed-list-group{
+    padding: 0 5%;
+}*/
+.listItem{
+	display: flex;
+	padding: 0.25rem 5%;
+}
+.listItem img{
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: 50%;
+	margin-right: 5%;
+}
+.listItem div h1,.pName{
+	color: #333;
+    font-size: 0.4rem;
+    font-weight: normal;
+    margin: 0.3rem 0;
+    letter-spacing: 2px;
+}
+.pName{
+    margin: 0.3rem 10px 0.3rem 0;
+}
+.listItem div p{
+	font-size: 0.3rem;
+	margin: 0;
+	padding: 0;
+}
+.daka{
+	color: #fff;
+	font-size: 0.3rem;
+	font-weight: normal;
+	border-radius: 4px;
+	background: #41A6FF;
+	padding: 2px 4px;
+}
+.barIcon{   
+	color: #fff;
+	font-size: .6rem; 
+	padding: 10px;   
+}
+.barTxt {    
+	color: #fff;
+	font-size: .4rem;
+	margin-top: 10px;
+}		
+#sou{
+	display: none;
+}
+/*.mui-search input{
+	text-align: left;
+}
+.mui-indexed-list-bar a.active{
+	color: #41A6FF;
+}*/

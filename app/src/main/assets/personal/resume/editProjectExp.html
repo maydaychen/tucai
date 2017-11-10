@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>编辑项目经历</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/mui.picker.css" />
+    <link  rel="stylesheet" href="../../static/css/mui.poppicker.css"/>
+    <link rel="stylesheet" href="../../static/css/resume.css">
+    <link rel="stylesheet" href="../../static/css/resume_common.css">
+    <style type="text/css">
+        button{background:#41a6ff;}
+        .mui-poppicker-header{text-align: center}
+        .mui-poppicker-header .mui-title-txt{
+            display:inline-block;
+            height:27px;
+            line-height: 27px;
+            color:#4C4C4C;
+        }
+        .add_container .mui-input-row label{
+            width:8%;
+            padding:20px 0;
+        }
+    </style>
+</head>
+
+<body style="background: #f6f6f6;">
+<header class="titleBar">
+    <a class="barLeft iconfont">&#xe604;</a>
+    <p class="barTxt">编辑项目经历</p>
+    <p class="barRight">
+        <a class="br" id="delete">
+            <i class="iconfont">&#xe621;</i>
+        </a>
+    </p>
+</header>
+<div class="mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="add_container">
+            <form class="mui-input-group" >
+                <!--<script type="text/html" id="listDiv">-->
+                    <!--<% each lists as list%>-->
+                <div class="mui-input-row">
+                    <label><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="项目名称" id="comName">
+                </div>
+                <div class="mui-input-row">
+                    <label><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="项目职责" id="jobName">
+                </div>
+                <div class="mui-input-row">
+                    <a id="showTimePicker">
+                        <label><i></i></label>
+                        <p id="inJob">项目开始时间</p>
+                    </a>
+                </div>
+                <div class="mui-input-row">
+                    <a id="showTimePicker2">
+                        <label><i></i></label>
+                        <p id="leaveJob">项目结束时间</p>
+                    </a>
+                </div>
+                <div class="mui-input-row">
+                    <label><i></i></label>
+                    <p class="e5">项目描述</p>
+                </div>
+                <div class="label">
+                    <textarea id="textarea" rows="5" placeholder="填写项目的具体内容"></textarea>
+                </div>
+                <div class="submitBtn mui-button-row">
+                    <button type="button" id="btn" class="mui-btn" style="background:#41a6ff">保存</button>
+                </div>
+                    <!--<% /each %>-->
+                <!--</script>-->
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/tmodjs.js"></script>
+<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.picker.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/mui.dtpicker.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/api.js"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+        swipeBack:true //启用右滑关闭功能
+    });
+
+    mui('.mui-scroll-wrapper').scroll({
+        scrollY: true, //是否竖向滚动
+        scrollX: false, //是否横向滚动
+        startX: 0, //初始化时滚动至x
+        startY: 0, //初始化时滚动至y
+        indicators: true, //是否显示滚动条
+        deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+        bounce: true //是否启用回弹
+    });
+    //选择时间
+    (function($, doc) {
+        $.init();
+        $.ready(function(){
+
+            //  获取时间年月
+            var yearArray = new Array();
+            for (var i = 77; i >= 0; i --) {
+                var monthArray = new Array();
+                for (var j = 1; j <= 12; j ++) {
+                    var month = new Object();
+                    if(j<=9){
+                        month.value = "0"+j;
+                    }else{
+                        month.value = j ;
+                    }
+//                    month.value = j  + "月";
+                    month.text = j + "月";
+                    monthArray.push(month);
+                }
+                var year = new Object();
+                year.value = i + 1940 + "年" ;
+                year.text = i + 1940 ;
+                year.children = monthArray;
+                yearArray.push(year);
+            };
+
+            var _getParam = function(obj, param) {
+                return obj[param] || '';
+            };
+            //	  参加工作年份级联示例
+            var timePicker = new $.PopPicker({
+                layer: 2,
+                title:'项目开始时间'
+            });
+            timePicker.setData(yearArray);
+
+            doc.getElementById('showTimePicker').addEventListener('tap', function() {
+                timePicker.show(function(items) {
+                    doc.getElementById('inJob').innerHTML = _getParam(items[0], 'text') +  "." + _getParam(items[1], 'value')+'项目开始';
+                    doc.getElementById('inJob').style="color:#5e5e5e";
+                });
+            }, false);
+            //	出生年月级联示例
+            var timePicker2 = new $.PopPicker({
+                layer: 2,
+                title:'项目结束时间'
+            });
+            timePicker2.setData(yearArray);
+            doc.getElementById('showTimePicker2').addEventListener('tap', function() {
+                timePicker2.show(function(items) {
+                    doc.getElementById('leaveJob').innerHTML =  _getParam(items[0], 'text') +  "." + _getParam(items[1], 'value')+'项目结束';
+                    doc.getElementById('leaveJob').style="color:#5e5e5e";
+                });
+            }, false);
+
+        });
+    })(mui, document);
+
+
+
+    $(document).ready(function(){
+        //请求数据
+        var id=localStorage.getItem('id');
+            var params={id:id};
+            var addProExp=host+'c=Personal&a=projectexp_edit';
+            ajaxRun(addProExp,params,true,'POST',function(data){
+                console.log(data)
+               if(data.statuscode==1){
+                    //渲染数据
+                    console.log(data.result)
+                   var info=data.result;
+                    console.log(info)
+                        var proname=info[0].proname;
+                        var produty=info[0].produty;
+                        var starttime=info[0].starttime;
+                        var endtime=info[0].endtime;
+                        var prodescrib=info[0].prodescrib;
+
+                    console.log(proname)
+                   $('#comName').val(proname);
+                   $('#jobName').val(produty);
+                   $('#inJob').html(starttime+'项目开始').css('color','#5e5e5e');
+                   $('#leaveJob').html(endtime+'项目结束').css('color','#5e5e5e');
+                   $('#textarea').val(prodescrib);
+                   //保存事件
+                   $('#btn').click(function(){
+                       console.log($('#comName').val())
+                       var check;
+                       mui(".add_container input").each(function() {
+                           //若当前input为空，则alert提醒
+                           if(!this.value || this.value.trim() == "") {
+                               mui.alert("信息未填写完整");
+                               check = false;
+                               return false;
+                           }else{
+                               if($('#textarea').val()&&$('#textarea').val().trim() !== ""){
+                                   check =true;
+                               }else{
+                                   check=false;
+                                   mui.alert("信息未填写完整");
+                                   return false;
+                               }
+                           }
+                       }); //校验通过，继续执行业务逻辑
+                       if(check){
+                           var proname1=$('#comName').val();
+                           var produty1=$('#jobName').val();
+                           var starttime1=$('#inJob').html().substring(0,7);
+                           var endtime1=$('#leaveJob').html().substring(0,7);
+                           var prodescrib1=$('#textarea').val();
+                           var op="edit";
+                           var params={proname:proname1,produty:produty1,
+                               starttime:starttime1,endtime:endtime1,prodescrib:prodescrib1,id:id,op:op};
+                           var addProExp=host+'c=Personal&a=projectexp_edit';
+                           ajaxRun(addProExp,params,true,'POST',function(data){
+                               console.log(data);
+                               if(data.statuscode==1){
+                                   mui.toast('保存成功！');
+                                   $('#comName').val("");
+                                   $('#jobName').val("");
+                                   $('#inJob').html("项目开始时间").css('color','#CFCFCF');
+                                   $('#leaveJob').html("项目结束时间").css('color','#CFCFCF');
+                                   $('#textarea').val("");
+                                   localStorage.removeItem("id");
+                                   var href='resume.html';
+                                   location.href=href;
+                               }else{
+                                   mui.alert('保存失败！');
+                               }
+                           })
+                       }
+                   })
+               }
+            })
+        //删除
+        document.getElementById("delete").addEventListener('tap', function() {
+            var btnArray = ['否', '是'];
+            mui.confirm('确认删除此条经历记录', '请确认', btnArray, function(e) {
+                if (e.index == 1) {
+                    var deleteProExp=host+'c=Personal&a=projectexp_del';
+                    var params={id:id};
+                    ajaxRun(deleteProExp,params,true,"POST",function(data){
+                        console.log(data);
+                        if(data.statuscode==1){
+                            location.href="resume.html";
+                        }else{
+                            mui.toast('删除失败！');
+                        }
+                    });
+                }else{
+                    return;
+                }
+            })
+        });
+    })
+
+    $(function(){
+        $('.titleBar .barLeft').click(function(){
+            // history.back() 或 history.go(-1)
+            history.go(-1);
+        })
+    });
+</script>
+</body>
+
+</html>

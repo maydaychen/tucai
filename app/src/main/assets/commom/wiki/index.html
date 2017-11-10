@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>涂才百科</title>
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/commomCss/wiki.css">
+	</head>
+	<body>		
+	    <header class="titleBar">
+	        <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
+	        <p class="barTxt">涂才百科</p>
+	        <p class="barRight">
+	            <a class="br"></a>
+	        </p>
+	    </header>
+	    <div style="height:100%;overflow-y: auto" id="tcbaApp">
+	    	<div class="wikiTop">
+	    		<div class="wikiNav" v-for="(category,index) in categoryLists" v-bind:class="{'activeTop':index==selected }" :id="category.c_id" @click="selectBtn(index,category.c_id)" v-text="category.c_name"></div>
+	    	</div>
+	    	
+	    	<div>
+		    	<div class="wikiLists">
+		    		<div class="noData" v-if="tcbkLists == ''">暂无数据</div>
+		    		<div class="wikiList" v-if="tcbkLists != ''" v-for="(tcbkList,index) in tcbkLists">
+			    		<div class="listTop">
+			    			<div class="listTopImg">
+			    				<img :src="[tcbkList.author_img]"/>
+			    			</div>
+			    			<div v-text="tcbkList.autor_id"></div>
+			    		</div>
+			    		<div @click="artical(tcbkList.id)">
+				    		<div class="listImg"><img :src="[tcbkList.small_img]" /></div>
+			    			<div class="listTitle" v-text="tcbkList.title"></div>
+			    		</div>
+		    			<div class="listBottom">
+		    				<div @click="share(tcbkList.id)"><i class="iconfont">&#xe635;</i>
+		    					<span v-text="tcbkList.share"></span>
+		    				</div>
+			    			<div @click="comment(tcbkList.id)"><i class="iconfont">&#xe610;</i>
+			    				<span v-text="tcbkList.commnum"></span>
+			    			</div>
+			    			<div @click="agree(tcbkList.id)">
+			    				<i class="iconfont agreeBind" :class="{'agreeState': tcbkList.zan ==1 }">&#xe670;</i>
+			    				<span v-text="tcbkList.click"></span>
+			    			</div>
+		    			</div>			    			
+		    		</div>
+		    		
+		    	</div>
+	    	</div>
+	    	
+	    	<div class="write" onclick="writeArtical()">
+	    		<img src="../../static/images/write.jpg" />
+	    	</div>
+	    	
+	    </div>
+	    
+	    <div class="cd-popup" role="alert">
+	    	<div>
+		    	<div class="shareMethods">
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/wechat.jpg" /></div>
+		    			<div>微信好友</div>
+		    		</div>
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/wechats.jpg" /></div>
+		    			<div>微信朋友圈</div>
+		    		</div>
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/qq.jpg" /></div>
+		    			<div>QQ好友</div>
+		    		</div>
+		    		<div class="shareMethod">
+		    			<div class="methodImg"><img src="../../static/images/qqs.jpg" /></div>
+		    			<div>QQ空间</div>
+		    		</div>
+		    	</div>
+		    	<div class="cancelShare">取消</div>
+	    		
+	    	</div>
+	    </div>
+
+	</body>
+	<script src="../../static/js/jquery.js"></script>
+	<script src="../../static/js/flexible.js"></script>
+	<script src="../../static/js/mui.min.js"></script>
+	<script src="../../static/js/public.js"></script>
+	<script src="../../static/js/api.js"></script> 
+	<script src="../../static/js/vue.min.js"></script>
+	<script src="../../static/js/webapp.js"></script>
+	<script>
+		var categoryLists = '';
+		var tcbkLists = '';
+		var indexvue = new Vue({
+		  el: '#tcbaApp',
+		  data: {
+		    categoryLists: categoryLists,
+		    tcbkLists: tcbkLists,
+		    selected: 0
+		  },
+		  methods: {
+		  	selectBtn: function(index,typeId){
+		  		this.selected = index;
+		  		getTcbkList(typeId);
+		  	}
+		  }
+		})	
+		var parmas = {};
+		var categoryListUrl = host + 'c=tcbk&a=getCategory';
+		ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
+			if(data.statuscode==1){
+				indexvue._data.categoryLists = data.result;
+				var typeId = data.result[0].c_id;
+				getTcbkList(typeId);
+			}else{
+				rzState=0;
+				console.log(data.msg);	
+				mui.toast(data.msg,{ duration:1000}); 
+			}					
+									
+	 	});
+		function getTcbkList(typeId) {
+			var url = host + 'c=tcbk&a=getTcbkList';
+			var parmas = {type_id: typeId};
+			ajaxRun(url,parmas,true,'GET',function (data) {					
+				if(data.statuscode==1){
+					tcbkLists = data.result;
+					indexvue._data.tcbkLists = tcbkLists;
+				} else {
+					indexvue._data.tcbkLists = '';
+					rzState=0;
+					console.log(data.msg);	
+					mui.toast(data.msg,{ duration:1000}); 
+				}					
+										
+		 	});
+		}
+		
+		function back() {
+			location.href = "../../index.html"
+		}
+		function artical(articalId) {
+			location.href = "artical.html?articalId=" + articalId;
+		}
+		function writeArtical() {
+			console.log("Artical")
+			location.href='write.html';
+		}
+		$(".cancelShare").bind("click",function(){
+	         event.preventDefault();
+	         $(".cd-popup").removeClass('is-visible');
+	    });
+
+		function comment(articalId) {
+			location.href = "comment.html?articalId=" + articalId;
+		}
+		
+		
+		
+		function share(articalId){
+			console.log("分享");
+			$(".cd-popup").addClass('is-visible');
+			_webapp.shareTo();
+		//	var url = host + 'c=tcbk&a=shareOrZan';
+		//	var parmas = {
+		//		articalId: articalId,
+		//		type: "share"
+		//	}
+		//	ajaxRun(url,parmas,true,'GET',function (data) {
+		//		if(data.statuscode==1){
+		//			console.log("分享");
+		//			$(".cd-popup").addClass('is-visible');
+		//			
+		//		} else {
+		//		 	rzState=0;
+		//			console.log('未认证');	
+		//			mui.toast('未认证',{ duration:1000}); 
+		//		}					
+		// 	});
+		}
+	</script>
+</html>

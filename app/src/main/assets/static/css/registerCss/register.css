@@ -1,0 +1,74 @@
+body {
+    color: #333;
+    background-color: #fff;
+    -webkit-overflow-scrolling: touch;
+}
+.titleBar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 0 4%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.titleBar>a {
+    box-sizing: border-box;
+    padding: .2rem 0;
+    color: #666;
+    font-size: .5rem;
+}
+.registerTitle {
+    width: 100%;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+    font-size: .4rem;
+    font-weight: bold;
+}
+.mui-input-row {
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 20px;
+}
+.register-icon {
+    width: 20% !important;
+}
+.register-text {
+    width: 80% !important;
+    line-height: 40px;
+    color: #333;
+    font-size: .32rem;
+    border: 0;
+    -webkit-user-select: auto !important;
+}
+.register-text::-webkit-input-placeholder{
+    color: #d3d3d3;
+}
+.getCode {
+    width: 100px!important;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc!important;
+    border-radius: 30px!important;
+    font-size: .32rem;
+    color: #666;
+    float: right;
+    text-align: center;
+    padding: 0!important;
+    margin: 0;
+}
+.register-bottom {
+    margin: 50px 20px;
+    background-color: #41a6ff;
+    color: #fff;
+    font-size: .4rem;
+    text-align: center;
+    border-radius: 5px;
+    height: 50px;
+    line-height: 50px;
+}

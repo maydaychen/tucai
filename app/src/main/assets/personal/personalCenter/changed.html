@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>修改手机号</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/css/mui.min.css">
+    <link rel="stylesheet" href="../../static/css/public.css">
+    <link rel="stylesheet" href="../../static/css/iconfont.css">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css">
+    <link rel="stylesheet" href="../../static/css/home.css">
+    <link rel="stylesheet" href="../../static/css/center.css">
+</head>
+
+<body style="background: #f6f6f6;">
+<header class="titleBar">
+    <a class="barLeft iconfont" data-href="install">&#xe604;</a>
+    <p class="barTxt">修改手机号</p>
+</header>
+<section class="p-con">
+    <div class="p-container">
+        <div class="p-icon">
+            <i class="iconfont">&#xe61c;</i>
+        </div>
+        <div class="p-info">
+            <p>您当前的手机号为</p>
+            <p class="mobile">1366****502</p>
+            <p>更换后可以用新手机号登录</p>
+        </div>
+    </div>
+    <form class="p-form">
+        <div>
+            <select>
+                <option selected="selected">0086</option>
+                <option>+86</option>
+            </select>
+            <i class="p-arrow"></i>
+            <input type="text" placeholder="新手机号" id="phoneNum">
+        </div>
+        <div>
+            <input type="text" placeholder="验证码">
+            <input type="button" class="yzm getCode" value="获取验证码">
+        </div>
+    </form>
+</section>
+<div class="mui-button-row">
+    <button type="button" class="mui-btn  btn-confirm">确认</button>
+</div>
+
+<script src="../../static/js/mui.min.js"></script>
+<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/tmodjs.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
+<script src="../../static/js/public.js"></script>
+<script src="../../static/js/config.js"></script>
+<script src="../../static/js/api.js"></script>
+<script>
+    mui.init({
+        statusBarBackground: '#41a6ff',
+    });
+
+    $(function () {
+        FastClick.attach(document.body);
+        loadInfo();
+    });
+
+    function loadInfo() {
+        var userid = localStorage.getItem('userid');
+        var params = {uid: userid};
+        var url = host + "c=personal&a=phone_update";
+        console.log(url);
+        ajaxRun(url, params, true, 'GET', function (data) {
+            console.log(data);
+            if (data.statuscode == 1) {
+                console.log(data.msg);
+                var phone = data.result.phone;
+                var myphone = phone.substr(3, 4);
+                var mobile = phone.replace(myphone, "****");
+                console.log(mobile);
+                $(".mobile").html(mobile);
+            } else {
+                console.log(data.msg);
+            }
+        })
+    }
+
+    $("#phoneNum").blur(function () {
+        reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
+        if (!reg.test($("#phoneNum").val())) {
+            mui.alert("格式有误，请输入手机号");
+        }
+    })
+    $(".btn-confirm").on("click", function () {
+        var userid = localStorage.getItem('userid');
+        var phone = $("#phoneNum").val();
+        var params = {
+            uid: userid,
+            phone: phone
+        };
+        console.log(params);
+        var url = host + "c=personal&a=phone_update";
+        console.log(url);
+        ajaxRun(url, params, true, 'POST', function (data) {
+            console.log(data);
+            if (data.statuscode == 1) {
+                mui.alert(data.msg);
+            } else {
+                mui.alert(data.msg);
+            }
+        })
+    })
+</script>
+
+</body>
+
+</html>
