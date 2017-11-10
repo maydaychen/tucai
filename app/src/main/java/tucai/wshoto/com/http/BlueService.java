@@ -10,7 +10,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import tucai.wshoto.com.bean.ImageBean;
 
 /**
  * 作者：JTR on 2016/11/24 14:15
@@ -56,7 +55,7 @@ public interface BlueService {
     rx.Observable<JSONObject> dalete_token(@Query("access_token") String access_token, @Query("sessionkey") String sessionkey,
                                            @Query("sign") String sign, @Query("timestamp") int timestamp);
 
-
-    @GET("/index.php?m=phone&c=upload&a=avatar")
-    rx.Observable<ImageBean> getAva(@Query("base64_string") String base64_string);
+    @FormUrlEncoded
+    @POST("/index.php?m=phone&c=upload&a=avatar")
+    rx.Observable<JSONObject> getAva(@Field("base64_string") String base64_string);
 }
