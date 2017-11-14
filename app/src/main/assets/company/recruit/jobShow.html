@@ -13,18 +13,18 @@
 		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>	
 		<link rel="stylesheet" href="../../static/css/mui.min.css">
 		<link rel="stylesheet" href="../../static/css/public.css">
-		<link rel="stylesheet" href="../../static/css/iconfont.css">
 		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../static/css/iconfont.css">
 		<link rel="stylesheet" href="../../static/css/home.css">
 		<style type="text/css">
-
+			.nomore{ margin-bottom: 50px}
 		</style>
 	</head>
 
 	<body style="background: #f6f6f6;">
 		<section  id="app" style="width: 100%;height: 100%;">
 		<header class="titleBar">
-			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
+			<a class="barLeft iconfont" onclick="back()">&#xe604;</a>
 			<p class="barTxt">招聘求职</p>
 			<p class="barRight">
 				<a class="br"></a>
@@ -72,7 +72,7 @@
 					<ul class="tdul scrolls" id="tdul" style="display: block; height: 100%; overflow: auto">
 						<li class="tdLi" v-for="(item, index) in rsList" :key="item.id" @click="goRs(item.id)">
 							<div class="tdTop">
-								<img class="tdImg" :src="[item.photo_img]"/>
+								<img class="tdImg" :src="[item.photo_img==''?'../../static/images/aboutTc.gif':item.photo_img]"/>
 								<p class="td1"><a v-text="item.fullname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
 								<p class="td2">求职期望 <em v-text="item.intention_jobs"></em></p>
 								<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>
@@ -135,7 +135,7 @@
                             return;
                         }
 						that.page++;
-				        console.log('页数'+that.page);
+                        pageflag = true;
 					});
 			  	},
 			  	goRs:function(id){
@@ -229,6 +229,7 @@
 			  			that.xs=xsid;
 			  			that.page=1;
 			  			that.rsList=[];
+			  			$('.nomore').remove();
 			  			that.loadInfo();
 					});
 								  	
@@ -246,7 +247,6 @@
                             setTimeout(function(){
                                 $('#loadTips').remove();
 								that.loadInfo();
-                                pageflag = true;
                             },1000)
                         }
 		            });
@@ -260,6 +260,9 @@
             app.loadInfo();
             app.loadPz();
 
+		function back() {
+			location.href = '../../index.html';
+		}
 
 		</script>
 </html>

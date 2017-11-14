@@ -246,9 +246,9 @@ body{
 }
 .btn-confirm{
     width: 90%;
-    font-size: 0.5rem;
+    font-size: 0.4rem;
     color: #fff;
-    line-height: 40px;
+    line-height: 28px;
     background: #41A6FF;
     border: 1px solid #41A6FF;
     letter-spacing: 2px;
@@ -438,7 +438,7 @@ input[type=button].yzm{
 }
 .recTop span{
     color: #404040;
-    font-size: 0.5rem;
+    font-size: 0.45rem;
 }
 .recCon h1{
     font-size: 0.5rem;

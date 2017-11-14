@@ -28,7 +28,11 @@
 	    	</div>
 	    	<div>
 	    		<div class="live-1">
-	    			<div v-for="(v,i) in vedioLists"><video :src="v.link_url" controls="controls" /></video></div>
+					<div v-for="(v,i) in vedioLists"><video :src="v.link_url" controls="controls" /></video></div>
+					<div style="text-align:center;" v-if="display">
+						<img class="nodata" src="../static/images/nodata.png">
+						<p style="font-size:12px;color:#999">暂无数据</p>
+					</div>
 	    			<!--<div><video  src="../static/images/live.png" controls="controls"></video></div>
 	    			<div><video src="../static/images/live.png"></video></div>-->
 	    			
@@ -51,7 +55,8 @@
 		  data: {
 		    categoryLists: ["推荐","企业","行业"],
 		    vedioLists: vedioLists,
-		    selected: 0
+		    selected: 0,
+			display:false
 		  },
 		  methods: {
 		  	selectBtn: function(index,typeId){
@@ -61,14 +66,17 @@
 		  	}
 		  }
 		})	
-		var parmas = {typeId: 1};
+		var parmas = {type_id: 1};
 		var categoryListUrl = host + 'c=video&a=getvideoList';
 		ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
 			if(data.statuscode==1){
 				vediovue._data.vedioLists = data.result;
 				console.log(vediovue)
 				var typeId = 1;
+				vediovue._data.display = false
 			}else{
+				vediovue._data.vedioLists = []//这里 如果没有相关数据置为空
+				vediovue._data.display = true
 				mui.toast(data.msg,{ duration:1000});  
 			}					
 									
@@ -80,7 +88,10 @@
 	 		ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
 				if(data.statuscode==1){
 					vediovue._data.vedioLists = data.result;
+					vediovue._data.display = false
 				}else{	
+					vediovue._data.vedioLists = []//这里 如果没有相关数据置为空
+					vediovue._data.display = true
 					mui.toast(data.msg,{ duration:1000}); 
 				}					
 										

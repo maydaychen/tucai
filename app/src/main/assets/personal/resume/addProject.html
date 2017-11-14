@@ -157,8 +157,8 @@
     $(document).ready(function(){
         $('#comName').focus();
         $('#textarea').on('input propertychange',function(){
-            if(!this.value||this.value.trim()==""|| $('#inJob').css('color')=='rgb(207, 207, 207)'
-                ||$('#leaveJob').css('color')=='rgb(207, 207, 207)'){
+            if(!this.value||this.value.trim()==""|| $('#inJob').html()=='项目开始时间'
+                ||$('#leaveJob').html()=='项目结束时间'){
                 return false;
             }else{
                 $('#btn').removeAttr('disabled').css('background','#41a6ff');

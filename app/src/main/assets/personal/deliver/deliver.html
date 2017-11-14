@@ -14,12 +14,6 @@
     <link rel="stylesheet" href="../../static/css/home.css">
     <link rel="stylesheet" href="../../static/css/deliver.css">
     <style type="text/css">
-        .mui-scroll-wrapper{
-            margin-top: 83px;
-        }
-        .td_all .jobs .jobUl{
-            padding-top:10px;
-        }
         .mui-table-view .mui-table-view-cell .mui-media-body p{
             line-height: .6rem;
         }
@@ -68,13 +62,43 @@
             margin-top:5px;
             color:#D3D3D3;
         }
-        .mui-scroll{
-            /*min-height:100%;*/
+        #pullrefresh{
+            padding-top:85px;
+        }
+        .no_tips{
+            width:100px;
+            height:50px;
+            text-align: center;
+            position:absolute;
+            bottom:30px;
+            left:50%;
+            margin-left:-25px;
+            line-height: 50px;
+            background:#000;
+            opacity:.8;
+            z-index: 1001;
+            color:#fff;
+            border-radius:15px;
+        }
+        /*    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    float: left;
+    margin-right: 3%;
+    margin-top: 10px;
+}*/
+        #pullrefresh .mui-table-view img{
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            float: left;
+            margin-right: 3%;
+            margin-top: 10px;
         }
     </style>
 </head>
 
-<body style="background: #f6f6f6;position:relative">
+<body style="background: #f6f6f6;position:relative;">
 <header class="titleBar">
     <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
     <p class="barTxt">我的投递</p>
@@ -98,13 +122,13 @@
     </div>
 </div>
 
-<div id="pullrefresh" class="mui-scroll-wrapper mui-content">
+<div id="pullrefresh" style="width: 100%; height: 100%; float: left; overflow: hidden">
 
-    <div id="pullrefresh0" class="mui-scroll" v-if="allList!==null">
-        <ul id="dataList0" class="mui-table-view" v-show="show==true">
-            <li class="mui-table-view-cell mui-media"  v-for="item in allList">
+    <div id="pullrefresh0" style="height:100%">
+        <ul id="dataList0" class="mui-table-view" style="height:100%;overflow:auto;" v-show="show==true">
+            <li class="mui-table-view-cell mui-media"  v-for="item in allList" >
                 <span class="chat_time" v-text="item.addtime"></span>
-                <a data-href="../wiki/artical.html">
+                <a @click="toDetail(item.id)">
                     <img class="mui-media-object mui-pull-left" :src="item.company.logo">
                     <div class="mui-media-body">
                         <h2 v-text="item.job.jobs_name"></h2>
@@ -120,15 +144,11 @@
                 <i :data-face="item.is_face"></i>
             </li>
         </ul>
-    </div>
 
-
-    <div id="pullrefresh1" class="mui-scroll" v-if="lookList!==null">
-
-        <ul id="dataList1" class="mui-table-view" v-show="show==true">
-            <li class="mui-table-view-cell mui-media"  v-for="item in lookList">
+        <ul id="dataList1" class="mui-table-view" style="height:100%;overflow:auto;" v-show="show==true">
+            <li class="mui-table-view-cell mui-media"  v-for="item in lookList" >
                 <span class="chat_time" v-text="item.addtime"></span>
-                <a data-href="../wiki/artical.html">
+                <a @click="toDetail(item.id)">
                     <img class="mui-media-object mui-pull-left" :src="item.company.logo">
                     <div class="mui-media-body">
                         <h2 v-text="item.job.jobs_name"></h2>
@@ -143,15 +163,11 @@
                 </a>
             </li>
         </ul>
-    </div>
 
-
-    <div id="pullrefresh2" class="mui-scroll" v-if="interview!==null">
-
-        <ul id="dataList2" class="mui-table-view" v-show="show==true">
+        <ul id="dataList2" class="mui-table-view" style="height:100%;overflow:auto;" v-show="show==true">
             <li class="mui-table-view-cell mui-media"  v-for="item in interview">
                 <span class="chat_time" v-text="item.addtime"></span>
-                <a data-href="../wiki/artical.html">
+                <a @click="toDetail(item.id)">
                     <img class="mui-media-object mui-pull-left" :src="item.company.logo">
                     <div class="mui-media-body">
                         <h2 v-text="item.job.jobs_name"></h2>
@@ -167,13 +183,10 @@
             </li>
         </ul>
 
-    </div>
-
-    <div id="pullrefresh3" class="mui-scroll" v-if="nochoseList!==null">
-        <ul id="dataList3" class="mui-table-view" v-show="show==true">
+        <ul id="dataList3" class="mui-table-view"  style="height:100%;overflow:auto;" v-show="show==true">
             <li class="mui-table-view-cell mui-media"  v-for="item in nochoseList">
                 <span class="chat_time" v-text="item.addtime"></span>
-                <a data-href="../wiki/artical.html">
+                <a @click="toDetail(item.id)">
                     <img class="mui-media-object mui-pull-left" :src="item.company.logo">
                     <div class="mui-media-body">
                         <h2 v-text="item.job.jobs_name"></h2>
@@ -188,7 +201,12 @@
                 </a>
             </li>
         </ul>
+
     </div>
+</div>
+
+<div class="no_tips">
+    <span>无更多数据</span>
 </div>
 
 <script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
@@ -200,183 +218,197 @@
 <script>
     var url= host + 'c=personalJobsend&a=getRecicveList';
     var params = '';
-    var page=1;
-    var Flag=false;
-    //mui 初始化下拉加载
-    mui.init({
-        pullRefresh: {
-                container: '#pullrefresh',
-                up: {
-                    contentrefresh: '正在加载...',
-                    callback: pullupRefresh
-                }
-            }
-    });
-    mui('.mui-scroll-wrapper').scroll({
-        scrollY: true, //是否竖向滚动
-        scrollX: false, //是否横向滚动
-        startX: 0, //初始化时滚动至x
-        startY: 0, //初始化时滚动至y
-        indicators: false, //是否显示滚动条
-        deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
-        bounce: true //是否启用回弹
-    });
+
+    var page=[1,1,1,1];
+    var pagesize=10;
+    var pageflag=[true,true,true];
 
     //VUE实例 渲染页面
+
     var allListVue=new Vue({
-        el:'#pullrefresh0',
+        el:'#dataList0',
         data:{
-            allList:null,
-            show:false
-        }
-    });
-    var lookListVue=new Vue({
-        el:'#pullrefresh1',
-        data:{
-            lookList:null,
-            show:false
-        }
-    });
-    var interviewVue=new Vue({
-        el:'#pullrefresh2',
-        data:{
-            interview:null,
-            show:false
-        }
-    });
-    var nochoseListVue=new Vue({
-        el:'#pullrefresh3',
-        data:{
-            nochoseList:null,
-            show:false
-        }
-    })
-
-    //全部 ajax
-    function all(){
-        params={page:1,pagesize:10};
-        ajaxRun(url,params,true,'get',function(data){
-            console.log(data);
-            if(data.statuscode==1){
-               allListVue._data.allList=data.result;
-                allListVue._data.show=true;
-                setTimeout(function(){
-                    $('#pullrefresh0 i').each(function(){
-                        var view=$(this).attr('data-face');
-                        if(view==1){
-                            $(this).html('可面试');
-                        }else if(view==2){
-                            $(this).html('不合适');
-                        }else if(view==3){
-                            $(this).html('已查看');
-                        }else{
-                            $(this).html('已投递');
+            allList:[],
+            show:true
+        },
+        methods:{
+            loadAll:function(){
+                var that=this;
+                params={page:page[0],pagesize:pagesize};
+                ajaxRun(url,params,true,'get',function(data){
+                    console.log(data);
+                    if(data.statuscode==1){
+                        that.allList=that.allList.concat(data.result);
+                        setTimeout(function(){
+                            $('#dataList0 i').each(function(){
+                                var view=$(this).attr('data-face');
+                                if(view==1){
+                                    $(this).html('可面试');
+                                }else if(view==0){
+                                    $(this).html('不合适');
+                                }else if(view==3){
+                                    $(this).html('已查看');
+                                }else{
+                                    $(this).html('已投递');
+                                }
+                            });
+                        },50);
+                        if(data.result.length<pagesize){
+                            $('.no_tips').show().delay(500).fadeOut();
+                            return;
                         }
-                    });
-                },50);
-            }else{
-                $('.tips').show();
+                        page[0]++;
+                        pageflag[0] = true;
+                    }else{
+                        if(page[0]==1){
+                            $('.tips').show();
+                        }
+                        $('.no_tips').show().delay(500).fadeOut();
+                    }
+                })
             }
-        })
-    }
+        }
+    });
+    allListVue.loadAll();
+    bindScroll($('#dataList0'),0);
 
-    //面试 ajax
-    function  interview(){
-        params={is_face:1,page:1,pagesize:10};
-        ajaxRun(url,params,true,'get',function(data){
-            console.log(data)
-            if(data.statuscode==1){
-               interviewVue._data.interview=data.result;
-               interviewVue._data.show=true;
-            }else{
-                mui.toast(data.msg)
+    var lookListVue=new Vue({
+        el:'#dataList1',
+        data:{
+            lookList:[],
+            show:false
+        },
+        methods:{
+            loadLook:function(){
+                var that=this;
+                params={is_face:3,page:page[1],pagesize:pagesize};
+                ajaxRun(url,params,true,'get',function(data){
+                    console.log(data);
+                    if(data.statuscode==1){
+                        that.lookList=that.lookList.concat(data.result);
+                        if(data.result.length<pagesize){
+                            if($('#dataList1').css('display')=="block"){
+                                $('.no_tips').show().delay(500).fadeOut();
+                            }
+                            return;
+                        }
+                        page[1]++;
+                        pageflag[1]=true;
+                    }else{
+                        $('.no_tips').show().delay(500).fadeOut();
+                    }
+                })
             }
-        })
-    }
-    //不合适 ajajx
-    function nochose(){
-        params={is_face:0,page:1,pagesize:5};
-        ajaxRun(url,params,true,'get',function(data){
-            console.log(data);
-            if(data.statuscode==1){
-               nochoseListVue._data.nochoseList=data.result;
-               nochoseListVue._data.show=true;
-            }else{
-               mui.toast(data.msg)
+        }
+    });
+    lookListVue.loadLook();
+    bindScroll($('#dataList1'),1);
+
+    var interviewVue=new Vue({
+        el:'#dataList2',
+        data:{
+            interview:[],
+            show:false
+        },
+        methods:{
+            loadInterView:function(){
+                var that=this;
+                params={is_face:1,page:page[2],pagesize:pagesize};
+                ajaxRun(url,params,true,'get',function(data){
+                    console.log(data);
+                    if(data.statuscode==1){
+                        that.interview=that.interview.concat(data.result);
+                        if(data.result.length<pagesize){
+                            if($('#dataList2').css('display')=="block"){
+                                $('.no_tips').show().delay(500).fadeOut();
+                            }
+                            return;
+                        }
+                        page[2]++;
+                        pageflag[2] = true;
+                    }else{
+                        $('.no_tips').show().delay(500).fadeOut();
+                    }
+                })
             }
-        })
-    }
-    //已查看 ajax
-	function looked(){
-        params={is_face:3,page:1,pagesize:10};
-        ajaxRun(url,params,true,'get',function(data){
-            console.log(data);
-            if(data.statuscode==1){
-                lookListVue._data.lookList=data.result;
-                lookListVue._data.show=true;
-            }else{
-                mui.toast(data.msg);
+        }
+    });
+    interviewVue.loadInterView();
+    bindScroll($('#dataList2'),2);
+
+    var nochoseListVue=new Vue({
+        el:'#dataList3',
+        data:{
+            nochoseList:[],
+            show:false
+        },
+        methods:{
+            loadNoChose:function(){
+                var that=this;
+                params={is_face:0,page:page[3],pagesize:pagesize};
+                ajaxRun(url,params,true,'get',function(data){
+                    console.log(data);
+                    if(data.statuscode==1){
+                        that.nochoseList=that.nochoseList.concat(data.result);
+                        if(data.result.length<pagesize){
+                            if($('#dataList3').css('display')=="block"){
+                                $('.no_tips').show().delay(500).fadeOut();
+                            }
+                            return;
+                        }
+                        page[3]++;
+                        pageflag[3] = true;
+                    }else{
+                        $('.no_tips').show().delay(500).fadeOut();
+                    }
+                })
             }
-        })
-    }
+        }
+    });
+    nochoseListVue.loadNoChose();
+    bindScroll($('#dataList3'),3);
 
     //返回上一页
 	function back(){
         location.href='../personalCenter/personalCenter.html';
 	}
 
-    //下拉加载函数
-    function pullupRefresh(){
-        setTimeout(function () {
-            mui('#pullrefresh').pullRefresh().endPullupToRefresh((Flag)); //参数为true代表没有更多数据了。
-            loadMore();
-        }, 1500);
+    //滚动函数
+    function bindScroll(ele,num){
+        ele.on('scroll', function() {
+            var scrollHeight = $(this)[0].scrollHeight;
+            var scrollTop = $(this)[0].scrollTop;
+            var nDivHight = $(this).height();
+            var tipHtml="<span id=\"loadTips\"><a></a></span>";
+            if (pageflag[num] == true && scrollTop + nDivHight > scrollHeight - 30) {
+                pageflag[num] = false;
+                ele.append(tipHtml).show();
+                setTimeout(function(){
+                    if(num==0){
+                        allListVue.loadAll();
+                        $('#loadTips').hide();
+                    }else if(num==1){
+                        lookListVue.loadLook();
+                        $('#loadTips').hide();
+                    }else if(num==2){
+                        interviewVue.loadInterView();
+                        $('#loadTips').hide();
+                    }else{
+                        nochoseListVue.loadNoChose();
+                        $('#loadTips').hide();
+                    }
+                },1000)
+            }
+        });
     }
 
-    function loadMore(){
-        console.log(page);
-        argument1 = {page:page,pagesize:5};
-        argument1 = {page:page,pagesize:5,is_face:1};//面试
-        argument1 = {page:page,pagesize:5,is_face:0};//不合适
-        argument1 = {page:page,pagesize:5,is_face:2};// 被查看
-
-        //判断谁显示，谁显示，谁下拉加载  即ajax不同的参数
-        var block0=$('#pullrefresh0').css('display');
-        var block1=$('#pullrefresh1').css('display');
-        var block2=$('#pullrefresh2').css('display');
-        var block3=$('#pullrefresh3').css('display');
-
-        console.log(block0,block1,block2,block3);
-//        ajaxRun(indexUrl, argument, true, 'GET', function (data) {
-//            console.log(data);
-//            if(data.statuscode==1){
-//                if(data.result.length<5 || data.result==[] || data.result==null){
-//                    Flag=true;
-//                }
-//                jobListVue._data.jobList=jobListVue._data.jobList.concat(data.result);
-//            }else{
-//                mui.toast(data.msg,{ duration:1000});
-//            }
-//            page++;
-//        });
-    };
-
-
     //查看投递详情跳转
-//    mui('.mui-scroll-wrapper').on('tap','a',function(){
-//        url=$(this).attr('data-href');
-//        if(url==""||url==null||url==undefined){
-//            return
-//        }
-//        var deliverId=$(this).attr('data-id');
-//        console.log(deliverId);
-//        location.href=url+'?deliverId='+deliverId;
-//    });
+    function toDetail(data){
+        var href="deliveryRecord.html";
+        location.href=href+"?deliverId="+data;
+    }
 
     //初始index:0显示 其他隐藏
-    $('.mui-scroll').hide();
-	$('#pullrefresh0').show();
-    all();
     //导航栏目切换
     $('.mid_bar').on('tap','span',function(){
         //添加、移除active样式
@@ -385,20 +417,17 @@
 
         //获取index
         var index=$('.mid_bar span').index($(this));
-
-        //控制匹配的div显示隐藏
-        $('.mui-scroll').hide();
-        var id='#pullrefresh'+index;
-        $(id).show();
         if(index==0){
-            all();
+            allListVue._data.show=true;
         }else if(index==1){
-
-            looked();
+            allListVue._data.show=false;
+            lookListVue._data.show=true;
         }else if(index==2){
-            interview();
+            allListVue._data.show=false;
+            interviewVue._data.show=true;
         }else{
-            nochose();
+            allListVue._data.show=false;
+            nochoseListVue._data.show=true;
         }
     })
 

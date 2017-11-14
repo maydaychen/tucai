@@ -57,9 +57,9 @@
     mui.init({
         statusBarBackground: '#41a6ff',
     });
-//  var status = GetRequest().status;
-//  console.log(status);
-//  doLocalStorage('set','status',status);
+  var status = GetRequest().status;
+  console.log(status);
+  doLocalStorage('set','status',status);
 	loadInfo();
 	
 	
@@ -112,13 +112,15 @@
 	   				console.log(data.msg); 				
 	   			}
 	   		})
-//	   		if(status=='index'){
-//	   			location.href='../../index.html';
-//	   			doLocalStorage('remove','status');
-//	   		}else if(status=='undefined'){	   			
+	   		if(status=='index'){
+	   		    console.log(city);
+	   			location.href='../../index.html';
+	   			doLocalStorage('remove','status');
+
+	   		}else if(status=='undefined'){
 	   			location.href='recruitment.html';
-//	   			doLocalStorage('remove','status');
-//	   		}	   		
+	   			doLocalStorage('remove','status');
+	   		}
 		})
    }
    $('.titleBar').on('tap','.barLeft',function(){

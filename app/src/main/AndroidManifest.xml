@@ -114,24 +114,24 @@
         <activity
             android:name="tucai.wshoto.com.wxapi.WXPayEntryActivity"
             android:exported="true"/>
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+        <!--<activity-->
+        <!--android:name="com.tencent.tauth.AuthActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:noHistory="true">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW"/>-->
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+        <!--<category android:name="android.intent.category.DEFAULT"/>-->
+        <!--<category android:name="android.intent.category.BROWSABLE"/>-->
 
-                <data android:scheme="1106046817"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            />
+        <!--<data android:scheme="tencent1106510230"/>-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<activity-->
+        <!--android:name="com.tencent.connect.common.AssistActivity"-->
+        <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+        <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
+        <!--/>-->
         <activity android:name="tucai.wshoto.com.map.BNDemoGuideActivity"></activity>
         <activity android:name="tucai.wshoto.com.map.BNDemoMainActivity">
             <!--   <intent-filter>
@@ -158,6 +158,51 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <!--<intent-filter>-->
+            <!--<data android:scheme="tencent1106510230"/>-->
+
+            <!--<action android:name="android.intent.action.VIEW"/>-->
+
+            <!--<category android:name="android.intent.category.BROWSABLE"/>-->
+            <!--<category android:name="android.intent.category.DEFAULT"/>-->
+            <!--</intent-filter>-->
+
+            <!-- 调用新浪原生SDK，需要注册的回调activity -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+            <!-- 集成line客户端登录授权，需要添如下格式的过滤器 -->
+            <intent-filter>
+                <data android:scheme="line.1477692153"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="cn.sharesdk.tencent.qq.ReceiveActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="tencent1106510230"/>
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="UMENG_APPKEY"
@@ -167,6 +212,12 @@
             android:name="UMENG_MESSAGE_SECRET"
             android:value="308f4eb736f8397eab6a4d39f35ad0cf">
         </meta-data>
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="224972831b639"/>
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="2c8aaa12df62e7d6fd0bd8187040c25b"/>
     </application>
 
 </manifest>

@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="../../static/fonts/iconfont.css">
     <link rel="stylesheet" href="../../static/css/iconfont.css">
     <link rel="stylesheet" href="../../static/css/commomCss/wiki.css">
+    <style>
+    	.articleContent>table {
+    		width: 100% !important;
+    	}
+    </style>
 	</head>
 	<body>		
 	    <header class="titleBar">
@@ -47,7 +52,7 @@
 			    				<span v-text="tcbkList.commnum"></span>
 			    			</div>
 			    			<div @click="agree(tcbkList.id)">
-			    				<i class="iconfont agreeBind" :class="{'agreeState': tcbkList.zan ==1 }">&#xe670;</i>
+			    				<i class="iconfont agreeBind" :class="{'agreeState': tcbkList.zan ==1 }" :id="tcbkList.id">&#xe670;</i>
 			    				<span v-text="tcbkList.click"></span>
 			    			</div>
 		    			</div>			    			
@@ -62,7 +67,7 @@
 	    	
 	    </div>
 	    
-	    <div class="cd-popup" role="alert">
+	    <!--<div class="cd-popup" role="alert">
 	    	<div>
 		    	<div class="shareMethods">
 		    		<div class="shareMethod">
@@ -85,7 +90,7 @@
 		    	<div class="cancelShare">取消</div>
 	    		
 	    	</div>
-	    </div>
+	    </div>-->
 
 	</body>
 	<script src="../../static/js/jquery.js"></script>
@@ -96,6 +101,10 @@
 	<script src="../../static/js/vue.min.js"></script>
 	<script src="../../static/js/webapp.js"></script>
 	<script>
+		$(document).ready(function(){ 
+			$(".articleContent table").attr('width','100% !important');
+			$(".articleContent table").style('width','100%');
+		})
 		var categoryLists = '';
 		var tcbkLists = '';
 		var indexvue = new Vue({
@@ -155,7 +164,7 @@
 		}
 		$(".cancelShare").bind("click",function(){
 	         event.preventDefault();
-	         $(".cd-popup").removeClass('is-visible');
+//	         $(".cd-popup").removeClass('is-visible');
 	    });
 
 		function comment(articalId) {
@@ -166,7 +175,7 @@
 		
 		function share(articalId){
 			console.log("分享");
-			$(".cd-popup").addClass('is-visible');
+//			$(".cd-popup").addClass('is-visible');
 			_webapp.shareTo();
 		//	var url = host + 'c=tcbk&a=shareOrZan';
 		//	var parmas = {

@@ -18,7 +18,10 @@
 		<link rel="stylesheet" href="../../static/css/home.css">
 		<link rel="stylesheet" href="../../static/css/deliver.css">
 		<style type="text/css">
-
+			.nomore{margin-bottom: 70px}
+			#pullrefresh{
+				margin-top:45px;
+			}
 		</style>
 	</head>
 
@@ -38,6 +41,22 @@
 				<span>谁看过我</span>
 				<span>消息提醒</span>
 			</div>
+		<div id="pullrefresh"  class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view" id="chatList" v-if="show==true" >
+					<li class="mui-table-view-cell mui-media" v-for="item in chatList">
+						<span class="chat_time" v-text="item.addtime"></span>
+						<a :data-chatno="item.chatno">
+							<img class="mui-media-object mui-pull-left" :src="item.avatars.avatars?item.avatars.avatars: '../../static/images/aboutTc.gif'" />
+						<div>
+							<h2 v-text="item.realname.realname"></h2>
+								<p class='mui-ellipsis' v-text="item.message"></p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 		<div class="muiTop" id="app" style="width: 100%; height: 100%; float: left; overflow: hidden">
 			<div class="tdList" style="height: 96%">
 				<ul class="tdul scrolls" id="tdul_1" style="height: 100%;overflow: auto">
@@ -46,7 +65,7 @@
 						<p>暂无通知</p>
 					</div>
 					<li class="tsLi" v-for="(item, index) in listAll">
-						<img class="tdImg tdb" src="../../static/images/muwu.jpg"/>
+						<img class="tdImg tdb" src="../../static/images/msg.png"/>
 						<p class="ts1" v-text="item.title"></p>
 						<time v-text="item.addtime"></time>
 					</li>
@@ -56,15 +75,21 @@
 						<i class="iconfont">&#xe6ce;</i>
 						<p>暂无看过</p>
 					</div>
-					<li class="tdLi" v-for="(item, index) in listIng" @click="goRs(item.resumeid)">
-						<div class="tdTop bnone">
-							<img class="tdImg tdb" :src="[item.avatar]"/>
-							<p class="td1"><a v-text="item.fullname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
-							<p class="td2">求职期望 {{item.jobs_name}}</p>
-							<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>
-							<p class="td4">看过：<a v-text="item.jobs_name"></a></p>
-							<time v-text="item.addtime"></time>
-						</div>
+					<!--<li class="tdLi" v-for="(item, index) in listIng" @click="goRs(item.resumeid)">-->
+						<!--<div class="tdTop bnone">-->
+							<!--<img class="tdImg tdb" :src="[item.avarats]"/>-->
+							<!--<p class="td1"><a v-text="item.realname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>-->
+							<!--<p class="td2">求职期望 {{item.jobs_name}}</p>-->
+							<!--<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>-->
+							<!--<p class="td4">看过：<a v-text="item.jobs.jobs_name"></a></p>-->
+							<!--<time v-text="item.addtime"></time>-->
+						<!--</div>-->
+					<!--</li>-->
+
+					<li class="tsLi" v-for="(item, index) in listIng" @click="goRs(item.resume_id)">
+						<img class="tdImg tdb" :src="item.avatars"/>
+						<p class="ts1" v-text="item.realname" style="margin-top: .7rem"></p>
+						<time v-text="item.addtime"></time>
 					</li>
 				</ul>
 				<ul class="tdul scrolls" id="tdul_3" style="height: 100%;overflow: auto">
@@ -73,8 +98,8 @@
 						<p>暂无提醒</p>
 					</div>
 					<li class="tsLi" v-for="(item, index) in listOff">
-						<img class="tdImg tdb" src="../../static/images/muwu.jpg"/>
-						<p class="ts1" v-text="item.title"></p>
+						<img class="tdImg tdb" :src="[item.favatar]"/>
+						<p class="ts1" v-text="item.message"></p>
 						<time v-text="item.addtime"></time>
 					</li>
 				</ul>
@@ -120,10 +145,48 @@
 		<script src="../../static/js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			$(function(){
+                $('#pullrefresh').hide();
 				FastClick.attach(document.body);
-
+                $('.barTab a').eq(0).on('tap',function () {
+                    //location.href='../../commom/chatMsg/chatMsg.html?id='+userid
+					$(this).addClass('btActive').siblings().removeClass('btActive');
+					$('#pullrefresh').show();
+					$('.tdTab').hide();
+					$('#app').hide();
+                });
+                $('.barTab a').eq(1).on('tap',function () {
+                    $(this).addClass('btActive').siblings().removeClass('btActive');
+                    $('#pullrefresh').hide();
+                    $('.tdTab').show();
+                    $('#app').show();
+				})
 			});
-
+            var chatListVue=new Vue({
+                el:'#chatList',
+                data:{
+                    chatList:[],
+                    show:true
+                },
+                methods:{
+                    loadChatList:function(){
+                        var that=this;
+                        var parmas={page:1,pagesize:pagesize};
+                        var chatList=host+'c=notice&a=getChatList';
+                        ajaxRun(chatList,parmas,true,'POST',function (data) {
+                            console.log(data);
+                            if(data.statuscode==1){
+                                that.chatList=that.chatList.concat(data.result);
+                                that.show=true;
+                                page[0]++;
+                                pageflag[0]=true;
+                            }else{
+                                mui.toast(data.msg)
+                            }
+                        })
+                    }
+                }
+            });
+            chatListVue.loadChatList();
             var page=[1,1,1];
             var pagesize=10;
             var pageflag = [true,true,true];
@@ -145,10 +208,11 @@
                                 if(data.result.length<pagesize){
                                     setTimeout(function () {
                                         $('#tdul_1').off('scroll').append('<p class="nomore">无更多数据</p>');
-                                    },300)
+                                    },300);
                                     return;
                                 }
                                 page[0]++;
+                                pageflag[0] = true;
                             }else{
 
                             }
@@ -157,8 +221,8 @@
                     },
                     loadIng:function(){
                         var that=this;
-                        var parmas={is_face:1,page:page[1],pagesize:pagesize};
-                        ajaxRun(port.getRecicveList,parmas,true,'POST',function (data) {
+                        var parmas={page:page[1],pagesize:pagesize};
+                        ajaxRun(port.getSeeList,parmas,true,'POST',function (data) {
                             console.log('谁看过我:',data);
                             if(data.statuscode==1){
                                 that.listIng=that.listIng.concat(data.result);
@@ -169,6 +233,7 @@
                                     return;
                                 }
                                 page[1]++;
+                                pageflag[1] = true;
                             }else{
 
                             }
@@ -177,7 +242,7 @@
                     },
                     loadOff:function(){
                         var that=this;
-                        var parmas={is_face:0,page:page[2],pagesize:pagesize};
+                        var parmas={page:page[2],pagesize:pagesize};
                         ajaxRun(port.show_message_list,parmas,true,'POST',function (data) {
                             console.log('消息提醒:',data);
                             if(data.statuscode==1){
@@ -189,6 +254,7 @@
                                     return;
                                 }
                                 page[2]++;
+                                pageflag[2] = true;
                             }else{
 
                             }
@@ -210,9 +276,6 @@
                             });
                         });
                         $('.tdTab span').eq(0).click();
-						$('.barTab a').eq(0).click(function () {
-                            location.href='../../commom/chatMsg/chatMsg.html?id='+userid
-                        });
                     },
                     bindScroll:function(ele,num){
                         var that=this;
@@ -222,20 +285,20 @@
                             var nDivHight = $(this).height();
                             var tipHtml="<span id=\"loadTips\"><a></a></span>";
                             if (pageflag[num] == true && scrollTop + nDivHight > scrollHeight - 30) {
+                                console.log(pageflag[num])
                                 pageflag[num] = false;
                                 ele.append(tipHtml).show();
                                 setTimeout(function(){
                                     $('#loadTips').remove();
                                     if(num==0){
-                                        that.loadAll();
+                                        that.loadAll(num);
                                     }
                                     if(num==1){
-                                        that.loadIng();
+                                        that.loadIng(num);
                                     }
                                     if(num==2){
-                                        that.loadOff();
+                                        that.loadOff(num);
                                     }
-                                    pageflag[num] = true;
                                 },1000)
                             }
                         });
@@ -245,7 +308,7 @@
                 watch: {
 
                 },
-            })
+            });
             app.bindScroll($('#tdul_1'),0);
             app.bindScroll($('#tdul_2'),1);
             app.bindScroll($('#tdul_3'),2);
@@ -253,5 +316,12 @@
             app.loadAll();
             app.loadIng();
             app.loadOff();
+
+            //跳转到聊天对话页面
+            $('#chatList').on('tap','a',function(){
+                var href="../../commom/chatMsg/chatPersonal.html";
+                var chatno=$(this).attr('data-chatno');
+                location.href=href+'?chatno='+chatno;
+            })
 		</script>
 </html>

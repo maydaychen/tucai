@@ -23,7 +23,7 @@ public class Constants {
     public static ArrayList<String> list_age = new ArrayList<String>();
     public static List<BodyResponse.MessageBean> list_body = new ArrayList<BodyResponse.MessageBean>();
     //此处需要更改
-    public static String TENCENT_APP_ID = "1106046817";
+    public static String TENCENT_APP_ID = "1106510230";
     public static String WX_APP_ID = "wxd7d147504c67d9b9";
     public static String WX_SECRET = "42581576a888986998f06a6e817d967b";
 }

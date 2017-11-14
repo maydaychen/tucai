@@ -15,6 +15,33 @@
 		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
 		<link rel="stylesheet" href="../../static/css/home.css">
 		<style type="text/css">
+            .addImg {
+                width: 3rem;
+                height: 3rem;
+                float: left;
+                margin-left: 34%;
+                margin-right: 33%;
+                margin-top: 5%;
+                padding: 20px;
+            }
+			#val3 img{
+				width: 40px;
+				height: 40px;
+				border-radius:50%;
+			}
+            #mbody .cow input{
+                width:100%;
+                border:0;
+                min-height:20px;
+                text-align: right;
+                color:#999;
+                -webkit-user-select: auto;
+            }
+            .mBody{
+                float:none;
+                padding-top:0 !important;
+                margin-top:45px;
+            }
 		</style>
 	</head>
 
@@ -23,27 +50,32 @@
 			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
 			<p class="barTxt">设置</p>
 			<p class="barRight">
-				<a class="br" onclick="upImg()">提交</a>
+				<a class="br">提交</a>
 			</p>
-		</header>	
-		
-		<div class="mBody">
+		</header>
+
+		<div class="mBody" id="mbody">
 			<a class="cow" id="box1">
 				<h1>企业全称</h1>
 				<span>
 					<p id="val1"></p>
-					<i class="iconfont">&#xe649;</i>
+					<i class="iconfont"></i>
 				</span>
 			</a>
 			<div class="cowLine"></div>
 			<a class="cow mgt" id="box2">
 				<h1>企业邮箱</h1>
 				<span>
-					<p id="val2"></p>
-					<i class="iconfont">&#xe649;</i>
+                    <input type="text" id="val2" placeholder="输入企业邮箱">
 				</span>
 			</a>
-			
+			<!--<a class="cow mgt" id="box2">-->
+				<!--<h1>企业logo</h1>-->
+				<!--<span>-->
+					<!--<p id="val3"><img src="../../static/images/aboutTc.gif"></p>-->
+					<!--<i class="iconfont">&#xe649;</i>-->
+				<!--</span>-->
+			<!--</a>			-->
 			<section class="cow">
 				<div class="upLeft">
 					<img src="../../static/images/a8.png"/>
@@ -58,15 +90,15 @@
 				</div>
 			</section>
 			<section class="cow">
-				<div class="upImg">					
+				<div class="upImg">
 					<div class="imgs">
-			
+
 					</div>
 					<img class="addImg" src="../../static/images/a9.png"/>
 				</div>
 			</section>
 		</div>
-		
+
 		<div class="fadeBottom"></div>
 		<div class="lightBottom">
 			<div class="lb" id="pic1">
@@ -80,108 +112,141 @@
 			</div>
 			<a class="closeLb">取消</a>
 		</div>
-		
+
 	</body>
-		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="../../static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../static/js/mui.min.js"></script>
 		<script src="../../static/js/update.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../static/js/effect.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../../static/js/malert.js" type="text/javascript" charset="utf-8"></script>-->
 		<script src="../../static/js/webapp.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 
-			var arrFiles=[];
+			var picFiles=[];
+            var pics=[];
+            var logo='';
+            var rs;
 			$(function(){
-				FastClick.attach(document.body);
+				//FastClick.attach(document.body);
 				bindEle();
 				loadInfo();
 			});
-			
+
 			function bindEle(){
 				$('.closeLb,.fadeBottom').click(function(){
 					$('.lightBottom').fadeOutDown();
 					$('.fadeBottom').hide();
-					
+
 				});
 //				$('.addImg').click(function(){
 //					$('.lightBottom').show().fadeInUp();
 //					$('.fadeBottom').show();
 //				});
 
-				$('#box1').click(function(){
-					$.malert({
-						text: "输入企业全称",
-						cancle: function () {
-							console.log('关闭了')
-						},
-						ok: function () {
-							var str=$.trim($('#mInput').val());
-							if(str==""||str.length>20){
-								mui.toast('输入不正确！');
-								return;
-							}
-							$('#val1').html(str).attr('data-val',str);
-						}
-					})
-				});
-                $('#box2').click(function(){
-                    $.malert({
-                        text: "输入企业邮箱",
-                        cancle: function () {
-                            console.log('关闭了')
-                        },
-                        ok: function () {
-                            var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                            var str=$.trim($('#mInput').val());
-                            if(str==""||str.length>20||!reg.test(str)){
-                                mui.toast('输入不正确！');
-                                return;
-                            }
-                            $('#val2').html(str).attr('data-val',str);
+//				$('#box11').click(function(){
+//					$.malert({
+//						text: "输入企业全称",
+//						cancle: function () {
+//							console.log('关闭了')
+//						},
+//						ok: function () {
+//							var str=$.trim($('#mInput').val());
+//							if(str==""||str.length>20){
+//								mui.toast('输入不正确！');
+//								return;
+//							}
+//							$('#val1').html(str).attr('data-val',str);
+//						}
+//					})
+//				});
+//                $('#box2').click(function(){
+//                    $.malert({
+//                        text: "输入企业邮箱",
+//                        cancle: function () {
+//                            console.log('关闭了')
+//                        },
+//                        ok: function () {
+//                            var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+//                            var str=$.trim($('#mInput').val());
+//                            if(str==""||str.length>20||!reg.test(str)){
+//                                mui.toast('输入不正确！');
+//                                return;
+//                            }
+//                            $('#val2').html(str).attr('data-val',str);
+//                        }
+//                    })
+//                });
+//            	$("#photo").change(function () {
+//					if (typeof (FileReader) != "undefined") {
+//						var regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
+//						$($(this)[0].files).each(function () {
+//							var file = $(this);
+//							//arrFiles.push(file);
+//							if (regex.test(file[0].name.toLowerCase())) {
+//								var reader = new FileReader();
+//									reader.onload = function (e) {
+//										var html="<img class=\"pic\" src=\""+e.target.result+"\" />";
+//										$('.imgs').append(html);
+//										$('.closeLb').click();
+//                                        arrFiles.push(reader.result);
+//                                        console.log(arrFiles)
+//									};
+//									reader.readAsDataURL(file[0]);
+//							}
+//							else {
+//								alert(file[0].name + "不是图片！");
+//								return false;
+//							}
+//						});
+//					} else { alert("不支持"); }
+//				});
+                $('#val2').focus();
+
+            	$('.addImg').on('tap',function () {
+                    _webapp.uploadImg(function (res) {
+						console.log('uploadImg:',res);
+						if(res.statusCode==0){
+						    var save='http://tczp.wshoto.com/'+res.data.save_path;
+						    var show='http://tczp.wshoto.com/'+res.data.show_path;
+                            picFiles.push(save);
+                            pics.push(show);
+                            console.log('数组:',picFiles,pics);
+                            loadImg();
+                        }else{
+						    mui.toast('上传失败！');
                         }
+
                     })
                 });
-            	$("#photo").change(function () {
-					if (typeof (FileReader) != "undefined") {
-						var regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
-						$($(this)[0].files).each(function () {
-							var file = $(this);
-							//arrFiles.push(file);
-							if (regex.test(file[0].name.toLowerCase())) {
-								var reader = new FileReader();
-									reader.onload = function (e) {
-										var html="<img class=\"pic\" src=\""+e.target.result+"\" />";
-										$('.imgs').append(html);
-										$('.closeLb').click();
-                                        arrFiles.push(reader.result);
-                                        console.log(arrFiles)
-									};
-									reader.readAsDataURL(file[0]);
-							}
-							else {
-								alert(file[0].name + "不是图片！");
-								return false;
-							}
-						});
-					} else { alert("不支持"); }
-				});
-            	var pics=[];
-            	$('.addImg').click(function () {
-                    pics=[];
-                    _webapp.uploadImg(function (res) {
-						console.log(res);
-						alert(res);
-                        for (var i=0;i<res.data.length;i++){
-                            pics.push(res.data[i]);
-						};
-                    })
-                })
+//            	$('#val3').on('tap',function () {
+//                    _webapp.uploadImg(function (res) {
+//                        console.log('uploadImg:',res);
+//                        if(res.statusCode==0){
+//                            var save='http://tczp.wshoto.com/'+res.data.save_path;
+//                            var show='http://tczp.wshoto.com/'+res.data.show_path;
+//                            logo=show;
+//                            $('#val3 img').attr('src',logo);
+//                            console.log('logo:',logo);
+//                        }else{
+//                            mui.toast('上传失败！');
+//                        }
+//
+//                    })
+//                });
 			}
-			
-			var rs;
+
+			function loadImg() {
+			    var html="";
+                for (var i=0;i<pics.length;i++){
+                    html+="<img class=\"pic\" src=\""+pics[i]+"\" />";
+                }
+                $('.imgs').html(html);
+            }
+
+
 			function loadInfo(){
 				var parmas={id:userid};
 				ajaxRun(port.companyInfo,parmas,true,'POST',function (data) {
@@ -196,17 +261,47 @@
 					}
 				});
 			}
-			
-			function upImg() {
-                var parmas={base64_string:arrFiles};
-                ajaxRun(port.certificate_img,parmas,true,'POST',function (data) {
-                    console.log('上传图片:',data);
+
+//			function upInfo() {
+////                var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+////                var email=$('#val2').val();
+////                if(str==""||str.length>20||!reg.test(str)){
+////                    mui.toast('输入不正确！');
+////                    return;
+////                }
+////                $('#val2').val(email).attr('data-val',str);
+//
+//			    var email=$('#val2').val();
+//                var parmas={img:pics,email:email};
+//                if(pics.length==0||email==""){
+//                    mui.toast('请填写完整！')
+//                    return;
+//				}
+//                ajaxRun(port.renzhengs,parmas,true,'POST',function (data) {
+//                    console.log('上传认证:',data);
+//                    if(data.statuscode==1){
+//                        mui.toast('提交成功！');
+//                    }else{
+//                        mui.toast('提交失败！');
+//                    }
+//                });
+//
+//            }
+            $('.titleBar').on('tap','.barRight',function(){
+                var email=$('#val2').val();
+                var parmas={img:pics,email:email};
+                if(pics.length==0||email==""){
+                    mui.toast('请填写完整！')
+                    return;
+                }
+                ajaxRun(port.renzhengs,parmas,true,'POST',function (data) {
+                    console.log('上传认证:',data);
                     if(data.statuscode==1){
-						
+                        mui.toast('提交成功！');
+                    }else{
+                        mui.toast('提交失败！');
                     }
                 });
-
-            }
-
+            })
 		</script>
 </html>

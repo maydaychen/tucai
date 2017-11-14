@@ -36,8 +36,8 @@
 	<div class="mui-scroll">	
 		<section class="jobs rContentJob"  id="app">
 		    <ul class="jobUl">
-				<li class="jobLi" v-for="(list,i) in lists"  @click="jobDetail(list.company_id)">	
-		            <a class="ja">
+				<li class="jobLi" v-for="(list,i) in lists" :data-id="[list.id]">	
+		            <!--<a class="ja">-->
 		                <div class="jtxt">
 		                    <span v-text="list.jobs_name"></span>
 		                    <i><span v-text='list.minwage'></span>-<span v-text='list.maxwage'></span></i>
@@ -51,7 +51,7 @@
 		                    <h1 v-text="list.companyname"></h1>
 		                    <p><span v-text='list.nature_cn'></span> |<span v-text='list.scale_cn'></span>|<span v-text='list.finance'></span></p>
 		                </div>
-		            </a>
+		            <!--</a>-->
 		        </li>					
 		    </ul>
 		</section>
@@ -95,19 +95,29 @@
             var url =host +'c=Personal&a=job_serach';
 			var parmas = {page:page,pagesize:pagesize,jobname:name};
 			ajaxRun(url,parmas,true,'GET',function (data) {
-				console.log(data);
-				search._data.lists = data.result;
+				if (data.statuscode == 1) {
+					console.log(data);
+					search._data.lists = data.result;
+					setTimeout(function () {
+							$('.jobUl li').off().on('touchend', function () {
+								var id = $(this).attr('data-id');
+								location.href='../jobDetail/jobDetail.html?jobDetailId='+id;
+							});
+						}, 200);
+				} else {
+					console.log(data.msg);
+				}
 		 	});
     });
     
-    function jobDetail(id){
-    	console.log(id);
-		location.href='../jobDetail/jobDetail.html?jobDetailId='+id
+//  function jobDetail(id){
+//  	console.log(id);
+//		location.href='../jobDetail/jobDetail.html?jobDetailId='+id
 //  	$('.jobLi').click(function(){
 //  		var pageid = $(this).attr('data-id');
 //  		console.log(pageid);
 //      })
-    }
+//  }
     $(".titleBar").on("tap",".barLeft",function(){
 //  	location.href='recruitment.html'
 		history.go(-1);

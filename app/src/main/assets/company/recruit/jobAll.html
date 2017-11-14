@@ -49,7 +49,7 @@
 		</div>
 		
 		<div class="addAddress">
-			<a class="aaBtn" onclick="newJob()">发布新职位</a>
+			<a class="aaBtn">发布新职位</a>
 		</div>
 		
 	</body>	
@@ -68,6 +68,26 @@
 				FastClick.attach(document.body);
 				rz();
                 bindScroll($('#tdul'));
+                $('.aaBtn').on('tap',function () {
+                    if(rzState==1){
+//			        mui.openWindow({
+//			            url:'jobAdd.html?id='+userid,
+//			        })
+                        location.href="jobAdd.html";
+                    }else{
+                        var btnArray = ['取消', '去认证'];
+                        mui.confirm('需要先完成企业认证身份才可发布职位？', '提示', btnArray, function(e) {
+                            if (e.index == 1) {
+//					        mui.openWindow({
+//					            url:'../set/setApprove.html?id='+userid,
+//					        })
+                                location.href="../set/setApprove.html?id="+userid;
+                            } else {
+
+                            }
+                        })
+                    }
+                })
 			});
 			//认证
 			var rzState;
@@ -105,7 +125,6 @@
                         setTimeout(function(){
                             $('#loadTips').remove();
                             loadInfo();
-                            pageflag = true;
                         },1000)
                     }
                 });
@@ -136,6 +155,7 @@
                             return;
                         }
                         page++;
+                        pageflag = true;
 					}else{
 						console.log('请求失败')	
 					}					
@@ -143,24 +163,7 @@
 			}
 			//发布新职位
 			function newJob(){
-				if(rzState==1){
-//			        mui.openWindow({
-//			            url:'jobAdd.html?id='+userid,
-//			        })
-					window.location.href="jobAdd.html";
-				}else{
-					var btnArray = ['取消', '去认证'];
-					mui.confirm('需要先完成企业认证身份才可发布职位？', '提示', btnArray, function(e) {
-						if (e.index == 1) {
-//					        mui.openWindow({
-//					            url:'../set/setApprove.html?id='+userid,
-//					        })
-                            location.href="../set/setApprove.html?id="+userid;
-						} else {
-					
-						}
-					})													
-				}
+
 			}
 		</script>
 </html>

@@ -22,7 +22,7 @@
         <div class="head-container flex">
                 <div class="user-pic">
                     <div>
-                        <img :src="[lists.thumb||'../../static/images/aboutTc.gif']" alt="">
+                        <img :src="[lists.avatars||'../../static/images/aboutTc.gif']" alt="">
                     </div>
                 </div>
                 <div class="user-info">
@@ -164,7 +164,7 @@
 		}else{
 			console.log(data.msg); 				
 		}
-	})   	
+	},1)   	
  	
  }
  

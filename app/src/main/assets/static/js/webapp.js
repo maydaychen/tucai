@@ -632,9 +632,9 @@ var _webapp = {
     }
 
     if (_env.android) {
-      console.log('进入安卓端')
+      console.log('进入安卓端');
       _webapp.connectWebViewJavascriptBridge(function (bridge) {
-        console.log('安卓端获取信息的回调')
+        console.log('安卓端获取信息的回调');
         if (_webapp.init === false) {
           //初始化
           _webapp.init = true;

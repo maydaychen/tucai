@@ -51,6 +51,23 @@
         	width: 15px;
         	height: 15px;
         }
+        #showTimePicker{
+        	position:relative;
+        }
+        #timeResult{
+        	width:100%;
+        	position:absolute;
+        	right:4%;
+        	padding:5px 0;
+        	padding-right:4%;
+        	text-align: right;
+        }
+        /*#showTimePicker h1{
+        	float:left;
+        }*/
+        #timeResult{
+        	width:100%;
+        }
     </style>
 </head>
 
@@ -64,7 +81,9 @@
         <a class="cow  changeImg">
             <h1>头像</h1>
             <span>
-                <div class="img"></div>
+                <div class="img">
+                	<img id="headImg" src=""/>
+                </div>
                 <i class="iconfont">&#xe649;</i>
             </span>
         </a>
@@ -84,7 +103,7 @@
         </div>-->
 
         <div class="cowLine"></div>
-        <a class="cow" data-href="personalName">
+        <a class="cow" data-href="personalName" id="realname">
             <h1>姓名</h1>
             <span>
                 <p id="name">编辑姓名</p>
@@ -126,7 +145,7 @@
             </span>
         </div>
         <div class="cowLine"></div>
-        <a class="cow" data-href="selIntr">
+        <a class="cow" data-href="selIntr" id="selIntru">
             <h1>介绍自己</h1>
             <span>
                 <p id="intru">自我介绍..</p>
@@ -151,99 +170,15 @@
     <script src="../../static/js/config.js"></script>
     <script src="../../static/js/api.js" type="text/javascript" charset="utf-8"></script>
     <script>
-        var arrFiles = [];
+//      var arrFiles = [];
+//      var pics=[];
+        var showPic;
+        var savePics;
+ 
         mui.init({
             statusBarBackground: '#41a6ff',
         });
-        
-//      var pics=[];
-//      function uploadImg(){       	
-//			pics=[];
-//			_webapp.uploadImg(function (res) {
-//				console.log(res);
-//				alert(res);
-//			    for (var i=0;i<res.data.length;i++){
-//			        pics.push(res.data[i]);
-//				};
-//			})
-//             
-//      }
-       
-        
-        
-        
-      //    更换头像
-      function bindEle() {
-      	 var pics=[];
-      	$(".personal-con").on('tap',".changeImg",function(){
-      		pics=[];
-      		console.log(123);
-			_webapp.uploadImg(function (res) {
-				console.log(res);
-			    for (var i=0;i<res.data.length;i++){
-			        pics.push(res.data[i]);
-				};
-			})
-			
-      	});
-      	
-//        上传头像
-		$(".titleBar").on('tap','span',function(){
-			console.log(pics);
-			var param = {base64_string: pics};
-            var getInfo = host + "c=upload&a=avatar";
-            ajaxRun(getInfo, param, true, 'GET', function (data) {
-                console.log(data);
-                if (data.statuscode == 1) {
-                	console.log(data.msg);
-                } else {
-                	console.log(data.msg);
-                }
-            });
-		})
-      	
-      	
-      	
-//          $('.closeLb,.fadeBottom').on("tap", function () {
-//              $('.lightBottom').fadeOutDown();
-//              $('.fadeBottom').hide();
-//          });
-//          $('.changeImg').on("tap", function () {               
-//              $('.lightBottom').show().fadeInUp();
-//              $('.fadeBottom').show();
-//          });
-//			$('.lightBottom').on("tap","#photo",function(){
-//	            $('.lightBottom').fadeOutDown();	                
-//	            $('.fadeBottom').hide();
-//        	});
-//          $("#photo").change(function () {
-//              if (typeof (FileReader) != "undefined") {
-//                  var regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
-//                  $($(this)[0].files).each(function () {
-//                      var file = $(this);
-////                      arrFiles.push(file);
-//                      if (regex.test(file[0].name.toLowerCase())) {
-//                          var reader = new FileReader();
-//                          reader.onload = function (e) {
-//                              var html = "<img src=\"" + e.target.result + "\" />";
-//                              $('.img').append(html);
-//                              $('.closeLb').click();
-//                              arrFiles.push(reader.result);
-//                              console.log(arrFiles)
-//                              doLocalStorage('set','pic',arrFiles);
-//                          };
-//                          reader.readAsDataURL(file[0]);
-//                      }
-//                      else {
-//                          alert(file[0].name + "不是图片！");
-//                          return false;
-//                      }
-//                  });
-//              } else { 
-//              	alert("不支持");
-//              }
-//          });            
-    }
+    
         // 切换时间
         (function ($, doc) {
             $.init();
@@ -344,6 +279,46 @@
         console.log(sex_cn);
 		doLocalStorage('set','sex',sex_cn);
 
+
+		    //更换头像
+//    function bindEle() {
+      	 
+      	$(".personal-con").on('tap',".changeImg",function(){
+      		console.log(123);
+			_webapp.uploadImg(function (res) {
+				console.log(res);
+				if(res.statusCode==0){
+					showPic='http://tczp.wshoto.com/'+res.data.show_path;
+					savePics='http://tczp.wshoto.com/'+res.data.save_path;
+					console.log(showPic);
+					console.log(savePics);
+//					var html = "<img src=\"" + showPic + "\" />";
+//					$('.img').append(html);
+					$('#headImg').attr('src',showPic);
+					doLocalStorage('set','pic',showPic);
+					doLocalStorage('set','pics',res.data.save_path);
+				}				
+			})						
+      	});
+      	
+//        上传头像
+//		$(".titleBar").on('tap','span',function(){
+//			var save_pic =localStorage.getItem('pics');
+//			console.log(save_pic);
+//			var param = {avatar: save_pic,level: 2};
+//          var getInfo = host + "c=upload&a=avatar";
+//          ajaxRun(getInfo, param, true, 'GET', function (data) {
+//              console.log(data);
+//              if (data.statuscode == 1) {
+//              	console.log(data.msg);
+//              } else {
+//              	console.log(data.msg);
+//              }
+//          });
+//		})      	      	                 
+//  }
+
+		
         $(document).ready(function () {
             function getInfo(){
                 var url=host+"c=Personalinfo&a=show_personal_info";
@@ -351,13 +326,20 @@
                     console.log(data);
                     if(data.statuscode==1){
                         var info = data.result;
+                        $("#realname").on("tap",function(){
+                        	doLocalStorage('set','name',info.realname);
+                        });
+                        $("#selIntru").on("tap",function(){
+                        	doLocalStorage('set','intru',info.introduction);
+                        });              
                         $('#name').html(info.realname);
                         var sex_cn = info.sex;
                         $("input[name='userGender'][value='" + sex_cn + "']").attr('checked', 'checked');
-                        $('#timeResult').html(info.workyear + '年');
+                        $('#timeResult').html(info.experience_cn);
                         $('#timeResult2').html(info.birthday);
                         $('#intru').html(info.introduction);
                         $('#address').html(info.residence);
+                        $('#headImg').attr('src',info.avatars);
                         //重新赋值
                         var name = localStorage.getItem("name");
 			            var intru = localStorage.getItem("intru");
@@ -365,7 +347,7 @@
 			            var time2 = localStorage.getItem("time2");
 			            var liveCity=localStorage.getItem("liveCity"); 
 			            var sex = localStorage.getItem('sex');
-//			            var pic =localStorage.getItem('pic');
+			            var pic =localStorage.getItem('pic');
 			            
 //			            var name=doLocalStorage('get','name');
 //			            var intru=doLocalStorage('get','intru');
@@ -373,12 +355,12 @@
 //			            var time2=doLocalStorage('get','time2');
 //			            var liveCity=doLocalStorage('get','liveCity');
 //			            var sex=doLocalStorage('get','sex');
-			            console.log(sex); 
-			            console.log(name);
-//			            if(pic!==null){
-//			            	var html = "<img src=\"" + pic + "\" />";
-//                          $('.img').append(html);
-//			            }
+
+			            console.log(sex); console.log(time2);
+			            console.log(pic);
+			            if(pic!==null){
+			            	$('#headImg').attr('src',pic);
+			            }
 			            if (name !== null) {
 						    $('#name').html(name);
 						}
@@ -401,49 +383,49 @@
                     }else{
                     	 mui.toast('您尚未设置个人信息！');
                     }
-                });
+                },1);
             }
             getInfo();
-            bindEle();            
-//          var userid = localStorage.getItem('userid');
-//          var argument = { uid:userid,op:"edit"};
-//          var getInfo = host + "c=Personalinfo&a=personal_info_update";
-//          ajaxRun(getInfo, argument, true, 'GET', function (data) {
-//              console.log(data)
-//              if (data.statuscode == 1) {
-//              	
-//                  var info = data.result;
-//                  $('#name').html(info.realname);
-//                  var sex_cn = info.sex;
-//                  $("input[name='userGender'][value='" + sex_cn + "']").attr('checked', 'checked');
-//                  $('#timeResult').html(info.workyear + '年');
-//                  $('#timeResult2').html(info.birthday);
-//                  $('#intru').html(info.introduction);                                                           
-//              } else {
-//                  mui.toast('您尚未设置个人信息！')
-//              }
-//          });
+//          bindEle();            
+
             $('.titleBar').on('tap', 'span', function () {
+            	var save_pic =localStorage.getItem('pics');
+				console.log(save_pic);
                 var realname = $('#name').html();
                 var introduction = $('#intru').html();
                 var sex = $("input[name='userGender']:checked").val();
-                console.log(sex);
+//              console.log(sex);
                 var liveCity=$('#address').html();
                 var workyear = $('#timeResult').html().substring(0, 4);
                 var birthday = $('#timeResult2').html();
-                var params = { op: 'edit', uid: userid, realname: realname, sex: sex,
-                    workyear: workyear, birthday: birthday, introduction: introduction ,address:liveCity};
-                    console.log(params);
+                var params = { op: 'edit', uid: userid,avatar: save_pic,level: 2,realname: realname, sex: sex,
+                    workyear: workyear, birthday: birthday, introduction: introduction ,address:liveCity};  
+                    
                 var infoUpdata = host + "c=Personalinfo&a=personal_info_update";
-                if (realname == "编辑姓名" ||sex==undefined ||introduction == "自我介绍..."
+                var savePic = $('#headImg').attr('src');
+                console.log("savePic:" + savePic)
+                if (savePic == undefined|| realname == "编辑姓名" ||sex==undefined ||introduction == "自我介绍..."
                     || workyear == "选择年份" || birthday == "选择出生年月" || liveCity=="选择地址") {
                     mui.alert('信息不完整');
                 } else {
+                	console.log(11111);
                     ajaxRun(infoUpdata, params, true, 'GET', function (data) {
+                    	console.log(params);
+                    	console.log(222);
                         if (data.statuscode == 1) {
                             mui.toast('更新信息成功！')
+                            var param = {avatar: save_pic,level: 2};
+				            var getInfo = host + "c=upload&a=avatar";
+				            ajaxRun(getInfo, param, true, 'GET', function (data) {
+				                console.log(data);
+				                if (data.statuscode == 1) {
+				                	console.log(data.msg);
+				                } else {
+				                	console.log(data.msg);
+				                }
+				            });
                         } else {
-                            mui.toast('更新信息失败！')
+                            mui.toast(data.msg)
                         }
                     });
                 }
@@ -462,7 +444,7 @@
 			doLocalStorage('remove','time2');
 			doLocalStorage('remove','liveCity');
 			doLocalStorage('remove','sex');
-//			doLocalStorage('remove','pic');
+			doLocalStorage('remove','pic');
 			
             //  页面跳转
 	    	location.href='personalCenter.html'		

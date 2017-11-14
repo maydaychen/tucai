@@ -39,6 +39,12 @@
     mui.init({
         statusBarBackground: '#41a6ff',
     });
+    var realname = localStorage.getItem("name");
+    if(realname!==""&&realname!==null&&realname!==undefined){
+    	$('#name').val(realname);
+//  	console.log(realname);
+    }
+   
 //   统计输入的字数
     $(function(){
         var text1=$('#name').val();

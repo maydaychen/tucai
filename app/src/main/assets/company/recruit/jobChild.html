@@ -46,7 +46,7 @@
 							<p><i class="iconfont">&#xe69e;</i><a v-text="jobsInfo.education_cn"></a></p>
 						</div>
 						<div class="jd_3" @click="goCom(jobsInfo.company_id)">
-							<img class="" :src="[jobsInfo.logo]"/>
+							<img class="" :src="[company_Profile.logo==''?'../../static/images/aboutTc.gif':company_Profile.logo]"/>
 							<p class="jdt1" v-text="company_Profile.companyname"></p>
 							<p class="jdt2"><em v-text="company_Profile.trade_cn"></em> | <em v-text="jobsInfo.nature_cn"></em> | <em v-text="company_Profile.finance"></em></p>
 							<i class="iconfont">&#xe649;</i>
@@ -55,14 +55,14 @@
 					<section class="jd">
 						<div class="jd_4">
 							<h1 class="tzTitle"><i class="iconfont">&#xe8a0;</i>职位详情</h1>
-							<p class="jdt3" v-text="jobsInfo.contents"></p>
+							<p class="jdt3" v-text="jobsInfo.contents==''?'暂无':jobsInfo.contents"></p>
 						</div>						
 					</section>
 					<section class="jd">
 						<div class="jd_4">
 							<h1 class="tzTitle"><i class="iconfont">&#xe61b;</i>技能要求</h1>
 							<p class="jdt3">
-								<a style="width: 100%;float: left;color: #333" v-for="(item, index) in jobsInfo.skill" v-text="item"></a>
+								<a style="width: 100%;float: left;color: #333" v-for="(item, index) in jobsInfo.skill" v-text="item==''?'暂无':item"></a>
 							</p>
 						</div>						
 					</section>
@@ -75,7 +75,7 @@
 					<section class="jd">
 						<div class="jd_4">
 							<h1 class="tzTitle"><i class="iconfont">&#xe63d;</i>职位发布者</h1>
-							<p class="jdt3" id="username" v-text="result.user.realname"></p>
+							<p class="jdt3" id="username" v-text=""></p>
 						</div>							
 					</section>					
 				</div>
@@ -122,6 +122,7 @@
                             that.company_Profile=data.result.company_Profile;
                             that.jobsInfo=data.result.jobsInfo;
 							cpid=data.result.jobsInfo.id;
+							$('#username').html(data.result.user.realname)
 						}else{
 							mui.toast('请求失败',{ duration:1000}); 
 						}					

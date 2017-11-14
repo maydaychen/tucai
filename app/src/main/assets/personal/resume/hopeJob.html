@@ -43,7 +43,7 @@
                 </div>
                 <div class="mui-input-row">
                     <label><i></i></label>
-                    <input type="text" class="mui-input-clear" placeholder="工作类型" id="jobName">
+                    <p id="jobName">工作类型</p>
                 </div>
                 <div class="mui-input-row">
                     <a id="showCityPicker3">
@@ -57,7 +57,7 @@
                         <p id="leaveJob">期望月薪</p>
                     </a>
                 </div>
-                <div class="submitBtn mui-button-row">
+                <div class="submitBtn mui-button-row" data-status="">
                     <button type="button" id="btn" class="mui-btn" style="background:#41a6ff">保存</button>
                 </div>
             </form>
@@ -92,6 +92,22 @@
         indicators: true, //是否显示滚动条
         deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
         bounce: true //是否启用回弹
+    });
+    //选择工作类型
+    var jobType=new MobileSelect({
+        trigger:'#jobName',
+        wheels:[
+            {
+                data:[
+                    {id:'1',value:'全职'},
+                    {id:'2',value:'兼职'},
+                    {id:'3',value:'实习'}
+                ]
+            }
+        ],
+        callback:function(indexArr, data){
+                $('#jobName').html(data[0].value).css('color','#5e5e5e');
+        }
     });
     //选择薪水
     var moneys = new MobileSelect({
@@ -128,7 +144,15 @@
             ]}
         ],
         callback:function(indexArr, data){
-            $('#leaveJob').html('期望月薪'+' '+data[0].value+'-'+data[1].value).css('color','#5e5e5e');
+            if(data[0].id<data[1].id){
+                $('#leaveJob').html('期望月薪'+' '+data[0].value+'-'+data[1].value).css('color','#5e5e5e');
+                $('.submitBtn').attr('data-status','1');
+            }else{
+                mui.alert('所选薪资不合法，请重新选择');
+                //$('#btn').attr('disabled','disabled');
+                $('#leaveJob').html("请重新选择！");
+                $('.submitBtn').attr('data-status','0');
+            }
         }
     });
     //选择地址
@@ -163,9 +187,10 @@
         $('#btn').click(function(){
             var check;
             mui(".add_container input").each(function() {
+                var status=$(".submitBtn").attr('data-status');
                 //若当前input为空，则alert提醒
-                if(!this.value || this.value.trim() == ""|| $('#inJob').css('color')=='rgb(207, 207, 207)'
-                    ||$('#leaveJob').css('color')=='rgb(207, 207, 207)') {
+                if(!this.value || this.value.trim() == ""||$('#jobName').html()=='工作类型'|| $('#inJob').html()=='期望城市'
+                            ||$('#leaveJob').html()=='期望月薪') {
                     mui.alert("信息未填写完整");
                     check = false;
                     return false;
@@ -175,7 +200,7 @@
             }); //校验通过，继续执行业务逻辑
             if(check){
                 var job_name=$('#comName').val();
-                var type=$('#jobName').val();
+                var type=$('#jobName').html();
                 var city=$('#inJob').html();
                 var city1=city.substring(4,city.length);
                 var salary=$('#leaveJob').html();
@@ -188,7 +213,7 @@
                     if(data.statuscode==1){
                         mui.toast('添加成功！');
                         $('#comName').val("");
-                        $('#jobName').val("");
+                        $('#jobName').html("工作类型").css('color','#CFCFCF');
                         $('#inJob').html("期望城市").css('color','#CFCFCF');
                         $('#leaveJob').html("期望月薪").css('color','#CFCFCF');
                         location.href="resume.html";

@@ -83,7 +83,7 @@
 			$(".barTxt").html(personalName);
 			personalVue._data.perInfo = data.result.perinfo;
 			var tcbkList = data.result.tcbkList;
-			if(tcbkList.length < 5 || tcbkList == null || tcbkList == '') {
+			if(tcbkList.length < 1 || tcbkList == null || tcbkList == '') {
 				Flag = true;
 //				mui('#pullrefresh').pullRefresh().setStopped(true);
 			} else {

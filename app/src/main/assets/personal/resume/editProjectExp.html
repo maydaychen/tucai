@@ -175,7 +175,7 @@
 
     $(document).ready(function(){
         //请求数据
-        var id=localStorage.getItem('id');
+        var id = GetRequest().id;
             var params={id:id};
             var addProExp=host+'c=Personal&a=projectexp_edit';
             ajaxRun(addProExp,params,true,'POST',function(data){

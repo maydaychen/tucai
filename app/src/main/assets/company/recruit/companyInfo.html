@@ -45,7 +45,7 @@
 				<a class="cow">
 					<h1>公司LOGO</h1>
 					<span>
-						<img id="val3" class="logoImg" src="../../static/images/muwu.jpg"/>
+						<img id="val3" class="logoImg" src="../../static/images/aboutTc.gif"/>
 					</span>
 				</a>
 				<div class="cowLine"></div>
@@ -66,7 +66,7 @@
 				<a class="cow mgt" id="stepPicker">
 					<h1>发展阶段</h1>
 					<span>
-						<p id="val6">不需要融资</p>
+						<p id="val6"></p>
 					</span>
 				</a>
 				<a class="cow" id="setline">
@@ -111,15 +111,19 @@
 						var cp=data.result.company_profile
 						$('#val1').html(cp.companyname);
 						$('#val2').html(cp.short_name);
-						$('#val3').attr('src',cp.logo);
+						if(cp.logo==""){
+                            $('#val3').attr('src','../../static/images/aboutTc.gif');
+						}else{
+                            $('#val3').attr('src',cp.logo);
+                        }
 						$('#val4').html(cp.trade_cn);
 						$('#val5').html(cp.scale_cn);
-						$('#val6').html();
+						$('#val6').html(cp.finance);
 						$('#val7').html(cp.address);
 					}else{
-						console.log('请求失败')	
-					}					
-       		 	});			
+						console.log('请求失败')
+					}
+       		 	});
 			}
             function loadInfo2(){
                 var parmas={id:pageid};
@@ -130,7 +134,11 @@
                         var cp=data.result.company_Profile;
                         $('#val1').html(cp.companyname);
                         $('#val2').html(cp.short_name);
-                        $('#val3').attr('src',cp.logo);
+                        if(cp.logo==""){
+                            $('#val3').attr('src','../../static/images/aboutTc.gif');
+                        }else{
+                            $('#val3').attr('src',cp.logo);
+                        }
                         $('#val4').html(cp.trade_cn);
                         $('#val5').html(cp.scale_cn);
                         $('#val6').html(cp.finance);

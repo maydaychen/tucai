@@ -1,16 +1,16 @@
 package tucai.wshoto.com.http;
 
+import org.json.JSONObject;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import tucai.wshoto.com.bean.ImageBean;
 
 /**
  * Created by user on 2017/7/13.
@@ -34,8 +34,8 @@ public class HttpJsonMethod {
 
         retrofit = new Retrofit.Builder()
                 .client(httpClientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-//                .addConverterFactory(JsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
@@ -62,7 +62,7 @@ public class HttpJsonMethod {
 
 
 
-    public void getAva(Subscriber<ImageBean> subscriber, String avatar) {
+    public void getAva(Subscriber<JSONObject> subscriber, String avatar) {
         movieService.getAva(avatar)
 //                .map(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io())

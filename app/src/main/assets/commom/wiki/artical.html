@@ -25,13 +25,13 @@
 	    </header>
 	    <div style="height:100%;overflow-y: auto">
 	        <div class="personalBgImg">
-	            <img :src="tcbkInfo.author_img" />
+	            <img :src="tcbkInfo.small_img" />
 	        </div>
 	        <div class="articleBg articleTitle" v-text="tcbkInfo.title"></div>
 	        <div class="articleBg detialTime">
 	        	<div class="authorInfo">
-	        		<img src="" />
-	        		<div>刘楠</div>
+	        		<img :src="tcbkInfo.author_img" />
+	        		<div v-text="tcbkInfo.author"></div>
 	        	</div>
 	        	<div class="articleTimeRight" v-text="tcbkInfo.addtime"></div>
 	        	
@@ -58,12 +58,12 @@
 	        <div class="articleBottom">
 	            <div @click="share(tcbkInfo.id)"><i class="iconfont">&#xe635;</i>分享</div>
 				<div @click="comment(tcbkInfo.id)"><i class="iconfont">&#xe610;</i>评论</div>
-				<div @click="agree(tcbkInfo.id)"><i class="iconfont agreeBind" :class="{'agreeState': tcbkInfo.zan ==1 }">&#xe670;</i>点赞</div>
+				<div @click="agreeArtical(tcbkInfo.id)"><i class="iconfont agreeBind" :class="{'agreeState': tcbkInfo.zan ==1 }">&#xe670;</i>点赞</div>
 	        </div>
 	
 	
 	    </div>
-		<div class="cd-popup" role="alert">
+		<!--<div class="cd-popup" role="alert">
 	    	<div>
 		    	<div class="shareMethods">
 		    		<div class="shareMethod">
@@ -86,7 +86,7 @@
 		    	<div class="cancelShare">取消</div>
 	    		
 	    	</div>
-	    </div>
+	    </div>-->
 	</div>
 
 </body>
@@ -143,14 +143,15 @@
 //      });
  	}
  	
-//	function share() {
-//		console.log("分享");
+	function share() {
+		console.log("分享");
+		_webapp.shareTo();
 //		$(".cd-popup").addClass('is-visible');
-//	}
-	$(".cancelShare").bind("click",function(){
-         event.preventDefault();
-         $(".cd-popup").removeClass('is-visible');
-    });
+	}
+//	$(".cancelShare").bind("click",function(){
+//       event.preventDefault();
+//       $(".cd-popup").removeClass('is-visible');
+//  });
 
 	function comment(articalId) {
 		location.href = "comment.html?articalId=" + articalId;

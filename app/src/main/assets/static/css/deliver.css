@@ -65,6 +65,7 @@
     text-overflow: ellipsis;
     min-width: 0;
 }
+.mui-table-view .mui-table-view-cell .mui-media-body p {font-size:.3rem}
 @media screen and (min-width:413px){
     .mui-table-view .mui-table-view-cell .mui-media-body{
         padding-top:.3rem;
@@ -101,7 +102,7 @@
 /********中部导航***********/
 .mid_bar{
     width:100%;
-    height:1rem;
+    height:40px;
     /*padding-top:1.2rem;*/
 }
 .mid_bar ul{
@@ -110,10 +111,10 @@
 .mid_bar ul li span{
     display: block;
     width:100%;
-    height:1rem;
+    height:40px;
     text-align: center;
     font-size: .35rem;
-    line-height: 1rem;
+    line-height: 40px;
     color:#8f8f94;
 }
 .mid_bar ul li span.active{
@@ -179,7 +180,7 @@
 /********中部导航:4格***********/
 .mid_bar ul li.total4{
     width:25%;
-    height:1rem;
+    height:40px;
     padding:0 .4rem;
 }
 
@@ -313,7 +314,6 @@ footer ul li a.active p{
 .jobs .jobUl .jtxt>p>span{
     font-size: .4rem;
     display:inline-block;
-    width:2rem;
 }
 .jinfo{
     position: relative;

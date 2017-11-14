@@ -137,14 +137,14 @@
 		            <a class="ja" data-id="<% list.id %>">
 		                <div class="jtxt">
 		                    <span><% list.jobs_name%></span>
-		                    <i><%list.minwage%>k-<%list.maxwage%>k</i>
+		                    <i><% list.salary_cn%></i>
 		                </div>
 		                <div class="jtxt">
 		                    <p><%list.district_cn%>| <%list.experience_cn%> | <%list.education_cn%></p>
 		                    <p><%list.addtime%>发布</p>
 		                </div>
 		                <div class="jinfo">
-		                    <img src="<%list.thumb%>"/>
+		                    <img src="<%list.logo%>"/>
 		                    <h1><%list.companyname%></h1>
 		                    <p><%list.nature_cn%>| <%list.scale_cn%>| <%list.finance%></p>
 		                </div>
@@ -171,7 +171,10 @@
     job_apply();
     comList();
 	reqList();
-    
+    console.log("localStorage.getItem('cName')" + localStorage.getItem('cName'));
+    if(localStorage.getItem('cName') != null) {
+    	$("#cityName").html(localStorage.getItem('cName'));
+    }
     $(".jobUl").on("tap",'a',function(){
         var jobDetailId=$(this).attr('data-id');
         console.log(jobDetailId);
@@ -179,6 +182,7 @@
         location.href=href+"?jobDetailId="+jobDetailId;
     });
 //默认
+var n;
 function job_apply(){
 		n=0;
 	    doLocalStorage('set','n',n);
@@ -220,9 +224,9 @@ function job_apply(){
 	            	console.log(n);
 				});
 				var cityName=localStorage.getItem('cName');
-//				var cityName=doLocalStorage('get','cName')
+
 				if(cityName!==null){
-			   		$('#cityName').html(cityName);
+//			   		$('#cityName').html(cityName);
 			   		work_city();
 			   		n=5;
 	            	doLocalStorage('set','n',n);
@@ -447,7 +451,7 @@ console.log(cityName);
 //      localStorage.removeItem("cName");
 		doLocalStorage('remove','cName');
 		doLocalStorage('remove','n');		
-        location.href='select.html'	;
+        location.href='../../index.html'	;
 	})
 	
 //  加载更多	 
@@ -473,35 +477,35 @@ console.log(cityName);
 		}, 1500);
     }  
     function loadMore() {
-    	var n=localStorage.getItem('n');
-	 	console.log(n);
-    	if(n==0){
+    	var m=localStorage.getItem('n');
+	 	console.log(m);
+    	if(m==0){
     		page[0]++;
     		var params = {uid:userid,page:page[0],pagesize:5,op:'edit'};
    			var url=host+"c=personal&a=job_apply";
-    	}else if(n==1){
+    	}else if(m==1){
     		page[1]++;
     		var params = {page:page[1],pagesize:5,op:'edit'};
 			var url=host+"c=personal&a=is_tuijian";
-    	}else if(n==2){
+    	}else if(m==2){
     		page[2]++;
     		var params = {page:page[2],pagesize:5,op:'edit'};
 	   		var url=host+"c=personal&a=is_new";
-    	}else if(n==3){
+    	}else if(m==3){
     		page[3]++;
     		var trade= $("#trade .active").text();
 			var scale= $("#scale .active").text();
 			var finance= $("#finance .active").text();
 			var params = {trade: trade,scale: scale,finance: finance,page: page[3],pagesize: 5,op: 'edit'};
 			var url=host+"c=personal&a=company_serach_job";
-    	}else if(n==4){
+    	}else if(m==4){
     		page[4]++;
     		var edu= $("#edu .active").text();
 			var exp= $("#exp .active").text();
 			var wage= $("#wage .active").text();
 			var params = {education_cn: edu,experience_cn: exp,wagerange: wage,page:page[4],pagesize: 5,op:'edit'};
 			var url=host+"c=personal&a=require_serach";
-    	}else if(n==5){ 
+    	}else if(m==5){ 
     		page[5]++;
 			var params = {page:page[5],pagesize: 5,op: 'edit',work_city:cityName};
 			var url=host+"c=personal&a=work_city";

@@ -163,8 +163,8 @@
             mui(".add_container input").each(function() {
                 //若当前input为空，则alert提醒
                 if(!this.value || this.value.trim() == ""
-                    || $('#inJob').css('color')=='rgb(207, 207, 207)'
-                    ||$('#leaveJob').css('color')=='rgb(207, 207, 207)') {
+                    || $('#inJob').html()=='毕业时间'
+                            ||$('#leaveJob').html()=='学历') {
                     mui.alert("信息未填写完整");
                     check = false;
                     return false;

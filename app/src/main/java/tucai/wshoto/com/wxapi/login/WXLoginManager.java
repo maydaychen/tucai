@@ -47,7 +47,7 @@ public class WXLoginManager {
     }
 
     public void login(){
-        Log.i("WXLoginManager","login");
+        Log.i("chenyi","login");
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "wesnsapi_userinfochat_sdk_wshoto_webapp";

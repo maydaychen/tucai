@@ -110,8 +110,9 @@
 	<body>
 		<header class="titleBar">
 			<div class="topBar">
-				<div class="tArea" data-statu="">
-					<a>无锡</a>
+				<!--data-status==0 未定位；data-status==1 已定位-->
+				<div class="tArea">
+					<a data-statu="0">无锡</a>
 					<i class="iconfont">&#xe605;</i>
 				</div>
 				<div class="tSch">
@@ -166,8 +167,6 @@
 
 
 
-
-
 				<div class="nav">
 					<a class="navLi" data-href="personal/recruitment/select.html">
 						<img src="static/images/aa.png"/>
@@ -187,11 +186,11 @@
 					<a data-href="commom/tcTop.html" class="block" v-show="show==true">
 						<img src="static/images/a2.png"/>
 						<b></b>
-						<p v-text="topline.title"></p>
+						<p v-text="topline.title" class="mui-ellipsis"></p>
 						<i class="iconfont">&#xe649;</i>
 					</a>
 				</div>
-				<div style="width: 100%;float: left" id="app3">
+				<div style="width: 100%;float: left;height:126px;" id="app3">
 
 					<div class="swiper-container">
 						<div class="swiper-wrapper">
@@ -205,7 +204,7 @@
 
 
 				
-				<div class="vdBar" id="app2" >
+				<div class="vdBar" id="app2" style="height:112px;">
 					<a data-href="commom/live.html"  class="block" v-show="show==true">
 						<img class="vdImg" :src="tcLiveList.small_img"/>
 						<div class="vdTxt">
@@ -236,7 +235,7 @@
 									<p><span v-text="item.addtime"></span><span>发布</span></p>
 								</div>
 								<div class="jinfo">
-									<img src="static/images/yuantiao.jpg"/>
+									<img :src="item.logo ? item.logo : 'static/images/aboutTc.gif'"/>
 									<h1 v-text="item.companyname"></h1>
 									<p>
 										<span v-text="item.trade_cn"></span>
@@ -284,29 +283,6 @@
 			</ul>
 		</footer>
 		<!-- 分享 -->
-		<div class="cd-popup" role="alert"></div>
-		<div class="shareContainer">
-			<div class="shareMethods">
-				<div class="shareMethod">
-					<div class="methodImg"><img src="static/images/wechat.jpg" /></div>
-					<div>微信好友</div>
-				</div>
-				<div class="shareMethod">
-					<div class="methodImg"><img src="static/images/wechats.jpg" /></div>
-					<div>微信朋友圈</div>
-				</div>
-				<div class="shareMethod">
-					<div class="methodImg"><img src="static/images/qq.jpg" /></div>
-					<div>QQ好友</div>
-				</div>
-				<div class="shareMethod">
-					<div class="methodImg"><img src="static/images/qqs.jpg" /></div>
-					<div>QQ空间</div>
-				</div>
-			</div>
-			<div class="cancelShare">取消</div>
-
-		</div>
 		
 		<script src="static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/mui.min.js"></script>
@@ -322,7 +298,7 @@
 
 		    //分享
 		    $('.topBar').on('tap','.tLink',function(){
-		        console.log("分享")
+		        console.log("分享");
                 var type={};
                 _webapp.shareTo(type,function(res){
                     console.log(res);
@@ -330,36 +306,48 @@
 			});
 
 			//定位
-			var status=$('.tArea').attr("data-status");
-			if(status==""||status==null|status==undefined){
-                mui.toast("定位中...");
+			var positionStatus=$('.tArea a').attr('data-status');
+			if(positionStatus==0){
                 var data={};
-                var params={};
-                console.log("1:",params);
+                var argument={};
+                console.log("1:",argument);
                 _webapp.getLocation(data,function(res){
-                    	console.log(res);
-                        var lat=res.data.lat;
-                        var lng=res.data.lng;
-                        var location1=lat+','+lng;
-                    params={
-						location:location1,
-						key:"OAABZ-D6BH6-PMJST-M5MET-56X4E-T3BY5"
+                    console.log(res);
+                    var lat=res.data.lat;
+                    var lng=res.data.lng;
+                    var location=lat+','+lng;
+                    argument={
+                        location:location,
+                        key:"OAABZ-D6BH6-PMJST-M5MET-56X4E-T3BY5"
                     };
-                });
-                console.log("2:",params);
-                var getLocationUrl=host + 'c=login&a=getPostion';
+                    console.log("2:",argument);
+                    var getLocationUrl=host + 'c=login&a=getPostion';
 
-                ajaxRun(getLocationUrl,params,true,'GET',function(data){
-                    console.log(data);
-                    if(data.status==0){
-                        var  address= data.result.result.address_component.city;
-                        $('.tArea').attr('data-status','1');
-                        $('.tArea a').html(address);
-					}
+                    ajaxRun(getLocationUrl,argument,true,'GET',function(data){
+                        console.log(data);
+                        if(statuscode==1){
+                            var  address= data.result.result.ad_info.city;
+                            var positionAddr=address.slice(0,2);
+                            $('.tArea a').html(positionAddr).attr('data-status','1');
+                        }
+                    });
                 });
 			}
 
+            //点击手动选择城市
+            $('.tArea').on('tap',function(){
+                var status="index";
+                location.href="personal/recruitment/selectCity.html?status="+status;
+            });
+			//获取选择城市返回值
+            var city =  localStorage.getItem("cName");
+            console.log(city);
+            if(city!==undefined&&city!==null&&city!==""){
+                $('.tArea a').html(city.slice(0,2));
+			}
 
+
+			//$('#jobName').css('color')=='rgb(207, 207, 207)'
             var page = 2;
             var Flag = false;
             var jobListVue=new Vue({
@@ -459,7 +447,7 @@
                     }else{
                         mui.toast(data.msg,{ duration:2000});
                     }
-                },1);
+                });
 			};
 			//加载今日头条
 			function tcTop(){
@@ -475,7 +463,7 @@
 					}else{
 					    mui.toast(data.msg);
 					}
-                },1);
+                });
             };
 
 			//加载广告图片
@@ -488,62 +476,22 @@
 					  mui.toast('您尚未登录。')
 				   }else if(data.statuscode==1){
                        console.log(data);
-//                       var html="<div class=\"mui-slider-group mui-slider-loop\">\n" +
-//                           "<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->\n" +
-//                           "<div class=\"mui-slider-item mui-slider-item-duplicate\">\n" +
-//                           "<div class=\"slider-img\">\n" +
-//                           "<img :src=\"bannerList[bannerList.length-1].thumb\">\n" +
-//                           "</div>\n" +
-//                           "</div>\n" +
-//                           "<div class=\"mui-slider-item\" v-for=\"item in bannerList\">\n" +
-//                           "<div @click=\"getMore(item.id)\" class=\"slider-img\">\n" +
-//                           "<img :src=\"item.thumb\"/>\n" +
-//                           "</div>\n" +
-//                           "</div class=\"slider-img\">\n" +
-//                           "<div class=\"mui-slider-item mui-slider-item-duplicate\">\n" +
-//                           "<div>\n" +
-//                           "<img :src=\"bannerList[0].thumb\">\n" +
-//                           "</div>\n" +
-//                           "</div>\n" +
-//                           "</div>\n" +
-//                           "<div class=\"mui-slider-indicator\" style=\"bottom: 0; text-align: right;\">\n" +
-//                           "<div class=\"mui-indicator\" v-for=\"item in indicatorList\"></div>\n" +
-//                           "</div>";
 
                        var bannerList=data.result;
                        var indicatorList=data.result;
 
 //                       $('#app3').html(html);
 
-//                       new Vue({
-//                           el: '#app3',
-//                           data: {
-//                               bannerList: bannerList,
-//                               indicatorList:indicatorList
-//                           },
-//                           methods:{
-//                               toAdver:function(e){
-//                                   console.log(e.currentTarget);
-//                                   var href=e.currentTarget.getAttribute('data-href');
-//                                   var id=e.currentTarget.getAttribute('data-id');
-//                                   console.log(href);
-//                                   console.log(id);
-//                                   location.href=href+"?id="+id;
-//                               }
-//                           }
-//                       });
+
                        infoImgVue._data.bannerList=data.result;
 						console.log(bannerList)
 
-                       //$('#app3 .mui-slider-indicator').children('div:first-child').addClass('mui-active');
+
 				   }else{
 				       mui.toast('网络错误！')
 				   }
 
-//                    $('#app3').addClass('mui-slider');
-//                    mui('#app3').slider({interval: 2000});
-
-				},1);
+				});
 			};
 
 			function getMore(id){
@@ -563,7 +511,7 @@
                             jobListVue._data.finance=1;
 						}
 					}
-                },1)
+                })
 			};
 
 
@@ -608,20 +556,6 @@
 				var href='personal/recruitment/recruitmentSearch.html';
                 location.href=href;
             });
-
-
-			//分享;
-			$(".cancelShare").bind("click",function(){
-                event.preventDefault();
-                $('.shareContainer').hide();
-                $(".cd-popup").removeClass('is-visible');
-            });
-			//分享点击空白处关闭
-			$('body').on('tap','.is-visible',function(){
-                $('.shareContainer').hide();
-                $(".cd-popup").removeClass('is-visible');
-			});
-
 
             //底部导航跳转
 				//消息
@@ -699,9 +633,9 @@
             function loadMore() {
                 console.log(page);
                 indexUrl=host + "c=index&a=show_index_jobs";
-                argument = {page:page,pagesize:5};
+                var argument = {page:page,pagesize:5};
                 ajaxRun(indexUrl, argument, true, 'GET', function (data) {
-                    console.log(data)
+                    console.log(data);
                     if(data.statuscode==1){
                         if(data.result.length<5 || data.result==[] || data.result==null){
                             Flag=true;

@@ -80,9 +80,12 @@ body {
 	padding: 2px 4px;
 }
 .barIcon{   
+	box-sizing: border-box;
+	padding: .3rem 0;
 	color: #fff;
-	font-size: .6rem; 
-	padding: 10px;   
+	font-size: .6rem !important;
+	margin-left: 1%;
+	width: 30px; 
 }
 .barTxt {    
 	color: #fff;

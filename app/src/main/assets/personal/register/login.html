@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="../../static/css/iconfont.css">
     <link rel="stylesheet" href="../../static/css/registerCss/deliveryRecord.css">
     <link rel="stylesheet" href="../../static/css/registerCss/login.css">
+    <style>
+    .typechoose{display:none;position: fixed;top: 0;right: 0;left: 0;bottom: 0;background:#f6f7f9;text-align: center;}
+    .typechoose img{width: 100%;}
+    .gray { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%);-ms-filter: grayscale(100%); -o-filter: grayscale(100%);  filter: grayscale(100%);filter: gray;}
+    </style>
 	</head>
 	<body>
 				
@@ -51,6 +56,18 @@
             </div>
         </div>
     </div>
+    <div class="typechoose">
+        <div id="p-btn" >
+            <img src="../../static/images/personal.jpg" alt="" />
+            <span class="btn">我是个人</span>
+            <br><br>
+        </div>
+        <img class="orImg" src="../../static/images/or.jpg" alt="" />
+        <div id="c-btn" >				
+            <img src="../../static/images/com.jpg" alt="" />
+            <span class="btn">我是企业</span>
+        </div>			
+    </div>
 	</body>
 	<script src="../../static/js/jquery.js"></script>
 	<script src="../../static/js/flexible.js"></script>
@@ -82,17 +99,89 @@
 		    $(".cd-popup").removeClass('is-visible');
         });
         //安卓端未好 先注释掉
-        // $('#login_wechat').on('touchend',login_wechat);
-
-        function login_wechat() {
-            _webapp.authLogin('wechat', function (res) {
-                if (res.statusCode == 0) {
-                    if (typeof res.data != 'object') {
-                        res.data = $.parseJSON(res.data);
-                    }
-                    //以下写返回的微信数据用来ajax登录 
-                }
+         $('#login_wechat').on('touchend',function(){login_auth('wechat');});
+      $('#login_qq').on('touchend',function(){login_auth('qq');});
+    //_webapp.authLogin 第三方登录
+        var outh_utype = '';
+        
+        
+        
+        function login_auth(authtype) {       	
+            _webapp.authLogin(authtype, function (res) {
+					var hostUrl = host + 'c=Login&a=checkisregister';
+                	var outh_utype = '';
+	        		if (authtype == 'wechat') {     
+	                    if (typeof res != 'object') {
+                            res = $.parseJSON(res);
+                        }
+                        //以下写返回的微信数据用来ajax登录 
+                        var josnStr = JSON.stringify(res.data);
+                        var jsonObj = $.parseJSON(res.data);
+                        console.log(jsonObj);
+                        console.log("wx获取用户信息成功：" + josnStr);
+                        var openid = jsonObj.openid;
+                        var nickname = jsonObj.nickname;
+                        var avatar =  jsonObj.headimgurl;
+                        var wxParmas = {type: 'weixin', openid: openid};
+                        ajaxRun(hostUrl, wxParmas, true, 'GET', function (data) {
+                            console.log(data);
+                            if (data.statuscode == 0) {
+                                $(".typechoose").css("display","block");
+                                // outh_utype = chooseRole();
+                            }else{
+                                wxUid(openid, nickname, avatar, null);
+                            }
+                        });
+                        $("#p-btn").click(function() {
+                            outh_utype = 2;
+                            wxUid(openid, nickname, avatar, outh_utype);
+                        })
+                        $("#c-btn").click(function() {
+                            outh_utype = 1;
+                            wxUid(openid, nickname, avatar, outh_utype);
+                        })
+						    
+	    			}            	
+	        		if (authtype == 'qq') {     
+	                    if (typeof res != 'object') {
+                            res = $.parseJSON(res);
+                        }
+                        //以下写返回的微信数据用来ajax登录 
+                        var josnStr = JSON.stringify(res);
+                        console.log("qq获取用户信息成功：" + josnStr);
+                        var qqnum = res.openId;
+                        var nickname = res.nickname;
+                        var avatar = res.figureurl;
+                        var qqParmas = {type: 'qq', qqnum: qqnum};
+                        ajaxRun(hostUrl, qqParmas, true, 'GET', function (data) {
+                            if (data.statuscode == 0) {
+                                $(".typechoose").css("display","block");
+		                        $("#p-btn").click(function() {
+		                            outh_utype = 2;
+		                            qqUid(qqnum, nickname, avatar, outh_utype);
+		                        })
+		                        $("#c-btn").click(function() {
+		                            outh_utype = 1;
+		                            qqUid(qqnum, nickname, avatar, outh_utype);
+		                        })
+                              }else{
+                                  qqUid(qqnum, nickname, avatar, null);
+                              }
+                        });
+	    			} 
             });
+        }
+        
+        function chooseRole() {
+        	var outh_utype = '';
+        	$(".typechoose").css("display","block");
+        	$("#p-btn").click(function() {
+        		outh_utype = 2;
+        	})
+        	$("#c-btn").click(function() {
+        		outh_utype = 1;
+        	})
+        	return outh_utype;
         }
 	</script>
 </html>

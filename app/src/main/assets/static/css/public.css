@@ -645,3 +645,5 @@ a:link{
 }
 
 .mui-table-view:after{height: 0;}
+
+.nodata{width:100px;height:100px;margin:0 auto;display: block}

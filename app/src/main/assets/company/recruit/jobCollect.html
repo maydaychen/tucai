@@ -44,10 +44,10 @@
 						</div>											
 						<li class="tdLi" v-for="(item, index) in rcList" :key="item.id" @click="goRs(item.id)">
 							<div class="tdTop bnone">
-								<img class="tdImg" :src="[item.avatar]"/>
+								<img class="tdImg" :src="[item.MembersInfo.avatars]"/>
 								<p class="td1"><a v-text="item.fullname"></a><i class="iconfont" :data-sex="[item.sex]">{{item.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
-								<p class="td2">求职期望 {{item.intention_jobs}}</p>
-								<p class="td3"><em v-text="item.district_cn"></em> | <em v-text="item.wage_cn"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education_cn"></em></p>
+								<p class="td2">求职期望 {{item.exceptjob.jobname}}</p>
+								<p class="td3"><em v-text="item.exceptjob.salary"></em> | <em v-text="item.exceptjob.type"></em> | <em v-text="item.experience_cn"></em> | <em v-text="item.education[0].education_cn"></em></p>
 								<time v-text="item.faddtime"></time>
 							</div>
 						</li>												
@@ -58,10 +58,10 @@
 							<i class="iconfont">&#xe6ce;</i>
 							<p>还没有收藏资讯呢</p>
 						</div>
-						<li class="zxLi" v-for="(item, index) in zxList" :key="item.id" @click="goZx(item.tid)">
+						<li class="zxLi" v-for="(item, index) in zxList" :key="item.id" @click="goZx(item.id)">
 							<img :src="[item.thumb]">
 							<h1 v-text="item.title"></h1>
-							<p v-text="item.detail"></p>
+							<p v-text="item.addtime"></p>
 						</li>
 						
 					</ul>	
@@ -130,6 +130,7 @@
                                 return;
                             }
                             page[1]++;
+                            pageflag[1] = true;
                         }else{
 
                         }
@@ -171,7 +172,6 @@
                                   if(num==1){
                                       that.loadZx();
                                   }
-                                  pageflag[num] = true;
                               },1000)
                           }
                       });

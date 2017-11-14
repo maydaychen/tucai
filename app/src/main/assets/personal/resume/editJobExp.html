@@ -167,8 +167,11 @@
     })(mui, document);
     //删除按钮
     $(document).ready(function(){
-        var id=localStorage.getItem('id');
-        console.log(id)
+        //获取传入的jobDetailId
+        var id = GetRequest().id;
+
+        //var id=localStorage.getItem('id');
+        console.log(id);
         var params={id:id};
         var editJobExp=host+'c=Personal&a=workexp_edit';
         ajaxRun(editJobExp,params,true,'POST',function(data){
@@ -194,7 +197,8 @@
             var check;
             mui(".add_container input").each(function() {
                 //若当前input为空，则alert提醒
-                if(!this.value || this.value.trim() == "") {
+                if(!this.value || this.value.trim() == ""|| $('#inJob').html()=='入职时间'
+                    ||$('#leaveJob').html=='离职时间') {
                     mui.alert("信息未填写完整");
                     check = false;
                     return false;

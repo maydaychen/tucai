@@ -26,7 +26,7 @@
     <div class="head-container flex" onclick="setInfo()">
 	        <div class="user-pic">
 	            <div>
-	                <img id="headImg" :src="[lists.thumb||'../../static/images/aboutTc.gif']" alt="">
+	                <img id="headImg" :src="[lists.avatars||'../../static/images/aboutTc.gif']" alt="">
 	            </div>
 	        </div>
 	        <div class="user-info">
@@ -92,7 +92,7 @@
         </a>
     </li>
     <li>
-        <a data-href="../../commom/chatMsg/chatMsg">
+        <a data-href="../../company/recruit/jobMsg">
             <i class="iconfont">&#xe60c;</i>
             <p>消息</p>
         </a>
@@ -161,7 +161,7 @@
 		}else{
 			console.log(data.msg);	
 		}
-	})   	
+	},1);   	
  	
  }
 </script>

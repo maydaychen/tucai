@@ -5,7 +5,9 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -57,7 +59,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         SDKInitializer.initialize(getApplicationContext());
-        //initTencent();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            builder.detectFileUriExposure();
+        }
+        initTencent();
         initData();
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.setDebugMode(true);

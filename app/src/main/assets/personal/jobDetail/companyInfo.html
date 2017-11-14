@@ -148,7 +148,7 @@
         }
         .jobInfoContainer li a p{
             line-height: .8rem;
-            font-size: .4rem;
+            font-size: .35rem;
         }
         .jobInfoContainer li a p i{
             font-style: normal;
@@ -214,6 +214,9 @@
         .jinfo p{
             line-height:1rem;
         }
+        .jobInfoContainer li a h2 span{
+            color:#545454;
+        }
     </style>
 </head>
 
@@ -238,9 +241,15 @@
                             <li class="jobLi">
                                 <a class="ja">
                                     <div class="jinfo">
-                                        <img :src="[result.logo]">
+                                        <img :src="result.logo? result.logo: '../../static/images/aboutTc.gif'">
                                         <h1 class="mui-ellipsis" style="width:5rem" v-text="result.companyname"></h1><i></i>
-                                        <p><span v-text="result.trade_cn"></span><span class="widther">|</span><span v-text="result.scale_cn"></span><span class="widther">|</span><span v-text="result.finance"></span></p>
+                                        <p>
+                                            <span v-text="result.trade_cn"></span>
+                                            <span class="widther">|</span>
+                                            <span v-text="result.scale_cn"></span>
+                                            <span class="widther" v-show="display">|</span>
+                                            <span v-text="result.finance" v-show="display"></span>
+                                        </p>
                                     </div>
                                 </a>
                             </li>
@@ -268,18 +277,20 @@
                             </div>
                             <div class="comInfo">
                                 <div>
-                                    <h2>面试评价 (1)</h2>
-                                    <div class="jobs">
+                                    <h2>
+                                        <span>面试评价</span>
+                                        <span>(</span>
+                                        <span v-text="commentListLength"></span>
+                                        <span>)</span>
+                                    </h2>
+                                    <div class="jobs" v-for="item in commentList" v-if="commentShow==true">
                                         <ul class="jobUl">
                                             <li class="jobLi">
                                                 <a class="ja">
                                                     <div class="jinfo">
-                                                        <img src="../../static/images/yuantiao.jpg"/>
-                                                        <h1>欧阳云露</h1>
-                                                        <p>已面试：UI设计师</p>
+                                                        <h1 class="mui-ellipsis"><span>评价：</span><span v-text="item.pingjia"></span></h1>
                                                     </div>
                                                 </a>
-                                                <div>面试过程：公司不错，很锻炼人，很期待加入！</div>
                                             </li>
                                         </ul>
                                     </div>
@@ -288,22 +299,20 @@
                         </div>
                         <div class="jobInfoContainer msg" id="job" style="display: none" v-show="isHide">
                             <ul>
-                                <li>
-                                    <a data-href="jobDetail.html">
-                                        <h2>UI设计师<span class="rt">09月11日</span></h2>
-                                        <p>无锡 | 1-3年 | 本科<i class="rt">3k-5k</i></p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-href="jobDetail.html">
-                                        <h2>UI设计师<span class="rt">09月11日</span></h2>
-                                        <p>无锡 | 1-3年 | 本科<i class="rt">3k-5k</i></p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-href="jobDetail.html">
-                                        <h2>UI设计师<span class="rt">09月11日</span></h2>
-                                        <p>无锡 | 1-3年 | 本科<i class="rt">3k-5k</i></p>
+                                <li v-for="item in jobList">
+                                    <a data-href="jobDetail.html" :data-id="item.id">
+                                        <h2>
+                                            <span v-text="item.jobs_name"></span>
+                                            <span class="rt" v-text="item.addtime"></span>
+                                        </h2>
+                                        <p>
+                                            <span v-text="item.district_cn"></span>
+                                            <span class="widther">|</span>
+                                            <span v-text="item.experience_cn"></span>
+                                            <span class="widther">|</span>
+                                            <span v-text="item.education_cn"></span>
+                                            <i class="rt" v-text="item.salary_cn"></i>
+                                        </p>
                                     </a>
                                 </li>
                             </ul>
@@ -322,7 +331,7 @@
 <script src="../../static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../static/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../static/js/jquery.mockjax.js" type="text/javascript"></script>
-<script src="../../static/js/hrefJs/href.js"></script>
+
 <script src="../../static/js/vue.min.js"></script>
 <script src="../../static/js/api.js"></script>
 <script>
@@ -336,7 +345,15 @@
         statusBarBackground: '#41a6ff',
         swipeBack:true //启用右滑关闭功能
     });
-
+    mui('.mui-scroll-wrapper').scroll({
+        scrollY: true, //是否竖向滚动
+        scrollX: false, //是否横向滚动
+        startX: 0, //初始化时滚动至x
+        startY: 0, //初始化时滚动至y
+        indicators: true, //是否显示滚动条
+        deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+        bounce: true //是否启用回弹
+    });
     //获取传入的jobDetailId
     var _companyid = GetRequest().res_id;
     console.log(GetRequest().res_id);
@@ -407,7 +424,13 @@
             isShow:true,
             isHide:false,
             show:'active',
-            hide:null
+            hide:null,
+            jobsList:null,
+            display:false,
+            jobList:null,
+            commentList:[],
+            commentListLength:0,
+            commentShow:false
         },
         methods: {
             loadInfo:function(){
@@ -419,6 +442,10 @@
                     var state=data.result.collect;
                     if(data.statuscode==1){
                         that.result=data.result;
+                        if(data.result.finance!==""){
+                            that.display=true;
+                        }
+                        that.jobList=data.result.jobList;
                         star(state);
                     }
                 })
@@ -436,12 +463,33 @@
                     that.show=null;
                     that.hide='active'
                 }
+            },
+            loadGetComment:function(){
+                var that=this;
+                var parmas={companyid:_companyid };
+                var company_detail=host+'c=company&a=getComment';
+                ajaxRun(company_detail,parmas,true,'POST',function (data) {
+                    console.log(data);
+                    if(data.statuscode==1){
+                        that.commentList=data.result;
+                        that. commentListLength=data.result.length;
+                        that.commentShow=true;
+                    }else{
+                        mui.toast('暂无评价信息');
+                    }
+                })
             }
         },
         watch: {},
     })
     app.loadInfo();
     app.chose();
+    app.loadGetComment();
+    $('.jobInfoContainer').on('tap','a',function(){
+        var href=$(this).attr('data-href');
+        var jobDetailId=$(this).attr('data-id');
+        location.href=href+'?jobDetailId='+jobDetailId;
+    })
 </script>
 </body>
 

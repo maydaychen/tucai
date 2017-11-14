@@ -57,5 +57,5 @@ public interface BlueService {
 
     @FormUrlEncoded
     @POST("/index.php?m=phone&c=upload&a=avatar")
-    rx.Observable<JSONObject> getAva(@Field("base64_string") String base64_string);
+    rx.Observable<JSONObject> getAva(@Field("base64_string") String a);
 }

@@ -6,28 +6,45 @@ function backPage2() {
 	location.href = "../../index.html";
 }
 
-function share(articalId){
-	console.log("分享");
-	$(".cd-popup").addClass('is-visible');
-//	var url = host + 'c=tcbk&a=shareOrZan';
-//	var parmas = {
-//		articalId: articalId,
-//		type: "share"
-//	}
-//	ajaxRun(url,parmas,true,'GET',function (data) {
-//		if(data.statuscode==1){
-//			console.log("分享");
-//			$(".cd-popup").addClass('is-visible');
-//			
-//		} else {
-//		 	rzState=0;
-//			console.log('未认证');	
-//			mui.toast('未认证',{ duration:1000}); 
-//		}					
-// 	});
-}
+// function share(articalId){
+// 	console.log("分享");
+// 	$(".cd-popup").addClass('is-visible');
+// //	var url = host + 'c=tcbk&a=shareOrZan';
+// //	var parmas = {
+// //		articalId: articalId,
+// //		type: "share"
+// //	}
+// //	ajaxRun(url,parmas,true,'GET',function (data) {
+// //		if(data.statuscode==1){
+// //			console.log("分享");
+// //			$(".cd-popup").addClass('is-visible');
+// //
+// //		} else {
+// //		 	rzState=0;
+// //			console.log('未认证');
+// //			mui.toast('未认证',{ duration:1000});
+// //		}
+// // 	});
+// }
 
 function agree(articalId) {
+	var url = host + 'c=tcbk&a=shareOrZan';
+	var parmas = {
+		articalId: articalId,
+		type: "zan"
+	}
+	ajaxRun(url,parmas,true,'GET',function (data) {
+		if(data.statuscode==1){
+			console.log("点赞");
+			$('#' + articalId).toggleClass("agreeState");
+			$('#' + articalId).next().html(data.result);
+		} else {
+		 	rzState=0;
+			mui.toast(data.msg,{ duration:1000}); 
+		}					
+ 	});
+}
+function agreeArtical(articalId) {
 	var url = host + 'c=tcbk&a=shareOrZan';
 	var parmas = {
 		articalId: articalId,

@@ -54,9 +54,9 @@
 //	$(function(){
 //     loadInfo();
 //  });
-// var status = doLocalStorage('get','status');
-// var status=localStorage.getItem('status');
-// console.log(status);
+   var status = doLocalStorage('get','status');
+   var status=localStorage.getItem('status');
+   console.log(status);
    var list='';
    var search = new Vue({
 		el:'#app',
@@ -79,15 +79,15 @@
    	$("#cityList").on("tap","p",function(){
    		$(this).addClass("active").siblings().removeClass("active");
    		var city=$(this).text();
-// 		localStorage.setItem('cName',city);
+   		localStorage.setItem('cName',city);
 		doLocalStorage('set','cName',city);
-//		if(status=='index'){
-//			location.href="../../index.html";
-//			doLocalStorage('remove','status');			
-//		}else if(status=='undefined'){
+		if(status=='index'){
+			location.href="../../index.html";
+			doLocalStorage('remove','status');			
+		}else if(status=='undefined'){
 			location.href='recruitment.html';
-//			doLocalStorage('remove','status');
-//		}  		 
+			doLocalStorage('remove','status');
+		}  		 
    	})
    	$('.titleBar').on('tap','.barLeft',function(){
    		location.href='selectCity.html'  		

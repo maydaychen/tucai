@@ -41,10 +41,10 @@
                     <label><i></i></label>
                     <input type="text" class="mui-input-clear" placeholder="简历名称" id="title">
                 </div>
-                <!--<div class="label">-->
-                    <!--<i></i><label for="textarea" class="label1">技能描述</label>-->
-                    <!--<textarea id="textarea" rows="5" placeholder="填写工作技能"></textarea>-->
-                <!--</div>-->
+                <div class="mui-input-row">
+                    <label><i></i></label>
+                    <input type="text" class="mui-input-clear" placeholder="电话号码" id="telphone">
+                </div>
                 <div class="mui-input-row">
                     <label class="width8"><i></i></label>
                     <p class="e5">技能描述</p>
@@ -53,7 +53,7 @@
                     <textarea id="textarea" rows="5" placeholder="填写工作的具体内容"></textarea>
                 </div>
                 <div class="submitBtn mui-button-row">
-                    <button type="button" id="btn" class="mui-btn" disabled="disabled">保存</button>
+                    <button type="button" id="btn" class="mui-btn" >保存</button>
                 </div>
             </form>
         </div>
@@ -91,12 +91,13 @@
         var getResume=host + "c=Personal&a=show_resume";
         var params={};
         ajaxRun(getResume, params, true, 'POST', function (data) {
-            console.log(data)
+            console.log(data);
             if(data.statuscode==1){
                 var skillInfo=data.result.result5;
-                console.log(skillInfo)
+                console.log(skillInfo);
                 $('#title').val(skillInfo.title);
-                $('#textarea').val(skillInfo.skill)
+                $('#textarea').val(skillInfo.skill);
+                $('#telphone').val(skillInfo.mobile);
             }
         },1);
         $('#title').focus();
@@ -108,8 +109,15 @@
             }
         });
         var check;
+        function checkPhone(mobile){
+            if(!(/^1(3|4|5|7|8)\d{9}$/.test(mobile))){
+                mui.toast('手机号码有误，请重填',{ duration:1000});
+//      alert("手机号码有误，请重填");
+            }
+        }
         $('#btn').click(function(){
-            if(!$('#textarea').val()||$('#textarea').val().trim()==""){
+            var mobile=$('#telphone').val();
+            if(!$('#textarea').val()||$('#textarea').val().trim()==""||!(/^1(3|4|5|7|8)\d{9}$/.test(mobile))){
                 check =false;
                 mui.alert("信息未填写完整");
                 return false;
@@ -119,26 +127,16 @@
             if(check){
                 var skill=$('#textarea').val();
                 var title=$('#title').val();
-                var params={specialty:skill,title:title};
+                var mobile=$('#telphone').val();
+                var params={specialty:skill,title:title,mobile:mobile};
                 var skillDesc=host+'c=Personal&a=specialty_add';
                 ajaxRun(skillDesc,params,true,'POST',function(data){
-                    console.log(data)
+                    console.log(data);
                     if(data.statuscode==1){
-                        mui.alert('保存成功！');
                         $('#textarea').val("");
                         $('#title').val("");
-                        var href='resume.html';
-                        //location.href=href;
-                    }else if(data.statuscode==-2){
-                        var btnArray = ['否', '是'];
-                        mui.confirm('现在去完善？', '请完善个人信息', btnArray, function(e) {
-                            console.log(e);
-                            if (e.index == 1) {
-                                location.href="../personalCenter/personal.html";
-                            }else{
-                                return;
-                            }
-                        })
+                        $('#telphone').val("");
+                        location.href='resume.html';
                     }else{
                         mui.toast('网络错误,保存失败')
                     }

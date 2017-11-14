@@ -32,7 +32,7 @@
 	<script src="../../static/js/vue.min.js"></script>
 	<script>
 		var articleid = GetRequest().articalId;  
-		var uid = uid();    
+		// var uid = uid();    
 	    console.log("articleid" + articleid)
 		var url = host + 'c=tcbk&a=getTcbkInfo';
 		var categoryListUrl = host + 'c=tcbk&a=comment';
@@ -41,7 +41,7 @@
 	 		var content = $(".commentContent").val();
 	 		console.log(content)
 	 		if (content != '') {
-				var parmas = {id: articleid,uid: uid,content: content};
+				var parmas = {id: articleid,content: content};
 	 			ajaxRun(categoryListUrl,parmas,true,'GET',function (data) {					
 					if(data.statuscode==1){
 						location.href='index.html';

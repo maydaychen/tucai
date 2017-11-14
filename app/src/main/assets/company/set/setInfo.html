@@ -44,10 +44,10 @@
 		</header>	
 		
 		<div class="mBody">
-			<a class="cow changeImg" onclick="uploadImg()">
+			<a class="cow changeImg">
 				<h1>头像</h1>
 				<span>
-					<div class="img"></div>
+					<div class="img"><img id="headImg" src=""/></div>
 					<i class="iconfont">&#xe649;</i>
 				</span>
 			</a>
@@ -102,21 +102,39 @@
 			$(function(){
 				FastClick.attach(document.body);
 			});
-			
-		var pics=[];
-        function uploadImg(){       	
-			pics=[];
-			console.log(123);
+		
+		var save;
+		var showPic;
+        var savePics;
+       $(".changeImg").on('tap',function(){
+//    		pics=[];
 			_webapp.uploadImg(function (res) {
 				console.log(res);
-				alert(res);
-			    for (var i=0;i<res.data.length;i++){
-			        pics.push(res.data[i]);
-				};
-			})
-               
-        }
-			
+				if(res.statusCode==0){
+					save = res.data.save_path;
+					showPic='http://tczp.wshoto.com/'+res.data.show_path;
+					savePics='http://tczp.wshoto.com/'+res.data.save_path;
+//					var html = "<img src=\"" + showPic + "\" />";
+					$('#headImg').attr('src',showPic);
+				}			
+			})			
+      	});
+      	
+//        上传头像
+//		$(".titleBar").on('tap','span',function(){
+//			console.log(save);
+//			var param = {avatar: save,level: 2};
+//          var getInfo = host + "c=upload&a=avatar";
+//          ajaxRun(getInfo, param, true, 'GET', function (data) {
+//              console.log(data);
+//              if (data.statuscode == 1) {
+//              	console.log(data.msg);
+//              } else {
+//              	console.log(data.msg);
+//              }
+//          });
+//		})
+
 		 	//    更换头像
 //			var arrFiles = [];
 //          $('.closeLb,.fadeBottom').on("tap", function () {
@@ -192,10 +210,11 @@
                 console.log(data);
                 if(data.statuscode==1){
                     var info = data.result;
+                    $('#headImg').attr('src',info.avatars);
                     $('#realName').html(info.realname);                 
                     $('#job').html(info.work_type);
                 }
-            });
+            },1);
         }
         getInfo();
 	        
@@ -204,14 +223,24 @@
 	         	var userid = localStorage.getItem('userid');
 	         	var realname=$("#realName").html();
 	         	var work_type=$("#job").html();
-	         	if(realname==''||work_type==''){
+	         	if(realname==''||work_type==''||save==''){
 	         		 mui.alert('信息不完整');
 	         	}else{
-	         		var params = { op: 'edit', uid: userid, realname: realname,work_type:work_type};
+	         		var params = { op: 'edit', uid: userid, realname: realname,work_type:work_type,avatar: save,level: 2};
 		        	var url=host + "c=Personalinfo&a=personal_info_update";
 		        	ajaxRun(url, params, true, 'GET', function (data){
 	        	 	if (data.statuscode == 1) {
-                            mui.toast('更新信息成功！')
+                            mui.toast('更新信息成功！');
+                            var param = {avatar: save,level: 2};
+				            var getInfo = host + "c=upload&a=avatar";
+				            ajaxRun(getInfo, param, true, 'GET', function (data) {
+				                console.log(data);
+				                if (data.statuscode == 1) {
+				                	console.log(data.msg);
+				                } else {
+				                	console.log(data.msg);
+				                }
+				            });
                         } else {
                             mui.toast('更新信息失败！')
                         }	        	 	
@@ -219,20 +248,7 @@
 	         	}
 	         })
 	       
-//	    //        上传头像
-//		$(".titleBar").on('tap','span',function(){
-//			console.log(arrFiles);
-//			var param = {base64_string: arrFiles};
-//          var getInfo = host + "c=upload&a=avatar";
-//          ajaxRun(getInfo, param, true, 'GET', function (data) {
-//              console.log(data);
-//              if (data.statuscode == 1) {
-//              	
-//              } else {
-//              	
-//              }
-//          });
-//		})
+
 	  
 	  
 </script>

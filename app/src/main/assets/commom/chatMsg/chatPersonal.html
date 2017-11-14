@@ -15,7 +15,7 @@
 	<body style="height: calc(100% - 50px);">
 		<header class="titleBar">
 		    <a class="barLeft iconfont" onclick="back()">&#xe604;</a>
-		    <p class="barTxt">爬虫科技 刘鑫</p>
+		    <p class="barTxt">聊天</p>
 		    <p class="barRight">
 		        <a class="br"></a>
 		    </p>
@@ -71,6 +71,8 @@
 		var token = localStorage.getItem("userid");
 		var touid = GetRequest().touid;
 		var chatno = GetRequest().chatno;
+		var demoAvatar = '../../static/images/touxiang.jpg';
+		var myAvatars = '';
 		console.log("touid:" + touid + ",chatno:" + chatno)
 		var historyParmas = '';
 		if (chatno == undefined) {
@@ -83,7 +85,11 @@
 //		var historyParmas = {chatno:chatno,touid: touid};
 		ajaxRun(historyMsg,historyParmas,true,'POST',function (data) {
 			if(data.statuscode == 1) {	
-                var result = data.result;
+//				myAvatars = data.result.memberInfo.avatar;
+				if (myAvatars == '') {
+					myAvatars = demoAvatar;
+				}
+                var result = data.result.data;
                 var msgNum = result.length - 1;
                 lastId = result[msgNum].id;			
             	console.log("lastId:" + lastId);
@@ -116,9 +122,10 @@
 			}
 //			var loadParmas = {chatno:'chatno1509622679',id:lastId}
 			ajaxRun(historyMsg,loadParmas,true,'POST',function (data) {
+			    console.log(data)
 				if(data.statuscode == 1) {				
 	//          	console.log(data);
-	                var result = data.result;
+	                var result = data.result.data;
 	                for(var i = 0; i < result.length; i++) {
 	                	var msg = '';
 	                	var msgInfo = result[i];
@@ -130,7 +137,9 @@
 	                	}
 	                	$(".chatContents").append(msg);
 	                }
-	
+	                var length = result.length;
+                	lastId = result[length-1].id;
+                	setTimeout(toChatRecordsBottom(),3000);
 				} else {
 //					mui.toast(data.msg,{ duration:1000}); 
 				}
@@ -156,12 +165,14 @@
 //	            var parmas={tuid:touid,message:msgInfo,chatno:'chatno1509622679'};
 	            var send_chatMsg=host+'c=notice&a=doChat';
 	            ajaxRun(send_chatMsg,sendParmas,true,'POST',function (data) {
+	                console.log(data)
 	            	if (data.statuscode == 1) {
 		                console.log(data);
-		                var msg = send(msgInfo);
+		                myAvatars = data.result.avatar;
+		                var msg = send(msgInfo,myAvatars);
 		                $(".chatContents").append(msg);
 		                $('.chatMsg').val('');
-		                lastId = data.result;
+		                lastId = data.result.id;
 		                setTimeout(toChatRecordsBottom(),3000);
 	            	} else {
 	            		mui.toast(data.msg,{ duration:1000}); 
@@ -179,10 +190,10 @@
 			//location.href = "chatMsg.html";
             history.go(-1);
 		}
-		function send(message) {
+		function send(message,myAvatars) {
 			var str = "<div class='people-me'>" +
 					"<div class='head-imgright'>" +
-						"<img src='../../static/images/touxiang.jpg' />" +
+						"<img src='" + myAvatars + "' />" +
 					"</div>" +			
 					"<div class='text text-right'>" + message + "</div>" +					
 //					"<div class='msgState'>" + '已读' + "</div>" +
@@ -191,9 +202,13 @@
 			return str;
 		}
 		function mine(msgInfo) {
+			var avatar = msgInfo.avatars;
+			if (avatar == '') {
+				avatar = '../../static/images/touxiang.jpg';
+			}
 			var str = "<div class='people-me'>" +
 					"<div class='head-imgright'>" +
-						"<img src='../../static/images/touxiang.jpg' />" +
+						"<img src='" + avatar + "' />" +
 					"</div>" +			
 					"<div class='text text-right'>" + msgInfo.message + "</div>" +					
 //					"<div class='msgState'>" + '已读' + "</div>" +
@@ -202,9 +217,13 @@
 			return str;
 		}
 		function left(msgInfo) {
+			var avatar = msgInfo.avatars;
+			if (avatar == '') {
+				avatar = '../../static/images/touxiang.jpg';
+			}			
 			var str = "<div class='people-left'>" +
 		   			"<div class='head-img'>" +
-		   				"<img src='../../static/images/touxiang.jpg' />" +
+		   				"<img src='" + avatar + "' />" +
 		   			"</div>" +
 		   			"<div class='text text-left'>" + msgInfo.message + "</div>" +
 	   				"<div style='clear: both'></div>" +

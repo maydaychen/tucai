@@ -49,6 +49,9 @@ import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
+import com.tencent.connect.UserInfo;
+import com.tencent.connect.auth.QQToken;
+import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 import com.umeng.message.PushAgent;
@@ -77,7 +80,6 @@ import tucai.wshoto.com.Utils;
 import tucai.wshoto.com.alipay.AliPayManager;
 import tucai.wshoto.com.alipay.AliPayMessage;
 import tucai.wshoto.com.application.App;
-import tucai.wshoto.com.bean.ImageBean;
 import tucai.wshoto.com.http.HttpJsonMethod;
 import tucai.wshoto.com.http.ProgressErrorSubscriber;
 import tucai.wshoto.com.http.SubscriberOnNextAndErrorListener;
@@ -117,13 +119,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
     private static final int RC_LOCATION_CONTACTS_PERM = 124;
     //微信登录有效期
     private AccessToken mSavedAccessToken;
-    private SubscriberOnNextAndErrorListener<ImageBean> uploadOnNext;
-    /**
-     * 上传拍照或图库中图片，处理后保存的路径
-     */
-    /*
-    * 地图
-    * */
+    private SubscriberOnNextAndErrorListener<JSONObject> uploadOnNext;
     private LocationClient mLocationClient;
     private double lat;
     private double lon;
@@ -162,36 +158,35 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
             String url = HttpConstants.disease + "?id=" + id + "&" + "title=" + title;
             Log.i("chenyi", url);
             webView.loadUrl(url);
-            ll_gone.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+            ll_gone.setOnClickListener(v -> finish());
         } else {
             webView.loadUrl(HttpConstants.BASEURL4);
             //webView.loadUrl(HttpConstants.PAY);
         }
         webView.callHandler("frame", "123", jsResponseData -> Log.i("chenyi", "getLat " + jsResponseData));
         saveImg();
-        uploadOnNext = new SubscriberOnNextAndErrorListener<ImageBean>() {
+        uploadOnNext = new SubscriberOnNextAndErrorListener<JSONObject>() {
             @Override
-            public void onNext(ImageBean jsonObject) {
+            public void onNext(JSONObject jsonObject) {
                 if (updateDialog != null) {
                     updateDialog.dismiss();
                     updateDialog = null;
                 }
-//                String msg = jsonObject.toString();
-//                try {
-//                    if (jsonObject.getInt("statusCode") == 1) {
-//                        Toast.makeText(WebAppActivity.this, "上传成功！", Toast.LENGTH_SHORT).show();
-//                        msg = jsonObject.getString("result");
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                deletePic();
-//                Log.d("wjj", msg);
+                try {
+                    if (jsonObject.getInt("statuscode") == 1) {
+                        Toast.makeText(WebAppActivity.this, "上传成功！", Toast.LENGTH_SHORT).show();
+                        JSONObject jsonObject1 = new JSONObject();
+                        jsonObject1.put("statusCode", "0");
+                        jsonObject1.put("data", jsonObject.get("result"));
+                        Log.i("chenyi", "onNext:  success" + jsonObject1.toString());
+                        webView.callHandler("uploadImg", jsonObject1.toString(), jsResponseData -> Log.i("chenyi", "uploadImg callBack" + jsResponseData));
+//                        msg = jsonObject.get("result");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                deletePic();
+//                Log.i("chenyi", msg);
 //                getResult(msg);
             }
 
@@ -199,6 +194,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
             public void onError(Throwable e) {
                 if (updateDialog == null) {
                     updateDialog.dismiss();
+                    updateDialog = null;
                 }
                 Toast.makeText(WebAppActivity.this, "上传失败，请稍后再试", Toast.LENGTH_SHORT).show();
                 Log.i("chenyi", "err");
@@ -234,20 +230,12 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
     }
 
     public void getResult(String msg) {
-        String result = "{\"status\":\"1\", \"message\":\"" + msg + "\"}";
-        webView.callHandler("uploadImg", result, new CallBackFunction() {
-            @Override
-            public void onCallBack(String jsResponseData) {
-                Log.i("chenyi", "uploadImg " + jsResponseData);
-            }
-        });
+        String result = "{\"statusCode\":\"1\", \"data\":\"" + msg + "\"}";
+        webView.callHandler("uploadImg", result, jsResponseData -> Log.i("chenyi", "uploadImg " + jsResponseData));
     }
 
     public void loginTencent() {
         app = (App) getApplication();
-        if (!app.mTencent.isSessionValid()) {
-            app.mTencent.login(this, "all", loginListener);
-        }
         loginListener = new IUiListener() {
             @Override
             public void onComplete(Object o) {
@@ -260,6 +248,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
                     String openID = object.getString("openid");
                     app.mTencent.setAccessToken(accessToken, expires);
                     app.mTencent.setOpenId(openID);
+                    getUserInfo(openID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -267,14 +256,45 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
 
             @Override
             public void onError(UiError uiError) {
-
+                Log.i("chenyi", "onError: " + uiError.errorDetail);
             }
 
             @Override
             public void onCancel() {
-
+                Log.i("chenyi", "onCancel: ");
             }
         };
+        if (!app.mTencent.isSessionValid()) {
+            app.mTencent.login(this, "all", loginListener);
+        }
+
+    }
+
+    private void getUserInfo(String openId) {
+        QQToken token = app.mTencent.getQQToken();
+        UserInfo mInfo = new UserInfo(WebAppActivity.this, token);
+        mInfo.getUserInfo(new IUiListener() {
+            @Override
+            public void onComplete(Object object) {
+                JSONObject jb = (JSONObject) object;
+                try {
+                    jb.put("openId", openId);
+                    jb.put("statusCode", "1");
+                    Log.i("chenyi", "onComplete: " + jb.toString());
+                    webView.callHandler("authLogin", jb.toString(), data -> Log.i("chenyi", "qqLogin error result " + data));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(UiError uiError) {
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
     }
 
     private void init() {
@@ -326,28 +346,26 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
             Log.i("chenyi", "getLocation: start");
             initMap();
         });
-        webView.registerHandler("authLogin", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                Log.i("chenyi", "start login " + data);
-                try {
-                    JSONTokener jsonTokener = new JSONTokener(data);
-                    JSONObject wxJson = (JSONObject) jsonTokener.nextValue();
-                    String type = wxJson.getString("type");
-                    if ("wechat".equals(type)) {
-                        Log.i("chenyi", "wechat");
-                        WXLoginManager.getInstance(WebAppActivity.this).login();
-                        function.onCallBack(RESPONSE_TEXT_SUCCESS);
-                    } else if ("tencent".equals(type)) {
-                        loginTencent();
-                        function.onCallBack(RESPONSE_TEXT_SUCCESS);
-                    } else {
-                        function.onCallBack(RESPONSE_TEXT_FAIL);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        webView.registerHandler("authLogin", (data, function) -> {
+            Log.i("chenyi", "start login " + data);
+            try {
+                JSONTokener jsonTokener = new JSONTokener(data);
+                JSONObject wxJson = (JSONObject) jsonTokener.nextValue();
+                String type = wxJson.getString("type");
+                if ("wechat".equals(type)) {
+                    Log.i("chenyi", "wechat");
+                    WXLoginManager.getInstance(WebAppActivity.this).login();
+                    function.onCallBack(RESPONSE_TEXT_SUCCESS);
+                } else if ("qq".equals(type)) {
+                    Log.i("chenyi", "qq");
+                    loginTencent();
+                    function.onCallBack(RESPONSE_TEXT_SUCCESS);
+                } else {
                     function.onCallBack(RESPONSE_TEXT_FAIL);
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                function.onCallBack(RESPONSE_TEXT_FAIL);
             }
         });
 
@@ -486,35 +504,12 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
             }
         });
         webView.registerHandler("uploadImg", (responseData, function) -> {
-//            try {
             Log.i("chenyi", "handler: uploadImg");
-//                ActionSheet.createBuilder(WebAppActivity.this, getSupportFragmentManager())
-//                        .setCancelButtonTitle("Cancel")
-//                        .setOtherButtonTitles("相机", "图库")
-//                        .setCancelableOnTouchOutside(true)
-//                        .setListener(new ActionSheet.ActionSheetListener() {
-//                            @Override
-//                            public void onDismiss(ActionSheet actionSheet, boolean isCancel) {
-//                            }
-//
-//                            @Override
-//                            public void onOtherButtonClick(ActionSheet actionSheet, int index) {
-//                                if (index == 0) {
-//                                    camera();
-//                                    Log.i("chenyi", "camera");
-//                                } else {
-//                                    selectImage();
-//                                    Log.i("chenyi", "selectImage");
-//                                }
-//                            }
-//                        }).show();
-//
-//                function.onCallBack(RESPONSE_TEXT_SUCCESS);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                function.onCallBack(RESPONSE_TEXT_FAIL);
-//            }
             showType();
+        });
+        webView.registerHandler("shareTo", (responseData, function) -> {
+            Log.i("chenyi", "handler: shareTo");
+            showShare();
         });
         webView.registerHandler("backHistory", new BridgeHandler() {
             @Override
@@ -588,17 +583,12 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
     public void onMoonEvent(WXLoginInfoMessage loginInfoMessage) {
         String info = loginInfoMessage.getJsonString();
         Log.i("chenyi", "onMoonEvent WXLoginInfoMessage " + info);
-        webView.callHandler("authLogin", info, new CallBackFunction() {
-            @Override
-            public void onCallBack(String data) {
-                Log.i("chenyi", "wxLogin error result " + data);
-            }
-        });
+        webView.callHandler("authLogin", info, data -> Log.i("chenyi", "wxLogin error result " + data));
 
     }
 
     private void sendLoginError() {
-        Log.i("WebAppActivity", "sendLoginError");
+        Log.i("chenyi", "sendLoginError");
         WXLoginInfoMessage msg = new WXLoginInfoMessage();
         msg.status = -1;
         msg.data = "";
@@ -669,19 +659,27 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
      * 上传用户头像
      */
     private void upDataHeadImg() {
-//        try {
-//            Log.i("chenyi", "head");
-//            RequestManager.getInstance(WebAppActivity.this).getAva(WebAppActivity.this, picFile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        if (updateDialog == null) {
-            updateDialog = ProgressDialog.show(WebAppActivity.this, "上传头像", "头像正在上传中，请稍等...", true, false);
+        Log.i("chenyi", "upDataHeadImg: size=" + getBitmapSize(bmp));
+        if (getBitmapSize(bmp) > 1000000) {
+            Toast.makeText(this, "图片过大，请选择较小图片！", Toast.LENGTH_SHORT).show();
+        } else {
+            if (updateDialog == null) {
+                updateDialog = ProgressDialog.show(WebAppActivity.this, "上传头像", "头像正在上传中，请稍等...", true, false);
+            }
+            Log.i("chenyi", "upDataHeadImg: " + Utils.bitmaptoString(bmp));
+            HttpJsonMethod.getInstance().getAva(
+                    new ProgressErrorSubscriber<>(uploadOnNext, WebAppActivity.this), Utils.bitmaptoString(bmp));
         }
-        Log.i("chenyi", "upDataHeadImg: " + Utils.bitmaptoString(bmp));
-        String test = Utils.bitmaptoString(bmp);
-        HttpJsonMethod.getInstance().getAva(
-                new ProgressErrorSubscriber<>(uploadOnNext, WebAppActivity.this), Utils.bitmaptoString(bmp));
+    }
+
+    public int getBitmapSize(Bitmap bitmap) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {     //API 19
+            return bitmap.getAllocationByteCount();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {//API 12
+            return bitmap.getByteCount();
+        }
+        return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
     }
 
     public void camera() {
@@ -735,7 +733,6 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
                         ContentResolver cr = this.getContentResolver();
                         try {
                             bmp = BitmapFactory.decodeStream(cr.openInputStream(uri));
-
                             Matrix matrix = new Matrix();
                             matrix.setScale(0.5f, 0.5f);
                             bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
@@ -750,6 +747,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
                 case 101:
                     // 从拍照返回
                     if (data != null) {
+                        Log.i("chenyi", "onActivityResult: " + "拍照" + data.toString());
                         Bundle bundle = data.getExtras();
                         bmp = (Bitmap) bundle.get("data");
                         Matrix matrix = new Matrix();
@@ -762,7 +760,14 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
                 default:
                     break;
             }
+        } else {
+            app.mTencent.onActivityResult(requestCode, resultCode, data);
         }
+//        if (requestCode == Constants.REQUEST_API) {
+        if (requestCode == Constants.REQUEST_LOGIN) {
+            app.mTencent.handleLoginData(data, loginListener);
+        }
+//        }
     }
 
     public void deletePic() {
@@ -780,8 +785,8 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
             // 选择拍照
             Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             // 指定调用相机拍照后照片的储存路径
-            cameraintent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    Uri.fromFile(picFile));
+//            cameraintent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                    Uri.fromFile(picFile));
             startActivityForResult(cameraintent, 101);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1013,7 +1018,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
 // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
         //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle("涂材直聘邀请函");
+        oks.setTitle("涂才邀请函");
         // text是分享文本，所有平台都需要这个字段
         oks.setText("快来下载吧！");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
@@ -1021,7 +1026,8 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
 //        oks.setImagePath("file:///android_asset/logo.jpg");//确保SDcard下面存在此张图片
 //        oks.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503506356816&di=5dadbd01e162deb6601a801dc6258361&imgtype=0&src=http%3A%2F%2Fimg1.bitautoimg.com%2Fautoalbum%2Ffiles%2F20170407%2F958%2F16325395873602_5454777_3.jpg%3Fr%3D20170703");//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.example.user.guokun");
+        oks.setUrl("https://fir.im/lag3");
+//        oks.setSiteUrl("https://fir.im/lag3");
 //        oks.setUrl("http://www.baidu.com");
         // 启动分享GUI
         oks.show(this);
@@ -1033,7 +1039,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
                 Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // Have permissions, do the thing!
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
             File file = new File(fileName);
             if (!file.exists()) {
                 try {

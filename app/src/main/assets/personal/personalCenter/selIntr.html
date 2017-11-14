@@ -37,7 +37,12 @@
     mui.init({
         statusBarBackground: '#41a6ff'
     });
-
+	 var intru = localStorage.getItem("intru");
+	 if(intru!==""&&intru!==null&&intru!==undefined){
+	 	$("#sel").html(intru);
+	 }
+	 
+	 
 	$(document).ready(function(){
 //      var time1=localStorage.getItem("time1");
 //      var time2=localStorage.getItem("time2");

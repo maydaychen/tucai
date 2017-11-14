@@ -45,14 +45,14 @@
 						</div>
 						<li class="tdLi" v-for="(item, index) in listAll">
 							<div class="tdTop">
-								<img class="tdImg" :src="[item.member.avarats]"/>
-								<p class="td1"><a v-text="item.member.realname"></a><i class="iconfont" :data-sex="[item.member.sex]">{{item.resume.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
+								<img class="tdImg" :src="[item.membersinfo.avatar]"/>
+								<p class="td1"><a v-text="item.membersinfo.realname"></a><i class="iconfont" :data-sex="[item.membersinfo.sex]">{{item.membersinfo.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
 								<p class="td2">求职期望  <em v-text="item.jobs_name"></em></p>
-								<p class="td3"><em v-text="item.resume.district_cn"></em> | <em v-text="item.resume.wage_cn"></em> | <em v-text="item.resume.experience_cn"></em> | <em v-text="item.resume.education_cn"></em></p>
+								<p class="td3"><em v-text="item.resume.residence"></em> | <em v-text="item.exceptjob.salary"></em> | <em v-text="item.resume.experience_cn"></em> | <em v-text="item.education.education_cn"></em></p>
 								<time class="nd" v-text="item.addtime"></time>
 							</div>
 							<div class="tdBot">
-								<span>投递职位：<p>{{item.jobs.jobs_name}}</p></span>
+								<span>投递职位：<p>{{item.jobs_name}}</p></span>
 								<a @click="goRs(item.resumeid,item.id)">查看简历</a>
 							</div>
 						</li>
@@ -65,10 +65,10 @@
 						</div>
 						<li class="tdLi" v-for="(item, index) in listIng" :key="item.id" >
 							<div class="tdTop">
-								<img class="tdImg" :src="[item.member.avarats]"/>
-								<p class="td1"><a v-text="item.member.realname"></a><i class="iconfont" :data-sex="[item.member.sex]">{{item.resume.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
+								<img class="tdImg" :src="[item.membersinfo.avatar]"/>
+								<p class="td1"><a v-text="item.membersinfo.realname"></a><i class="iconfont" :data-sex="[item.membersinfo.sex]">{{item.membersinfo.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
 								<p class="td2">求职期望 <em v-text="item.jobs_name"></em></p>
-								<p class="td3"><em v-text="item.resume.district_cn"></em> | <em v-text="item.resume.wage_cn"></em> | <em v-text="item.resume.experience_cn"></em> | <em v-text="item.resume.education_cn"></em></p>
+								<p class="td3"><em v-text="item.resume.residence"></em> | <em v-text="item.exceptjob.salary"></em> | <em v-text="item.resume.experience_cn"></em> | <em v-text="item.education.education_cn"></em></p>
 								<time v-text="item.addtime"></time>
 							</div>
 							<div class="tdBot">
@@ -84,8 +84,8 @@
 						</div>
 						<li class="tdLi" v-for="(item, index) in listOff">
 							<div class="tdTop">
-								<img class="tdImg" :src="[item.member.avatar]"/>
-								<p class="td1"><a v-text="item.member.realname"></a><i class="iconfont" :data-sex="[item.member.sex]">{{item.member.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
+								<img class="tdImg" :src="item.membersinfo.avatar"/>
+								<p class="td1"><a v-text="item.membersinfo.realname"></a><i class="iconfont" :data-sex="[item.membersinfo.sex]">{{item.membersinfo.sex==1?'&#xe629;':'&#xe6d7;'}}</i></p>
 								<p class="td2">求职期望  <em v-text="item.jobs_name"></em></p>
 								<p class="td3"><em v-text="item.resume.district_cn"></em> | <em v-text="item.resume.wage_cn"></em> | <em v-text="item.resume.experience_cn"></em> | <em v-text="item.resume.education_cn"></em></p>
 								<time class="nd" v-text="item.addtime"></time>
@@ -147,6 +147,7 @@
                                 return;
                             }
                             page[0]++;
+                            pageflag[0] = true;
 						}else{
 
 						}
@@ -167,6 +168,7 @@
                                   return;
                               }
                               page[1]++;
+                              pageflag[1] = true;
                           }else{
 
                           }
@@ -187,6 +189,7 @@
                                   return;
 							  }
                               page[2]++;
+                              pageflag[2] = true;
                           }else{
 
                           }
@@ -233,7 +236,6 @@
                                 if(num==2){
                                     that.loadOff();
                                 }
-					            pageflag[num] = true;
 		                    },1000)		                    
 		                }
 		            });

@@ -17,7 +17,7 @@
 		<link rel="stylesheet" href="../../static/fonts/iconfont.css">
 		<link rel="stylesheet" href="../../static/css/home.css">
 		<style type="text/css">
-			
+
 		</style>
 	</head>
 
@@ -27,7 +27,7 @@
 			<a class="barLeft iconfont mui-action-back">&#xe604;</a>
 			<p class="barTxt">查看简历</p>
 			<p class="barRight">
-				<a class="br"></a>
+				<a class="br iconfont" id="collect" data-state=""></a>
 			</p>
 		</header>
 		<section id="1app" style="width: 100%; height: 100%;">
@@ -46,16 +46,16 @@
 				<!--这里放置真实显示的DOM内容-->
 				<section class="rsInfo" id="app">
 					<div class="rs rss">
-						<img class="headImg2" :src="[rs.result6.thumb]">
+						<img class="headImg2" :src="[rs.result6.avatars]">
 						<p class="rs1" v-text="rs.result6.realname"></p>
 						<p class="rs2" v-text="rs.result6.introduction"></p>
 					</div>
 					<div class="rs">
 						<h1 class="tith">基本信息</h1>
 						<p class="rsp">工作年限：<a v-text="rs.result6.experience_cn"></a></p>
-						<p class="rsp">最高学历：<a v-text="rs.result6.education_cn"></a></p>
+						<p class="rsp">最高学历：<a v-text="rs.result3[0].education_cn"></a></p>
 						<p class="rsp">所在城市：<a v-text="rs.result6.residence"></a></p>
-						<p class="rsp">联系电话：<a v-text="rs.result6.phone"></a></p>
+						<p class="rsp">联系电话：<a v-text="rs.result5.mobile"></a></p>
 					</div>
 					<div class="rs">
 						<h1 class="tith">工作经历</h1>
@@ -103,7 +103,29 @@
 	        var tid=url.tid;
 			$(function(){
 				FastClick.attach(document.body);
-			
+				$('#collect').click(function () {
+					var state=$(this).attr('data-state');
+					if(state==0){
+                        var parmas={resumeid:pageid,type:'add'};
+                        ajaxRun(port.favoritesresume,parmas,true,'POST',function (data) {
+                            console.log('favoritesresume:',data);
+                            if(data.statuscode==1){
+                                $('#collect').attr('data-state',1).html('&#xe71a;');
+                                mui.toast(data.msg);
+							}
+                        });
+					}else{
+                        var parmas={resumeid:pageid,type:'canlce'};
+                        ajaxRun(port.favoritesresume,parmas,true,'POST',function (data) {
+                            console.log('favoritesresume:',data);
+                            if(data.statuscode==1){
+                                $('#collect').attr('data-state',0).html('&#xe600;');
+                                mui.toast(data.msg);
+                            }
+                        });
+					}
+
+                })
 			});
 
 			var app = new Vue({
@@ -120,6 +142,13 @@
 						toLogin(data);
 						that.rs=data.result;
 						that.resumes(data.result.id);
+						var state=data.result.collect;
+                        $('#collect').attr('data-state',state);
+                        if(state==0){
+                            $('#collect').html('&#xe600;');
+						}else{
+                            $('#collect').html('&#xe71a;');
+						}
 					});				  		
 			  	},
 			  	resumes:function(){

@@ -48,10 +48,10 @@
                     <div class="jobLi" v-if="result!==null">
                         <a class="ja" data-href="companyInfo.html" :data-id="result.company_Profile.id">
                             <div class="jtxt">
-                                <span v-text="result.company_Profile.companyname"></span>
+                                <span v-text="result.jobsInfo.jobs_name"></span>
                                 <i v-text="result.jobsInfo.salary_cn"></i>
                             </div>
-                            <div class="jtxt" id="font_txt">
+                            <div class="jtxt" id="font_txt" >
                                 <p>
                                     <span><i class="iconfont">&#xe605;</i><span v-text="result.jobsInfo.district_cn"></span></span>
                                     <span><i class="iconfont">&#xe61d;</i><span v-text="result.jobsInfo.experience_cn"></span></span>
@@ -59,14 +59,14 @@
                                 </p>
                             </div>
                             <div class="jinfo">
-                                <img :src="result.company_Profile.logo"/>
+                                <img :src="result.company_Profile.logo?result.company_Profile.logo: '../../static/images/aboutTc.gif'"/>
                                 <h1 v-text="result.company_Profile.companyname" class="mui-ellipsis"></h1>
                                 <p>
-                                    <span v-text="result.jobsInfo.trade_cn"></span>
+                                    <span v-text="result.company_Profile.trade_cn"></span>
                                     <span class="widther">|</span>
                                     <span v-text="result.jobsInfo.scale_cn"></span>
-                                    <span class="widther">|</span>
-                                    <span v-text="result.company_Profile.finance"></span>
+                                    <span class="widther" v-show="display">|</span>
+                                    <span v-text="result.company_Profile.finance" v-show="display"></span>
                                 </p>
                                 <span class="mui-icon mui-icon-arrowright"></span>
                             </div>
@@ -74,11 +74,13 @@
                         <div class="jDetail">
                             <div class="jDetInfo">
                                 <p><i class="iconfont">&#xe8a0;</i>职位详情</p>
-                                <p v-text="result.jobsInfo.contents"></p>
+                                <p v-text="result.jobsInfo.contents" v-show="contents==1"></p>
+                                <p v-text="textNull" v-show="contents==0"></p>
                             </div>
                             <div class="jDetInfo">
                                 <p><i class="iconfont">&#xe61b;</i>技能要求</p>
-                                <p v-text="result.jobsInfo.skill"></p>
+                                <p v-text="result.jobsInfo.skill" v-show="skill==1"></p>
+                                <p v-text="textNull" v-show="skill==0"></p>
                             </div>
                             <div class="jDetInfo">
                                 <a data-href="../mapGuide.html" class="address">
@@ -91,7 +93,8 @@
                                 <p><i class="iconfont">&#xe640;</i>职位发布者</p>
                                 <div class="flex">
                                     <div class="imgInfo">
-                                        <img :src="result.company_Profile.logo">
+                                        <img :src="result.company_Profile.logo? result.company_Profile.logo: '../../static/images/aboutTc.gif'">
+                                        <!--item.avatar ? item.avatar : 'static/images/aboutTc.gif'-->
                                     </div>
                                     <div class="bossName">
                                         <p v-text="result.user.realname"></p>
@@ -155,7 +158,12 @@
         var app = new Vue({
             el: '#app',
             data: {
-                result:null
+                result:null,
+                display:false,
+                contents:0,
+                skill:0,
+                textNull:'无',
+                uid:null
             },
             methods:{
                 loadInfo:function(){
@@ -166,12 +174,23 @@
                     ajaxRun(job_detail,parmas,true,'POST',function (data) {
                         console.log(data);
                         var state=data.result.is_collet;
+                        if(data.result.company_Profile.finance!==""){
+                            that.display=true;
+                        }
+                        if(data.result.jobsInfo.contents!==""){
+                            that.contents=1;
+                        }
+                        if(data.result.jobsInfo.skill!==""){
+                            that.skill=1;
+                        }
                         if(data.statuscode==1){
                             //渲染数据
                             that.result=data.result;
                             getCollect(state);
                             var jobsInfo=data.result.jobsInfo;
+                            that.uid=jobsInfo.uid;
                             _company_id=jobsInfo.company_id;
+
                         }else{
                             mui.toast('网络错误，请稍后重试！');
                         }
@@ -239,7 +258,7 @@
     //发送简历
         $('.buttom_btn_list').on('tap','#sendResume',function(){
             var companyId=$('#app .ja').attr('data-id');
-            var  parmas={companyid:companyId,jobid:jobDetailId};
+            var parmas={companyid:companyId,jobid:jobDetailId};
             var send_resume=host+'c=personalJobsend&a=sendResume';
             ajaxRun(send_resume,parmas,true,'POST',function (data) {
                 console.log(data);
@@ -248,7 +267,8 @@
                     $('#sendResume').html('已投递').css('background-color','#5e5e5e')
                         .css('color','#fff').css('border-color','#5e5e5e').attr('disabled','disabled').attr('data-state','1');
                 }else{
-                    mui.alert('网络错误，请稍后重试！');
+
+                    mui.alert(data.msg);
                 }
             })
         })
@@ -256,8 +276,8 @@
         //跟他聊聊
         document.getElementById('chatWith').addEventListener('tap',function(){
             var href='../../commom/chatMsg/chatPersonal.html';
-            console.log(_company_id);
-            location.href=href+'?company_id='+_company_id;
+            var touid=app._data.uid;
+            location.href=href+'?touid='+touid;
         });
 
         setTimeout(function(){
