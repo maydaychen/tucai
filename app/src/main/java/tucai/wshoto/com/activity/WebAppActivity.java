@@ -1027,6 +1027,7 @@ public class WebAppActivity extends BaseActivity implements BaiduMap.OnMapLoaded
 //        oks.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503506356816&di=5dadbd01e162deb6601a801dc6258361&imgtype=0&src=http%3A%2F%2Fimg1.bitautoimg.com%2Fautoalbum%2Ffiles%2F20170407%2F958%2F16325395873602_5454777_3.jpg%3Fr%3D20170703");//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setUrl("https://fir.im/lag3");
+        oks.setTitleUrl("https://fir.im/lag3");
 //        oks.setSiteUrl("https://fir.im/lag3");
 //        oks.setUrl("http://www.baidu.com");
         // 启动分享GUI
